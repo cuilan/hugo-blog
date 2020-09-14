@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>AbstractCollection源码分析 | 翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="AbstractCollection源码分析" />
+<meta property="og:description" content="java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。
+一、AbstractCollection类继承规范  AbstractCollection 抽象类提供了 Collection 接口的骨干实现，以最大限度地减少实现 Collection 接口所需的工作量。 如需实现一个 不可修改的集合，只需要继承此类并提供 iterator() 方法和 size() 方法的实现。（iterator() 方法返回的迭代器必须实现 hasNext() 方法和 next()方法。） 如需实现一个 可修改的集合，则必须另外覆盖此类的 add() 方法（否则会抛出 UnsupportedOperationException 异常），iterator() 方法返回的迭代器必须另外实现其 remove() 方法。 除此之外还应该根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。 每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。   二、成员分析 2.1 常量 集合的最大数组大小。某些虚拟机在数组中保留一些 header words。如果尝试分配更大的数组可能会导致 OutOfMemoryError：请求的数组大小超过VM限制。
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 2.2 构造方法 唯一的构造函数。
+protected AbstractCollection() { } 2.3 抽象方法 方法描述见：java.util.Collection接口。
+public abstract Iterator&lt;E&gt; iterator(); public abstract int size(); 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/" />
+<meta property="article:published_time" content="2019-07-18T17:00:00+00:00" />
+<meta property="article:modified_time" content="2019-07-18T17:00:00+00:00" />
+<meta itemprop="name" content="AbstractCollection源码分析">
+<meta itemprop="description" content="java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。
+一、AbstractCollection类继承规范  AbstractCollection 抽象类提供了 Collection 接口的骨干实现，以最大限度地减少实现 Collection 接口所需的工作量。 如需实现一个 不可修改的集合，只需要继承此类并提供 iterator() 方法和 size() 方法的实现。（iterator() 方法返回的迭代器必须实现 hasNext() 方法和 next()方法。） 如需实现一个 可修改的集合，则必须另外覆盖此类的 add() 方法（否则会抛出 UnsupportedOperationException 异常），iterator() 方法返回的迭代器必须另外实现其 remove() 方法。 除此之外还应该根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。 每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。   二、成员分析 2.1 常量 集合的最大数组大小。某些虚拟机在数组中保留一些 header words。如果尝试分配更大的数组可能会导致 OutOfMemoryError：请求的数组大小超过VM限制。
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 2.2 构造方法 唯一的构造函数。
+protected AbstractCollection() { } 2.3 抽象方法 方法描述见：java.util.Collection接口。
+public abstract Iterator&lt;E&gt; iterator(); public abstract int size(); 2.">
+<meta itemprop="datePublished" content="2019-07-18T17:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-07-18T17:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="771">
+
+
+
+<meta itemprop="keywords" content="Java,源码,集合框架," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AbstractCollection源码分析"/>
+<meta name="twitter:description" content="java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。
+一、AbstractCollection类继承规范  AbstractCollection 抽象类提供了 Collection 接口的骨干实现，以最大限度地减少实现 Collection 接口所需的工作量。 如需实现一个 不可修改的集合，只需要继承此类并提供 iterator() 方法和 size() 方法的实现。（iterator() 方法返回的迭代器必须实现 hasNext() 方法和 next()方法。） 如需实现一个 可修改的集合，则必须另外覆盖此类的 add() 方法（否则会抛出 UnsupportedOperationException 异常），iterator() 方法返回的迭代器必须另外实现其 remove() 方法。 除此之外还应该根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。 每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。   二、成员分析 2.1 常量 集合的最大数组大小。某些虚拟机在数组中保留一些 header words。如果尝试分配更大的数组可能会导致 OutOfMemoryError：请求的数组大小超过VM限制。
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 2.2 构造方法 唯一的构造函数。
+protected AbstractCollection() { } 2.3 抽象方法 方法描述见：java.util.Collection接口。
+public abstract Iterator&lt;E&gt; iterator(); public abstract int size(); 2."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/&amp;text=AbstractCollection%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/&amp;title=AbstractCollection%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">AbstractCollection源码分析</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-07-18T17:00:00Z">July 18, 2019</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><strong><code>java.util.AbstractCollection</code></strong> 抽象类实现了 <strong><code>java.util.Collection</code></strong> 接口。</p>
+<p><img src="AbstractCollection-source-analysis/AbstractCollection1.png" alt="AbstractCollection继承关系" title="AbstractCollection继承关系"></p>
+<!-- raw HTML omitted -->
+<h2 id="一abstractcollection类继承规范">一、AbstractCollection类继承规范</h2>
+<ul>
+<li><strong><code>AbstractCollection</code></strong> 抽象类提供了 <strong><code>Collection</code></strong> 接口的骨干实现，以最大限度地减少实现 <strong><code>Collection</code></strong> 接口所需的工作量。</li>
+<li>如需实现一个 <strong>不可修改的集合</strong>，只需要继承此类并提供 <strong><code>iterator()</code></strong> 方法和 <strong><code>size()</code></strong> 方法的实现。（<strong><code>iterator()</code></strong> 方法返回的迭代器必须实现 <strong><code>hasNext()</code></strong> 方法和 <strong><code>next()</code></strong>方法。）</li>
+<li>如需实现一个 <strong>可修改的集合</strong>，则必须另外覆盖此类的 <strong><code>add()</code></strong> 方法（否则会抛出 <code>UnsupportedOperationException</code> 异常），<strong><code>iterator()</code></strong> 方法返回的迭代器必须另外实现其 <strong><code>remove()</code></strong> 方法。</li>
+<li>除此之外还应该根据 <strong><code>Collection</code></strong> 接口的规范提供 <strong>无参数构造器</strong> 和 <strong>参数为 Collection 的构造器</strong>。</li>
+<li>每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。</li>
+</ul>
+<hr>
+<h2 id="二成员分析">二、成员分析</h2>
+<h3 id="21-常量">2.1 常量</h3>
+<p>集合的最大数组大小。某些虚拟机在数组中保留一些 <code>header words</code>。如果尝试分配更大的数组可能会导致 <code>OutOfMemoryError</code>：请求的数组大小超过VM限制。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> MAX_ARRAY_SIZE <span style="color:#f92672">=</span> Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span> <span style="color:#f92672">-</span> 8<span style="color:#f92672">;</span>
+</code></pre></div><h3 id="22-构造方法">2.2 构造方法</h3>
+<p>唯一的构造函数。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">AbstractCollection</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="23-抽象方法">2.3 抽象方法</h3>
+<p>方法描述见：<!-- raw HTML omitted --><strong><code>java.util.Collection</code></strong><!-- raw HTML omitted --> 接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="24-实现方法">2.4 实现方法</h3>
+<h4 id="isempty方法">isEmpty()方法</h4>
+<p>如果挡墙集合不包含任何元素，则返回 <strong><code>true</code></strong>。依赖子类实现的 <strong><code>size()</code></strong> 方法，判断size是否等于0。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> size<span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="containsobject-o方法">contains(Object o)方法</h4>
+<p>如果当前集合中包含指定的元素，则返回 <strong><code>true</code></strong>。
+即：当且仅当此集合包含至少一个元素e时才返回true，<strong><code>(o == null ? e == null : o.equals(e))</code></strong>。
+此实现迭代集合中的元素，依次检查每个元素是否与指定元素相等。
+iterator()方法依赖子类的实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()))</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="toarray方法">toArray()方法</h4>
+<p>返回包含当前集合中所有元素的数组。
+如果当前集合的迭代器返回的元素是有序的，则此方法必须以相同的顺序返回元素数组。
+当前集合不会保留对数组中元素的引用，所以返回的数组是“安全的”。
+此方法充当基于数组和基于集合的API之间的桥梁。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object<span style="color:#f92672">[]</span> <span style="color:#a6e22e">toArray</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 初始化数组的大小
+</span><span style="color:#75715e"></span>    Object<span style="color:#f92672">[]</span> r <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">[</span>size<span style="color:#f92672">()];</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#75715e">// 元素少于预期的大小
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> i<span style="color:#f92672">);</span>
+        r<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()</span> <span style="color:#f92672">?</span> finishToArray<span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> it<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> r<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="toarrayt-a方法">toArray(T[] a)方法</h4>
+<p>返回包含当前集合中所有元素的数组，并按照类型放入指定数组 <strong>a</strong> 中。如果数组 <code>length</code> 小于当前集合，则创建一个新的数组并放入集合中的元素。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T<span style="color:#f92672">[]</span> <span style="color:#a6e22e">toArray</span><span style="color:#f92672">(</span>T<span style="color:#f92672">[]</span> a<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 预估数组的大小为集合的 size
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> size<span style="color:#f92672">();</span>
+    <span style="color:#75715e">// 如果数组 a 的长度小于 size，则反射一个 size 大小的数组
+</span><span style="color:#75715e"></span>    T<span style="color:#f92672">[]</span> r <span style="color:#f92672">=</span> a<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;=</span> size <span style="color:#f92672">?</span> a <span style="color:#f92672">:</span>
+              <span style="color:#f92672">(</span>T<span style="color:#f92672">[])</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">reflect</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Array</span>
+              <span style="color:#f92672">.</span><span style="color:#a6e22e">newInstance</span><span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">getClass</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getComponentType</span><span style="color:#f92672">(),</span> size<span style="color:#f92672">);</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span> i<span style="color:#f92672">++)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span> <span style="color:#75715e">// 元素少于预期的大小
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>a <span style="color:#f92672">==</span> r<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                r<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&lt;</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">return</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> i<span style="color:#f92672">);</span>
+            <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+                System<span style="color:#f92672">.</span><span style="color:#a6e22e">arraycopy</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> a<span style="color:#f92672">,</span> 0<span style="color:#f92672">,</span> i<span style="color:#f92672">);</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>a<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span> <span style="color:#f92672">&gt;</span> i<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    a<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">return</span> a<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        r<span style="color:#f92672">[</span>i<span style="color:#f92672">]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 元素大于预期的大小
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">()</span> <span style="color:#f92672">?</span> finishToArray<span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> it<span style="color:#f92672">)</span> <span style="color:#f92672">:</span> r<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="finishtoarrayt-r-iterator-it方法">finishToArray(T[] r, Iterator&lt;?&gt; it)方法</h4>
+<p>当迭代器返回的元素多于预期时，则重新分配在 <strong><code>toArray</code></strong> 中使用的数组，并完成从迭代器填充它。</p>
+<p>迭代器每次迭代到下一个元素时，判断 <strong><code>cap</code></strong> 数组的长度等于 <strong><code>i</code></strong> 当前迭代的元素数量，就将 cap 数组的长度增加 <strong><code>cap x 1.5 + 1</code></strong>，并判断是否超出了虚拟机最大限制，如果超出限制就调用 <strong><code>hugeCapacity()</code></strong> 方法调整大小。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>T<span style="color:#f92672">&gt;</span> T<span style="color:#f92672">[]</span> <span style="color:#a6e22e">finishToArray</span><span style="color:#f92672">(</span>T<span style="color:#f92672">[]</span> r<span style="color:#f92672">,</span> Iterator<span style="color:#f92672">&lt;?&gt;</span> it<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">int</span> cap <span style="color:#f92672">=</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> cap<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">int</span> newCap <span style="color:#f92672">=</span> cap <span style="color:#f92672">+</span> <span style="color:#f92672">(</span>cap <span style="color:#f92672">&gt;&gt;</span> 1<span style="color:#f92672">)</span> <span style="color:#f92672">+</span> 1<span style="color:#f92672">;</span>
+            <span style="color:#75715e">// 检测大小是否溢出
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newCap <span style="color:#f92672">-</span> MAX_ARRAY_SIZE <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">)</span>
+                newCap <span style="color:#f92672">=</span> hugeCapacity<span style="color:#f92672">(</span>cap <span style="color:#f92672">+</span> 1<span style="color:#f92672">);</span>
+            r <span style="color:#f92672">=</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> newCap<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        r<span style="color:#f92672">[</span>i<span style="color:#f92672">++]</span> <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>T<span style="color:#f92672">)</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 修剪过度分配
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">==</span> r<span style="color:#f92672">.</span><span style="color:#a6e22e">length</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> r <span style="color:#f92672">:</span> Arrays<span style="color:#f92672">.</span><span style="color:#a6e22e">copyOf</span><span style="color:#f92672">(</span>r<span style="color:#f92672">,</span> i<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="hugecapacityint-mincapacity方法">hugeCapacity(int minCapacity)方法</h4>
+<p>调整最大容量，如果小于0，抛出 <strong><code>OutOfMemoryError</code></strong> 异常，如果大于虚拟机最大限制，则设置为常量 <strong><code>MAX_ARRAY_SIZE</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hugeCapacity</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> minCapacity<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">&lt;</span> 0<span style="color:#f92672">)</span> <span style="color:#75715e">// overflow
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> OutOfMemoryError
+            <span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Required array size too large&#34;</span><span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>minCapacity <span style="color:#f92672">&gt;</span> MAX_ARRAY_SIZE<span style="color:#f92672">)</span> <span style="color:#f92672">?</span>
+        Integer<span style="color:#f92672">.</span><span style="color:#a6e22e">MAX_VALUE</span> <span style="color:#f92672">:</span>
+        MAX_ARRAY_SIZE<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="adde-e方法">add(E e)方法</h4>
+<ul>
+<li><strong>AbstractCollection</strong> 没有提供 add() 方法的具体实现，只提供子类实现的规范，始终抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</li>
+<li>如果添加成功（集合因调用导致改变），则返回 <strong><code>true</code></strong>。</li>
+<li>如果此集合不允许重复且已包含指定的元素 e ，则返回 <strong><code>false</code></strong>。</li>
+<li>某些子类实现的集合不允许添加 <strong><code>null</code></strong> 元素，或集合对添加的元素有 <strong>类型限制</strong>。</li>
+<li>如果集合因已包含该元素而拒绝添加特定元素 e，则必须 <strong>抛出异常，而不是返回 <code>false</code></strong>。以保证在此调用后集合始终保持不变。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 不支持的操作类型
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> UnsupportedOperationException<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="removeobject-o方法">remove(Object o)方法</h4>
+<ul>
+<li>从当前集合中移除指定元素的第一个出现的实例（如果存在）。</li>
+<li>此子类实现的 <strong><code>iterator()</code></strong> 方法查找指定的元素。如果找到该元素，则由此迭代器的 <strong><code>remove()</code></strong> 方法从集合中删除该元素。</li>
+<li><strong>注意</strong>：如果当前子类实现的 <code>iterator()</code> 方法返回的迭代器未实现 <code>remove()</code> 方法，且当前集合包含了指定的对象，则抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#75715e">// 判断 o 对象是否为 null，某些子类实现允许包含 null 元素，则需要提供对 null 元素进行删除
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+                it<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+            <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>o<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()))</span>
+                it<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="containsallcollection-c方法">containsAll(Collection&lt;?&gt; c)方法</h4>
+<p>如果当前集合包含指定 Collection 中的所有元素，则返回 <strong><code>true</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">containsAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Object e <span style="color:#f92672">:</span> c<span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>contains<span style="color:#f92672">(</span>e<span style="color:#f92672">))</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="addallcollection-extends-e-c方法">addAll(Collection&lt;? extends E&gt; c)方法</h4>
+<p>将指定集合中的所有元素条件至当前集合中，此方法依赖 <strong><code>add()</code></strong> 方法。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">boolean</span> modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>E e <span style="color:#f92672">:</span> c<span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>add<span style="color:#f92672">(</span>e<span style="color:#f92672">))</span>
+            <span style="color:#75715e">// 只要 c 集合发生改变，就将 modified 置为 true
+</span><span style="color:#75715e"></span>            modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> modified<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="removeallcollection-c方法">removeAll(Collection&lt;?&gt; c)方法</h4>
+<p>从当前集合，删除指定集合 c 中的全部元素，且该指定的集合不可为 null。
+<strong>注意</strong>：如果当前子类实现的 <code>iterator()</code> 方法返回的迭代器未实现 <code>remove()</code> 方法，且当前集合包含了指定的对象，则抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">removeAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">boolean</span> modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    Iterator<span style="color:#f92672">&lt;?&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>c<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+            it<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+            <span style="color:#75715e">// 只要 c 集合发生改变，就将 modified 置为 true
+</span><span style="color:#75715e"></span>            modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> modified<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="retainallcollection-c方法">retainAll(Collection&lt;?&gt; c)方法</h4>
+<p>仅保留当前集合包含了指定集合 c 中的元素，即：删除当前集合中不包含指定集合 c 中的元素。
+<strong>注意</strong>：如果当前子类实现的 <code>iterator()</code> 方法返回的迭代器未实现 <code>remove()</code> 方法，且当前集合包含了指定的对象，则抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">retainAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">boolean</span> modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>c<span style="color:#f92672">.</span><span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">()))</span> <span style="color:#f92672">{</span>
+            it<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+            <span style="color:#75715e">// 只要 c 集合发生改变，就将 modified 置为 true
+</span><span style="color:#75715e"></span>            modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> modified<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="clear方法">clear()方法</h4>
+<p><strong>清空集合</strong>，将当前集合中的全部元素删除。子类实现通常会以 <strong>高效的实现</strong> 来覆盖此方法。
+<strong>注意</strong>：如果当前子类实现的 <code>iterator()</code> 方法返回的迭代器未实现 <code>remove()</code> 方法，且当前集合包含了指定的对象，则抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+        it<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="tostring方法">toString()方法</h4>
+<p>返回当前集合的字符串表现形式，按照迭代器返回的顺序进行字符串拼接。
+覆盖 <strong><code>Object</code></strong> 的 <strong><code>toString()</code></strong> 方法，以 <strong><code>[</code></strong> 开始，以 <strong><code>]</code></strong> 结束，相邻元素以 <strong><code>, </code></strong> 逗号 + 空格来间隔，元素调用 <strong><code>String.valueOf(Object)</code></strong> 转换字符串形式。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">toString</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> it <span style="color:#f92672">=</span> iterator<span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;[]&#34;</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 空集合
+</span><span style="color:#75715e"></span>    StringBuilder sb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> StringBuilder<span style="color:#f92672">();</span>
+    sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;[&#39;</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 开始
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(;;)</span> <span style="color:#f92672">{</span>
+        E e <span style="color:#f92672">=</span> it<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+        sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span>e <span style="color:#f92672">==</span> <span style="color:#66d9ef">this</span> <span style="color:#f92672">?</span> <span style="color:#e6db74">&#34;(this Collection)&#34;</span> <span style="color:#f92672">:</span> e<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>it<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span>
+            <span style="color:#66d9ef">return</span> sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;]&#39;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">toString</span><span style="color:#f92672">();</span> <span style="color:#75715e">// 结束
+</span><span style="color:#75715e"></span>        sb<span style="color:#f92672">.</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39;,&#39;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">append</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#39; &#39;</span><span style="color:#f92672">);</span> <span style="color:#75715e">// 元素间隔
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%BA%90%E7%A0%81" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">源码</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">集合框架</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/posts/javase/set-source-analysis/">Set接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/list-source-analysis/">List接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/collection-source-analysis/">Collection接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/javacollectionsframework/">Java集合框架源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/iterable-source-analysis/">Iterable接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/linked-list-source-analysis/">LinkedList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/array-list-source-analysis/">ArrayList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/java-object-head/">Java对象头详解</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

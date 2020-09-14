@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on 翠兰 - Greenland</title>
+    <link>https://cuilan.github.io/categories/</link>
+    <description>Recent content in Categories on 翠兰 - Greenland</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 Sep 2019 16:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cuilan.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JavaSE</title>
+      <link>https://cuilan.github.io/categories/javase/</link>
+      <pubDate>Tue, 17 Sep 2019 16:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/categories/javase/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

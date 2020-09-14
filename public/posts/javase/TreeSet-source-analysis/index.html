@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>TreeSet源码分析 | 翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="TreeSet源码分析" />
+<meta property="og:description" content="java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serializable 接口。
+一、TreeSet特点或规范 TreeSet 是基于 java.util.TreeMap 的 java.util.NavigableSet 实现类。
+ 有序：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。 不可重复。  1.1 时间复杂度 TreeSet 的基本操作（add(Object)、remove(Object)、contains(Object)）均保证了时间复杂度为 O(logN)。
+1.2 有序性保证 注意：子类如果要正确实现 Set 接口，则由 Set 维护的排序（无论是否提供显式比较器）必须与 equals() 方法保持一致。 因为 Set 接口的唯一性是根据 equals() 方法决定的，而 TreeSet 是使用 compareTo() 方法实现元素比较。 TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。
+1.3 线程不安全 注意：TreeSet 类线程不同步。 如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。 实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：
+SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...)); 1.4 并发迭代 如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 remove()方法之外，迭代器将抛出 ConcurrentModificationException。
+ 二、成员变量 TreeSet 底层由 TreeMap 实现。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cuilan.github.io/posts/javase/treeset-source-analysis/" />
+<meta property="article:published_time" content="2019-08-20T15:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-20T15:00:00+00:00" />
+<meta itemprop="name" content="TreeSet源码分析">
+<meta itemprop="description" content="java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serializable 接口。
+一、TreeSet特点或规范 TreeSet 是基于 java.util.TreeMap 的 java.util.NavigableSet 实现类。
+ 有序：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。 不可重复。  1.1 时间复杂度 TreeSet 的基本操作（add(Object)、remove(Object)、contains(Object)）均保证了时间复杂度为 O(logN)。
+1.2 有序性保证 注意：子类如果要正确实现 Set 接口，则由 Set 维护的排序（无论是否提供显式比较器）必须与 equals() 方法保持一致。 因为 Set 接口的唯一性是根据 equals() 方法决定的，而 TreeSet 是使用 compareTo() 方法实现元素比较。 TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。
+1.3 线程不安全 注意：TreeSet 类线程不同步。 如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。 实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：
+SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...)); 1.4 并发迭代 如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 remove()方法之外，迭代器将抛出 ConcurrentModificationException。
+ 二、成员变量 TreeSet 底层由 TreeMap 实现。">
+<meta itemprop="datePublished" content="2019-08-20T15:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-20T15:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="741">
+
+
+
+<meta itemprop="keywords" content="Java,源码,集合框架," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="TreeSet源码分析"/>
+<meta name="twitter:description" content="java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serializable 接口。
+一、TreeSet特点或规范 TreeSet 是基于 java.util.TreeMap 的 java.util.NavigableSet 实现类。
+ 有序：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。 不可重复。  1.1 时间复杂度 TreeSet 的基本操作（add(Object)、remove(Object)、contains(Object)）均保证了时间复杂度为 O(logN)。
+1.2 有序性保证 注意：子类如果要正确实现 Set 接口，则由 Set 维护的排序（无论是否提供显式比较器）必须与 equals() 方法保持一致。 因为 Set 接口的唯一性是根据 equals() 方法决定的，而 TreeSet 是使用 compareTo() 方法实现元素比较。 TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。
+1.3 线程不安全 注意：TreeSet 类线程不同步。 如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。 实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：
+SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...)); 1.4 并发迭代 如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 remove()方法之外，迭代器将抛出 ConcurrentModificationException。
+ 二、成员变量 TreeSet 底层由 TreeMap 实现。"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://cuilan.github.io/posts/javase/treeset-source-analysis/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://cuilan.github.io/posts/javase/treeset-source-analysis/&amp;text=TreeSet%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://cuilan.github.io/posts/javase/treeset-source-analysis/&amp;title=TreeSet%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">TreeSet源码分析</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-08-20T15:00:00Z">August 20, 2019</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><strong><code>java.util.TreeSet</code></strong> 类继承自 <strong><code>java.util.AbstractSet</code></strong> 抽象类，实现了 <strong><code>java.util.NavigableSet</code></strong>、<strong><code>java.lang.Cloneable</code></strong>、<strong><code>java.io.Serializable</code></strong> 接口。</p>
+<p><img src="TreeSet-source-analysis/TreeSet1.png" alt="TreeSet继承关系" title="TreeSet继承关系"></p>
+<!-- raw HTML omitted -->
+<h2 id="一treeset特点或规范">一、TreeSet特点或规范</h2>
+<p><strong><code>TreeSet</code></strong> 是基于 <strong><code>java.util.TreeMap</code></strong> 的 <strong><code>java.util.NavigableSet</code></strong> 实现类。</p>
+<ul>
+<li><strong>有序</strong>：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。</li>
+<li><strong>不可重复</strong>。</li>
+</ul>
+<h3 id="11-时间复杂度">1.1 时间复杂度</h3>
+<p>TreeSet 的基本操作（<strong><code>add(Object)</code></strong>、<strong><code>remove(Object)</code></strong>、<strong><code>contains(Object)</code></strong>）均保证了时间复杂度为 <strong>O(logN)</strong>。</p>
+<h3 id="12-有序性保证">1.2 有序性保证</h3>
+<p><!-- raw HTML omitted -->注意<!-- raw HTML omitted -->：子类如果要正确实现 <strong>Set</strong> 接口，则由 <strong>Set</strong> 维护的排序（无论是否提供显式比较器）必须与 <strong>equals()</strong> 方法保持一致。
+因为 <strong>Set</strong> 接口的唯一性是根据 <strong><code>equals()</code></strong> 方法决定的，而 <strong>TreeSet</strong> 是使用 <strong><code>compareTo()</code></strong> 方法实现元素比较。
+TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。</p>
+<h3 id="13-线程不安全">1.3 线程不安全</h3>
+<p><!-- raw HTML omitted -->注意<!-- raw HTML omitted -->：<strong>TreeSet 类线程不同步</strong>。
+如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。
+实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">SortedSet s <span style="color:#f92672">=</span> Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">synchronizedSortedSet</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TreeSet<span style="color:#f92672">(...));</span>
+</code></pre></div><h3 id="14-并发迭代">1.4 并发迭代</h3>
+<p>如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 <strong><code>remove()</code></strong>方法之外，迭代器将抛出 <strong><code>ConcurrentModificationException</code></strong>。</p>
+<hr>
+<h2 id="二成员变量">二、成员变量</h2>
+<p><strong>TreeSet</strong> 底层由 <strong>TreeMap</strong> 实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">transient</span> NavigableMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;</span> m<span style="color:#f92672">;</span>
+
+<span style="color:#75715e">// 关联 NavigableMap 中的 Object 虚拟值
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">final</span> Object PRESENT <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Object<span style="color:#f92672">();</span>
+</code></pre></div><hr>
+<h2 id="三构造器">三、构造器</h2>
+<h3 id="空参构造器遵循-collection-接口规范">空参构造器（遵循 Collection 接口规范）</h3>
+<p>使用 TreeMap 实例，比较器为默认自然排序。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TreeSet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;());</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="参数为-collection-类型的构造器遵循-collection-接口规范">参数为 Collection 类型的构造器（遵循 Collection 接口规范）</h3>
+<p>使用 TreeMap 实例，比较器为默认自然排序。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TreeSet</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">();</span>
+    addAll<span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="参数为-comparator-类型的构造器">参数为 Comparator 类型的构造器</h3>
+<p>使用 TreeMap 实例，自定义比较器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TreeSet</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> comparator<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;&gt;(</span>comparator<span style="color:#f92672">));</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="参数为-sortedset-集合类型的构造器">参数为 SortedSet 集合类型的构造器</h3>
+<p>使用 TreeSet 实例，使用参数 SortedSet 的比较器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#a6e22e">TreeSet</span><span style="color:#f92672">(</span>SortedSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> s<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">(</span>s<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">());</span>
+    addAll<span style="color:#f92672">(</span>s<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="参数为-navigablemap-类型的构造器">参数为 NavigableMap 类型的构造器</h3>
+<p>包访问权限，指定特定可导航的 Map 构造 TreeSet，用于子类扩展。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">TreeSet<span style="color:#f92672">(</span>NavigableMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;</span> m<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">this</span><span style="color:#f92672">.</span><span style="color:#a6e22e">m</span> <span style="color:#f92672">=</span> m<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><hr>
+<h2 id="四方法分析">四、方法分析</h2>
+<h3 id="41-继承自-set-接口的方法">4.1 继承自 Set 接口的方法</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#75715e">// 返回 map 中 keySet 的迭代器
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">iterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">navigableKeySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 返回 set 的大小
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 返回 set 是否为空
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 返回 set 中是否包含元素 o
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">contains</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>o<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 添加元素 e，并返回是否成功
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>e<span style="color:#f92672">,</span> PRESENT<span style="color:#f92672">)==</span><span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 删除元素 o，并返回是否删除成功
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>o<span style="color:#f92672">)==</span>PRESENT<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 清空集合中的全部元素
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    m<span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+
+<span style="color:#75715e">// 添加集合，按照集合返回
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">public</span>  <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// 如果当前 set 集合中元素为空，使用集合 c 的比较器
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">==</span> 0 <span style="color:#f92672">&amp;&amp;</span> c<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 0 <span style="color:#f92672">&amp;&amp;</span> c <span style="color:#66d9ef">instanceof</span> SortedSet <span style="color:#f92672">&amp;&amp;</span> m <span style="color:#66d9ef">instanceof</span> TreeMap<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        SortedSet<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> set <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>SortedSet<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;)</span> c<span style="color:#f92672">;</span>
+        TreeMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;</span> map <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TreeMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span> Object<span style="color:#f92672">&gt;)</span> m<span style="color:#f92672">;</span>
+        Comparator<span style="color:#f92672">&lt;?&gt;</span> cc <span style="color:#f92672">=</span> set<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">();</span>
+        Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> mc <span style="color:#f92672">=</span> map<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>cc <span style="color:#f92672">==</span> mc <span style="color:#f92672">||</span> <span style="color:#f92672">(</span>cc <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> cc<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>mc<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+            map<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllForTreeSet</span><span style="color:#f92672">(</span>set<span style="color:#f92672">,</span> PRESENT<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#75715e">// 调用 AbstractCollection 的方法，forEach循环依次添加
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>c<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="42-继承自-sortedset-接口的方法">4.2 继承自 SortedSet 接口的方法</h3>
+<p>获取第一个元素。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">first</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">firstKey</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>获取最后一个元素。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">last</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">lastKey</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>获取集合的比较器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">comparator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="43-继承自-navigableset-接口的方法">4.3 继承自 NavigableSet 接口的方法</h3>
+<h4 id="元素操作">元素操作</h4>
+<p>返回 Set 中<strong>大于</strong>指定元素的<strong>最小元素</strong>，如果没有这样的元素，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">higher</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">higherKey</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 中<strong>小于</strong>指定元素的<strong>最大元素</strong>，如果没有这样的元素，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">lower</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">lowerKey</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 中<strong>大于等于</strong>指定元素的<strong>最小元素</strong>，如果没有这样的元素，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">ceiling</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">ceilingKey</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 中<strong>小于等于</strong>指定元素的<strong>最大元素</strong>，如果没有这样的元素，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">floor</span><span style="color:#f92672">(</span>E e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">floorKey</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>删除并返回第一个（最低）元素，如果 Set 为空，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">pollFirst</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,?&gt;</span> e <span style="color:#f92672">=</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">pollFirstEntry</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">:</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>删除并返回最后一个（最高）元素，如果 Set 为空，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">pollLast</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,?&gt;</span> e <span style="color:#f92672">=</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">pollLastEntry</span><span style="color:#f92672">();</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>e <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">:</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="子集操作">子集操作</h4>
+<p>返回 Set 的部分视图，其元素 <strong>小于</strong>（或 <strong>等于</strong>，如果 <strong>inclusive</strong> 为 <strong><code>true</code></strong>）<strong>toElement</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> NavigableSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">headSet</span><span style="color:#f92672">(</span>E toElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> inclusive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TreeSet<span style="color:#f92672">&lt;&gt;(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">headMap</span><span style="color:#f92672">(</span>toElement<span style="color:#f92672">,</span> inclusive<span style="color:#f92672">));</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 的部分视图，其返回的元素 <strong>小于toElement</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> SortedSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">headSet</span><span style="color:#f92672">(</span>E toElement<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> headSet<span style="color:#f92672">(</span>toElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 的部分视图，其元素 <strong>大于</strong>（或 <strong>等于</strong>，如果 <strong>inclusive</strong> 为 <strong><code>true</code></strong>）<strong>fromElement</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> NavigableSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">tailSet</span><span style="color:#f92672">(</span>E fromElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> inclusive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TreeSet<span style="color:#f92672">&lt;&gt;(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">tailMap</span><span style="color:#f92672">(</span>fromElement<span style="color:#f92672">,</span> inclusive<span style="color:#f92672">));</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 的部分视图，其返回的元素 <strong>大于等于fromElement</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> SortedSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">tailSet</span><span style="color:#f92672">(</span>E fromElement<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> tailSet<span style="color:#f92672">(</span>fromElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 的部分视图，其元素范围从 <strong>fromElement</strong> 到 <strong>toElement</strong>。如果 fromElement 和 toElement 相等，则返回的集合为空，除非 <strong>fromInclusive</strong> 和 <strong>toInclusive</strong> 都为 <strong><code>true</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> NavigableSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">subSet</span><span style="color:#f92672">(</span>E fromElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> fromInclusive<span style="color:#f92672">,</span>
+                              E toElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">boolean</span> toInclusive<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TreeSet<span style="color:#f92672">&lt;&gt;(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">subMap</span><span style="color:#f92672">(</span>fromElement<span style="color:#f92672">,</span> fromInclusive<span style="color:#f92672">,</span> toElement<span style="color:#f92672">,</span> toInclusive<span style="color:#f92672">));</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>返回 Set 的部分视图，其元素范围从 <strong>fromElement（包括）</strong> 到 <strong>toElement（不包括）</strong>。如果 fromElement 和 toElement 相等，则返回的集合为空。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> SortedSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">subSet</span><span style="color:#f92672">(</span>E fromElement<span style="color:#f92672">,</span> E toElement<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> subSet<span style="color:#f92672">(</span>fromElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> toElement<span style="color:#f92672">,</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="倒序操作">倒序操作</h4>
+<p>返回 Set 中元素的 <strong>逆序</strong> 视图。降序集合由此集合支持，因此对集合的更改也将反映在降序集合中，反之亦然。
+返回集合的顺序等同于 <strong><code>Collections.reverseOrder(comparator())</code></strong>。表达式 <strong><code>s.descendingSet().descendingSet()</code></strong> 返回集合等效于原集合 s。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> NavigableSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">descendingSet</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> TreeSet<span style="color:#f92672">&lt;&gt;(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">descendingMap</span><span style="color:#f92672">());</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>以 <strong>降序</strong> 返回此集合中元素的迭代器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">descendingIterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">descendingKeySet</span><span style="color:#f92672">().</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="44-继承自-collection-接口的方法">4.4 继承自 Collection 接口的方法</h3>
+<p>获得 TreeMap 中的分割器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Spliterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">spliterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> TreeMap<span style="color:#f92672">.</span><span style="color:#a6e22e">keySpliteratorFor</span><span style="color:#f92672">(</span>m<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="45-其他方法">4.5 其他方法</h3>
+<p>复制当前集合。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Object <span style="color:#a6e22e">clone</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    TreeSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> clone<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        clone <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TreeSet<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;)</span> <span style="color:#66d9ef">super</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clone</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>CloneNotSupportedException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> InternalError<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    clone<span style="color:#f92672">.</span><span style="color:#a6e22e">m</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;&gt;(</span>m<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> clone<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">writeObject</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ObjectOutputStream</span> s<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">throws</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IOException</span> <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// Write out any hidden stuff
+</span><span style="color:#75715e"></span>    s<span style="color:#f92672">.</span><span style="color:#a6e22e">defaultWriteObject</span><span style="color:#f92672">();</span>
+    <span style="color:#75715e">// Write out Comparator
+</span><span style="color:#75715e"></span>    s<span style="color:#f92672">.</span><span style="color:#a6e22e">writeObject</span><span style="color:#f92672">(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">comparator</span><span style="color:#f92672">());</span>
+    <span style="color:#75715e">// Write out size
+</span><span style="color:#75715e"></span>    s<span style="color:#f92672">.</span><span style="color:#a6e22e">writeInt</span><span style="color:#f92672">(</span>m<span style="color:#f92672">.</span><span style="color:#a6e22e">size</span><span style="color:#f92672">());</span>
+    <span style="color:#75715e">// Write out all elements in the proper order.
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>E e <span style="color:#f92672">:</span> m<span style="color:#f92672">.</span><span style="color:#a6e22e">keySet</span><span style="color:#f92672">())</span>
+        s<span style="color:#f92672">.</span><span style="color:#a6e22e">writeObject</span><span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">readObject</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ObjectInputStream</span> s<span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">throws</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">io</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IOException</span><span style="color:#f92672">,</span> ClassNotFoundException <span style="color:#f92672">{</span>
+    <span style="color:#75715e">// Read in any hidden stuff
+</span><span style="color:#75715e"></span>    s<span style="color:#f92672">.</span><span style="color:#a6e22e">defaultReadObject</span><span style="color:#f92672">();</span>
+    <span style="color:#75715e">// Read in Comparator
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">@SuppressWarnings</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;unchecked&#34;</span><span style="color:#f92672">)</span>
+        Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;</span> c <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> E<span style="color:#f92672">&gt;)</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">readObject</span><span style="color:#f92672">();</span>
+    <span style="color:#75715e">// Create backing TreeMap
+</span><span style="color:#75715e"></span>    TreeMap<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">,</span>Object<span style="color:#f92672">&gt;</span> tm <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> TreeMap<span style="color:#f92672">&lt;&gt;(</span>c<span style="color:#f92672">);</span>
+    m <span style="color:#f92672">=</span> tm<span style="color:#f92672">;</span>
+    <span style="color:#75715e">// Read in size
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> size <span style="color:#f92672">=</span> s<span style="color:#f92672">.</span><span style="color:#a6e22e">readInt</span><span style="color:#f92672">();</span>
+    tm<span style="color:#f92672">.</span><span style="color:#a6e22e">readTreeSet</span><span style="color:#f92672">(</span>size<span style="color:#f92672">,</span> s<span style="color:#f92672">,</span> PRESENT<span style="color:#f92672">);</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%BA%90%E7%A0%81" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">源码</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">集合框架</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/posts/javase/linkedhashset-source-analysis/">LinkedHashSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/hashset-source-analysis/">HashSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractset-source-analysis/">AbstractSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractsequentiallist-source-analysis/">AbstractSequentialList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/deque-source-analysis/">Deque接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/queue-source-analysis/">Queue接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/navigableset-source-analysis/">NavigableSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/sortedset-source-analysis/">SortedSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractlist-source-analysis/">AbstractList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractcollection-source-analysis/">AbstractCollection源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/set-source-analysis/">Set接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/list-source-analysis/">List接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/collection-source-analysis/">Collection接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/javacollectionsframework/">Java集合框架源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/iterable-source-analysis/">Iterable接口源码分析</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="翠兰 - Greenland" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="翠兰 - Greenland" />
+      
+    
+    
+    <meta property="og:title" content="Posts" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cuilan.github.io/posts/" />
+<meta property="og:updated_time" content="2019-09-17T16:00:00+00:00" />
+<meta itemprop="name" content="Posts">
+<meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height nested-img">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/" class="link black dim">
+        AbstractCollection源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。
+一、AbstractCollection类继承规范  AbstractCollection 抽象类提供了 Collection 接口的骨干实现，以最大限度地减少实现 Collection 接口所需的工作量。 如需实现一个 不可修改的集合，只需要继承此类并提供 iterator() 方法和 size() 方法的实现。（iterator() 方法返回的迭代器必须实现 hasNext() 方法和 next()方法。） 如需实现一个 可修改的集合，则必须另外覆盖此类的 add() 方法（否则会抛出 UnsupportedOperationException 异常），iterator() 方法返回的迭代器必须另外实现其 remove() 方法。 除此之外还应该根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。 每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。   二、成员分析 2.1 常量 集合的最大数组大小。某些虚拟机在数组中保留一些 header words。如果尝试分配更大的数组可能会导致 OutOfMemoryError：请求的数组大小超过VM限制。
+private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 2.2 构造方法 唯一的构造函数。
+protected AbstractCollection() { } 2.3 抽象方法 方法描述见：java.util.Collection接口。
+public abstract Iterator&lt;E&gt; iterator(); public abstract int size(); 2.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/set-source-analysis/" class="link black dim">
+        Set接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.Set 接口直接继承自 java.util.Collection 接口。
+一、Set接口特点或规范   不包含重复元素。至多一个 null 元素。数学意义的集合。
+  全部方法都继承自 java.util.Collection 接口。
+  子类实现必须创建一个不包含重复元素的构造函数。
+  子类实现必须对 equals() 和 hashCode() 方法重写，对 Set 进行 “值比较”。
+  某些子类实现对其包含的元素有限制。如：
+  某些实现禁止 null 元素
+  某些实现对其元素的类型有限制
+  二、继承自 Collection 的方法 详细方法描述，见：java.util.Collection接口。
+int size(); boolean isEmpty(); boolean contains(Object o); Iterator&lt;E&gt; iterator(); Object[] toArray(); &lt;T&gt; T[] toArray(T[] a); // 修改操作 boolean add(E e); boolean remove(Object o); // 批量操作 boolean containsAll(Collection&lt;?
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/list-source-analysis/" class="link black dim">
+        List接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.List 接口直接继承自 java.util.Collection 接口，在 Collection 接口的功能之上添加了 List 功能特有的接口规范。
+一、List接口特点   有序集合。
+  该接口的子类实现可以精确控制列表中每个元素的插入位置，可以通过索引访问元素，并搜索列表中的元素。
+  与 Set 集合不同，通常允许重复元素，且允许 null 元素， null 元素也可重复。
+  List 接口提供了一个特殊的迭代器：java.util.ListIterator，它允许元素插入和替换，以及 java.util.Iterator 接口提供的常规操作之外的双向访问。
+  还提供了一种从列表的指定位置开始的迭代器：listIterator(int index)。
+   二、继承自 Collection 的方法 详细方法描述，见：java.util.Collection接口。
+int size(); boolean isEmpty(); boolean contains(Object o); Iterator&lt;E&gt; iterator(); Object[] toArray(); &lt;T&gt; T[] toArray(T[] a); // 修改操作 boolean add(E e); boolean remove(Object o); // 批量操作 boolean containsAll(Collection&lt;?&gt; c); boolean addAll(Collection&lt;?
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/collection-source-analysis/" class="link black dim">
+        Collection接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.Collection 接口是单列集合层次结构中的 根接口。集合表示 一组对象，称为其 元素。其有些子类集合允许重复元素，有些其他集合则不允许。有些是有序的，有些是无序的。JDK中 Collection 不提供此接口的任何直接实现：它提供了更具体的子接口（如Set和List）的实现。此接口通常用于更抽象的传递集合，并在需要最大通用性的情况下对其进行操作。
+如：
+Collection&lt;?&gt; c = new ArrayList(); Collection&lt;?&gt; c = new HashSet(); 一、Collection接口规范 Collection接口定义了一系列子类实现规范：
+1、可重复、无序的集合（可能包含重复元素的无序集合）应直接实现此接口。
+2、所 有通用Collection实现类（通常 通过其子接口间接实现Collection）应提供 两个“标准”构造函数：
+ 一个无参构造函数，用它来创建一个空集合。 一个为子类类型的，参数为 Collection 的构造函数，使用与其参数相同的元素来创建新集合，允许用户复制任何集合，从而生成所需实现类型的等效集合。  Collection 接口无法强制执行此规范（因为接口不能包含构造函数），但Java平台库中的所有通用 Collection 实现都符合此规范。
+ 二、方法描述 size()方法 返回当前集合中的元素数量。如果此集合包含元素数量大于 Integer.MAX_VALUE 个元素，则返回 Integer.MAX_VALUE。
+int size(); isEmpty()方法 如果当前 Collection 不包含任何元素，则返回 true。
+boolean isEmpty(); contains()方法、containsAll(Collection&lt;?&gt; c)方法 如果当前集合包含指定元素，则返回 true。当且仅当此集合包含至少一个元素 e 时才返回 true。(o == null ? e == null : o.equals(e))
+boolean contains(Object o); 如果当前集合包含指定 Collection 中的所有元素，则返回 true。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/javacollectionsframework/" class="link black dim">
+        Java集合框架源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      接口 双列集合接口 java.util.Map&lt;Interface&gt; java.util.SortedMap&lt;Interface&gt; java.util.NavigableMap&lt;Interface&gt;
+ 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&lt;Abstract&gt; &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&ndash; java.util.Mapjava.util.HashMap&lt;Class&gt; &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;- java.util.Mapjava.util.LinkedHashMap&lt;Class&gt; &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;- java.util.Mapjava.util.TreeMap&lt;Class&gt; &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; java.util.NavigableMapjava.util.WeakHashMap&lt;Class&gt; &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; java.util.Mapjava.util.Dictionary&lt;Abstract&gt; 已过时 java.util.Hashtable&lt;Class&gt; 已过时 &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash; java.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/iterable-source-analysis/" class="link black dim">
+        Iterable接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      实现此接口的对象成为“for-each loop”语句的目标，即具有可迭代功能。
+Iterable 接口在 java.lang 包下，java.util.Collection 接口实现了此接口，因此 Collection 及其子类都可以使用迭代器。
+一、方法描述 iterator()方法 返回 T 类型元素的迭代器。见：IteratorIterator&lt;T&gt; iterator(); forEach()方法 对Iterable的每个元素执行给定操作，直到处理完所有元素或操作抛出异常为止。
+default void forEach(Consumer&lt;? super T&gt; action) { // 验证非空  Objects.requireNonNull(action); for (T t : this) { action.accept(t); } } spliterator()方法 分割迭代器，通常由实现此接口的子类覆盖默认实现。默认实现的拆分能力较差，子类的具体实现一般性能良好，有特定的具体实现优化。
+default Spliterator&lt;T&gt; spliterator() { return Spliterators.spliteratorUnknownSize(iterator(), 0); }  二、Iterator迭代器 集合框架的迭代器父接口。由子类提供具体实现。
+java.util.Iterator 接口的定义取代了 Java Collections Framework 中的 java.util.Enumeration。 迭代器在两个方面与枚举不同：
+ 迭代器允许调用者在迭代期间使用定义良好的语义从底层集合中删除元素。 方法名称已得到改进。  方法描述 hasNext()方法 如果迭代具有更多元素，则返回true。
+boolean hasNext(); next()方法 返回迭代中的下一个元素。
+E next(); remove()方法 从当前集合中移除迭代器返回的最后一个元素（即此时 next() 返回的元素）。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/java-object-head/" class="link black dim">
+        Java对象头详解
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      由于Java面向对象的思想，在JVM中需要大量存储对象，存储时为了实现一些额外的功能，需要在对象中添加一些标记字段用于增强对象功能，这些标记字段组成了对象头。
+1.对象头形式 JVM中对象头的方式有以下两种（以32位JVM为例）：
+1.1.普通对象 1.2.数组对象 2.对象头的组成 2.1.Mark Word 这部分主要用来存储对象自身的运行时数据，如hashcode、gc分代年龄等。mark word的位长度为JVM的一个Word大小，也就是说32位JVM的Mark word为32位，64位JVM为64位。 为了让一个字大小存储更多的信息，JVM将字的最低两个位设置为标记位，不同标记位下的Mark Word示意如下：
+其中各部分的含义如下： lock:2位的锁状态标记位，由于希望用尽可能少的二进制位表示尽可能多的信息，所以设置了lock标记。该标记的值不同，整个mark word表示的含义不同。
+   biased_lock lock 状态     0 01 无锁   1 01 偏向锁   0 00 轻量级锁   0 10 重量级锁   0 11 GC标记    biased_lock：对象是否启用偏向锁标记，只占1个二进制位。为1时表示对象启用偏向锁，为0时表示对象没有偏向锁。 age：4位的Java对象年龄。在GC中，如果对象在Survivor区复制一次，年龄增加1。当对象达到设定的阈值时，将会晋升到老年代。默认情况下，并行GC的年龄阈值为15，并发GC的年龄阈值为6。由于age只有4位，所以最大值为15，这就是 -XX:MaxTenuringThreshold 选项最大值为15的原因。 identity_hashcode：25位的对象标识Hash码，采用延迟加载技术。调用方法 System.identityHashCode()计算，并会将结果写到该对象头中。当对象被锁定时，该值会移动到管程Monitor中。 thread：持有偏向锁的线程ID。 epoch：偏向时间戳。 ptr_to_lock_record：指向栈中锁记录的指针。 ptr_to_heavyweight_monitor：指向管程Monitor的指针。
+64位下的标记字与32位的相似，不再赘述：
+2.2.class pointer 这一部分用于存储对象的类型指针，该指针指向它的类元数据，JVM通过这个指针确定对象是哪个类的实例。该指针的位长度为JVM的一个字大小，即32位的JVM为32位，64位的JVM为64位。 如果应用的对象过多，使用64位的指针将浪费大量内存，统计而言，64位的JVM将会比32位的JVM多耗费50%的内存。为了节约内存可以使用选项 +UseCompressedOops 开启指针压缩，其中，oop即ordinary object pointer普通对象指针。开启该选项后，下列指针将压缩至32位：
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/linked-list-source-analysis/" class="link black dim">
+        LinkedList源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      一、LinkedList简介二、成员分析三、链表实现四、双端队列实现五、队列实现六、栈实现七、列表实现八、迭代器、分割器一、LinkedList简介 java.util.LinkedList 是 java.util.List 接口实现，是一个 链表 数据结构的实现，直接继承自 java.util.AbstractSequentialList 抽象有序集合，是一个有序的 List，同时实现了 java.util.List 、 java.util.Deque 接口，也具备 队列 、 双端队列 的功能。同时，LinkedList 也具有 栈 的数据结构。因此 LinkedList 可以满足多种使用场景，是一个功能齐全的集合。
+1.1 LinkedList 继承关系图 1.2 LinkedList 的特性：  实现了 双链表 结构 实现了 Queue(队列) 与 Deque(双端队列) 结构 实现了 Stack(栈) 结构 有序 可重复 线程不安全 允许 null 值 查询慢、增删快 底层通过 Node 实现  1.3 线程同步问题 由于 LinkedList 出于性能的考虑，并没有实现同步，因此在多线程环境下操作时，可能会引发线程安全问题。最好的解决办法是在创建时使用集合工具类 Collections.synchronizedList() 方法进行包装，以防止意外对列表的非同步访问。
+List list = Collections.synchronizedList(new LinkedList(...));  二、成员分析 2.1 成员变量 // 集合大小 transient int size = 0; /** * 指向第一个节点的指针 * Invariant: (first == null &amp;&amp; last == null) || * (first.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/array-list-source-analysis/" class="link black dim">
+        ArrayList源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      ArrayList应该算是日常开发中使用最多的List实现类。
+一、ArrayList 的特性  有序 可重复 线程不安全 允许插入 null 值 查询快、增删慢 底层通过 Object[] 数组实现  二、ArrayList继承关系 java.util.ArrayList 继承 java.util.AbstractList，实现了 java.util.List、java.util.RandomAccess、 java.io.Serializable 接口。
+ 三、成员变量 // 序列化版本id private static final long serialVersionUID = 8683452581122892189L; // 默认初始容量 private static final int DEFAULT_CAPACITY = 10; // 用于空实例的共享空数组实例 private static final Object[] EMPTY_ELEMENTDATA = {}; // 用于默认大小的空实例的共享空数组实例。 private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; // 存储 ArrayList 元素的数组缓冲区 transient Object[] elementData; // ArrayList 的大小 private int size; // ArrayList 最大容量 private static final int MAX_ARRAY_SIZE = Integer.
+    </div>
+  </div>
+</div>
+</div>
+      
+    </section>
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/posts/page/2/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/posts/page/3/">3</a></li>
+    
+    
+    <li class="page-item disabled">
+    <a  class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/posts/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+</article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

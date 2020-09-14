@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/index.xml" rel="alternate" type="application/rss+xml" title="翠兰 - Greenland" />
+      <link href="/index.xml" rel="feed" type="application/rss+xml" title="翠兰 - Greenland" />
+      
+    
+    
+    <meta property="og:title" content="翠兰 - Greenland" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cuilan.github.io/" />
+<meta property="og:updated_time" content="2019-09-17T16:00:00+00:00" />
+<meta itemprop="name" content="翠兰 - Greenland">
+<meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="翠兰 - Greenland"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          翠兰 - Greenland
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray">
+    
+  </article>
+  
+  
+  
+  
+  
+  
+  
+    
+    
+
+    <div class="pa3 pa4-ns w-100 w-70-ns center">
+      
+       
+          <h1 class="flex-none">
+            Recent Posts
+          </h1>
+        
+
+      
+
+      <section class="w-100 mw8">
+        
+        
+          <div class="relative w-100 mb4">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="https://cuilan.github.io/posts/javase/dictionary-source-analysis/" class="color-inherit dim link">
+            Dictionary抽象类源码分析
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          一、Dictionary特点或规范 Dictionary 抽象类形式上等同于一个接口，其全部方法都是抽象方法。它是 Hashtable 的父类，它将 键 映射到 值。每个键和每个值都是一个对象。在任何一个 Dictionary 对象中，每个键最多与一个值相关联。给定一个 Dictionary 和一个键，可以查找关联的元素。任何非 null 对象都可以用作键和值。通常，此类的实现应使用 equals() 方法来确定两个键是否相同。
+注意：此类已过时。
+ 二、构造器 唯一空参构造器。
+public Dictionary() { }  三、方法描述 abstract public int size(); abstract public boolean isEmpty(); abstract public Enumeration&lt;K&gt; keys(); abstract public Enumeration&lt;V&gt; elements(); abstract public V get(Object key); abstract public V put(K key, V value); abstract public V remove(Object key); 
+        </div>
+          <a href="https://cuilan.github.io/posts/javase/dictionary-source-analysis/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="relative w-100 mb4">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="https://cuilan.github.io/posts/javase/treemap-source-analysis/" class="color-inherit dim link">
+            TreeMap源码分析
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          java.util.TreeMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.NavigableMap、java.lang.Cloneable、java.io.Serializable 接口。
+ 一、TreeMap特点或规范 TreeMap 是基于 红黑树 的 NavigableMap 实现。根据其 key 的 自然顺序 进行排序，或者根据使用的构造器在 Map 创建时提供的比较器进行排序。
+由于底层采用了红黑树的数据结构，因此 TreeMap 的查询方法，如：containsKey()，get()，put()，remove()，其时间复杂度均为：O(logn)。
+注意：TreeMap 不同步。 如果多个线程同时访问，并且至少有一个线程进行了结构上的修改，则必须在外部进行同步；如下：
+SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...));
+注意：此类中的方法返回的所有 Map.Entry 都它们不支持 Entry.setValue() 方法；可以使用 put(K, V) 方法更改 Entry 中的值。
+ 二、成员变量 2.1 常量 // 虚拟值 private static final Object UNBOUNDED = new Object(); // 表示红色节点 private static final boolean RED = false; // 表示黑色节点 private static final boolean BLACK = true; // 指定 Map 中的比较器 private final Comparator&lt;?
+        </div>
+          <a href="https://cuilan.github.io/posts/javase/treemap-source-analysis/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+          <div class="relative w-100 mb4">
+            
+<article class="bb b--black-10">
+  <div class="db pv4 ph3 ph0-l no-underline dark-gray">
+    <div class="flex flex-column flex-row-ns">
+      
+      <div class="blah w-100">
+        <h1 class="f3 fw1 athelas mt0 lh-title">
+          <a href="https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/" class="color-inherit dim link">
+            LinkedHashMap源码分析
+            </a>
+        </h1>
+        <div class="f6 f5-l lh-copy nested-copy-line-height nested-links">
+          java.util.LinkedHashMap 类继承了 java.util.HashMap 类，实现了 java.util.Map 接口。
+ 一、LinkedHashMap特点或规范 1.1 特点 java.util.LinkedHashMap 是 java.util.Map 接口的 链表 + 哈希 实现，具有可预测的迭代顺序；与 HashMap 的不同是在 HashMap 的基础上使用了双向链表的数据结构；并按照插入顺序排序。
+linkedHashMap 与 HashMap 比较：
+   特性 LinkedHashMap HashMap     有序性 有序 无序   数据结构 数组 - 链表 - 红黑树 数组 - 链表 - 红黑树 + 双向链表   空键 允许 允许   空值 允许 允许    1.2 LRU缓存 LinkedHashMap 提供了一个特殊的构造函数来构建 LRU 缓存（Least Recent Used最近最少使用），构造器如下：
+        </div>
+          <a href="https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/" class="ba b--moon-gray bg-light-gray br2 color-inherit dib f7 hover-bg-moon-gray link mt2 ph2 pv1">read more</a>
+        
+      </div>
+    </div>
+  </div>
+</article>
+
+          </div>
+        
+      </section>
+
+      
+      <section class="w-100">
+        <h1 class="f3">More</h1>
+        
+        
+          <h2 class="f5 fw4 mb4 dib mr3">
+            <a href="https://cuilan.github.io/posts/javase/hashmap-treenode/" class="link black dim">
+              HashMap.TreeNode类源码分析
+            </a>
+          </h2>
+        
+          <h2 class="f5 fw4 mb4 dib mr3">
+            <a href="https://cuilan.github.io/posts/javase/hashmap-source-analysis/" class="link black dim">
+              HashMap源码分析
+            </a>
+          </h2>
+        
+          <h2 class="f5 fw4 mb4 dib mr3">
+            <a href="https://cuilan.github.io/posts/javase/abstractmap-source-analysis/" class="link black dim">
+              AbstractMap源码分析
+            </a>
+          </h2>
+        
+          <h2 class="f5 fw4 mb4 dib mr3">
+            <a href="https://cuilan.github.io/posts/javase/navigablemap-source-analysis/" class="link black dim">
+              NavigableMap接口源码分析
+            </a>
+          </h2>
+        
+
+        
+        
+          <a href="https://cuilan.github.io/posts/" class="link db f6 pa2 br3 bg-mid-gray white dim w4 tc">All Posts</a>
+        
+        </section>
+      
+
+      </div>
+  
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="翠兰 - Greenland" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="翠兰 - Greenland" />
+      
+    
+    
+    <meta property="og:title" content="Posts" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cuilan.github.io/posts/" />
+<meta property="og:updated_time" content="2019-09-17T16:00:00+00:00" />
+<meta itemprop="name" content="Posts">
+<meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height nested-img">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/treeset-source-analysis/" class="link black dim">
+        TreeSet源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serializable 接口。
+一、TreeSet特点或规范 TreeSet 是基于 java.util.TreeMap 的 java.util.NavigableSet 实现类。
+ 有序：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。 不可重复。  1.1 时间复杂度 TreeSet 的基本操作（add(Object)、remove(Object)、contains(Object)）均保证了时间复杂度为 O(logN)。
+1.2 有序性保证 注意：子类如果要正确实现 Set 接口，则由 Set 维护的排序（无论是否提供显式比较器）必须与 equals() 方法保持一致。 因为 Set 接口的唯一性是根据 equals() 方法决定的，而 TreeSet 是使用 compareTo() 方法实现元素比较。 TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。
+1.3 线程不安全 注意：TreeSet 类线程不同步。 如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。 实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：
+SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...)); 1.4 并发迭代 如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 remove()方法之外，迭代器将抛出 ConcurrentModificationException。
+ 二、成员变量 TreeSet 底层由 TreeMap 实现。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/linkedhashset-source-analysis/" class="link black dim">
+        LinkedHashSet源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.LinkedHashSet 类继承自 java.util.HashSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。
+一、LinkedHashSet特点或规范 java.util.LinkedHashSet 类是 Set 接口的 哈希表 和 链表 双实现，保证迭代顺序。
+此实现与 HashSet 的不同之处在于它维护了一个双向链表。
+注意，如果将已存在的元素重新插入到集合中，不会影响插入顺序。
+ 二、构造器 空参构造器（遵循 Collection 接口规范） 调用父类构造器，使用 LinkedHashSet 实例，默认初始容量为 **16 **，默认加载因子为：0.75。
+public LinkedHashSet() { super(16, .75f, true); } 参数为 Collection 类型的构造器（遵循 Collection 接口规范） 调用父类构造器，使用 LinkedHashMap 实例，初始容量为：集合的 2倍，默认加载因子为：0.75。
+public LinkedHashSet(Collection&lt;? extends E&gt; c) { super(Math.max(2*c.size(), 11), .75f, true); addAll(c); } 指定初始容量和加载因子的构造器 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，可指定 初始容量 和 加载因子。
+public LinkedHashSet(int initialCapacity, float loadFactor) { super(initialCapacity, loadFactor, true); } 仅指定初始容量的构造器 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，仅支持指定 初始容量，加载因子默认为：0.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/hashset-source-analysis/" class="link black dim">
+        HashSet源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.HashSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。
+一、HashSet特点或规范 HashSet 类是 Set 接口的实现类，底层由 java.util.HashMap 实现。
+ 无序，不保证集合的迭代顺序 允许 null 元素。  1.1 性能  该类的基本操作（add(E)、remove(Object)、contains(Object)、size()）时间性能较高，时间复杂度为 O(1)，前提是 Hash 必须正确分布。 迭代此集合需要的时间与 HashSet 实例的大小（元素数量）加上后备 HashMap 实例的“容量”（桶数）之和成比例。因此，如果迭代性能很重要，则不要将初始容量设置得太高（或负载因子太低）。  1.2 线程不安全 注意，HashSet 线程不安全。如果多个线程同时访问，并且至少有一个线程修改了该 Set，则必须在外部进行同步。最好在创建完成时添加同步，以防止对 Set 的意外不同步访问：
+Set s = Collections.synchronizedSet(new HashSet(...)); 注意：线程并发访问，可能引发 ConcurrentModificationException 异常。
+ 二、成员变量 HashSet 底层由 HashMap 实现，由此来保证不可重复性。
+private transient HashMap&lt;E,Object&gt; map; // 关联 HashMap 中的 Object 虚拟值 private static final Object PRESENT = new Object();  三、构造器 空参构造器（遵循 Collection 接口规范） 使用 HashMap 实例，默认初始容量为 **16 **，默认加载因子为：0.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractset-source-analysis/" class="link black dim">
+        AbstractSet源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractSet 抽象类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Set 接口。
+一、AbstractSet特点或规范 AbstractSet 类提供了 Set 接口的基础实现，以最大限度地减少实现 Set 接口所需的工作量。
+ 子类通过此类实现集合 与 通过实现 AbstractCollection 类实现集合的过程相同，但必须遵循 Set 接口的规范。 AbstractSet 类不会覆盖 AbstractCollection 类中的任何实现。 只是添加了 equals() 和 hashCode() 的实现。  二、构造器 唯一构造器。
+protected AbstractSet() { } 三、实现方法 equals(Object) 方法 将指定对象与当前 Set 进行比较。
+ 如果指定对象也是一个集合，且与当前 Set 引用相同则返回 true。 两个集合具有相同的大小，并且指定集合的每个成员都包含在此集合中，则返回 true。  public boolean equals(Object o) { if (o == this) return true; if (!(o instanceof Set)) return false; Collection&lt;?&gt; c = (Collection&lt;?
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/" class="link black dim">
+        AbstractSequentialList源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。
+一、AbstractSequentialList特点或规范  此类以最大限度地减少实现一个 “顺序访问” 数据存储（如：链表）所需的工作量。 如需 随机访问 数据（如：数组），应优先使用 AbstractList 而不是此类。  实现此类需要实现的方法 最简实现此类，只需要提供 listIterator(int) 和 size() 方法的实现。
+随机访问 此类与 AbstractList 类相反，它在 列表迭代器 上实现了 “随机访问” 的方法：get(int index)，set(int index, E element)，add(int index, E element) 和 remove(int index)。
+可修改性规范  如果子类实现是不可修改的列表，只需要实现 ListIterator 的 hasNext()，next()，hasPrevious()，previous() 和 index() 方法。 如果子类实现需要可修改的列表，还应该实现 ListIterator 的 set() 方法。 如果子类实现需要可变大小的列表，还应该实现 ListIterator 的 remove() 和 add() 方法。  构造器规范 子类实现应根据 java.util.Collection 接口规范中的建议，提供：
+ 无参构造器 参数类型为 Collection 构造器   二、构造器 唯一构造器，protected 权限。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/deque-source-analysis/" class="link black dim">
+        Deque接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.Deque 接口直接继承自 java.util.Queue 接口。
+一、Deque接口特点或规范  Deque 是线性集合，最大的特点是支持 两端插入、移除元素。Deque 是 &ldquo;double ended queue&rdquo; 的缩写。 大多数 Deque 的子类实现对其包含的元素数量没有固定限制，但此接口支持：  支持容量限制的子类实现。 支持没有容量限制子类实现。   支持访问双端队列两端的元素。 提供额外的 插入，提取 和 检查 三组操作。其中每组都以两种形式存在：  一种在操作失败时抛出异常。 一种返回特殊值（null 或 false，具体取决于操作），此形式的插入操作专门用于容量限制的队列实现；在大多数实现中，插入操作不会失败。    1.1 Deque 双端队列十二种方法摘要：     第一个元素(Head)  最后一个元素(Tail)       抛出异常 返回特殊值 抛出异常 返回特殊值   插入 addFirst(e) offerFirst(e) addLast(e) offerLast(e)   删除 removeFirst() pollFirst() removeLast() pollLast()   获取 getFirst() peekFirst() getLast() peekLast()    1.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/queue-source-analysis/" class="link black dim">
+        Queue接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.Queue 接口直接继承自 java.util.Collection 接口。
+一、Queue接口特点或规范 除了基本的 Collection 功能外，队列还提供额外的 插入，提取 和 检查 三组操作。其中每组都以两种形式存在：
+ 一种在操作失败时抛出异常。 一种返回特殊值（null 或 false，具体取决于操作），此形式的插入操作专门用于容量限制的队列实现；在大多数实现中，插入操作不会失败。  1.1 队列方法摘要    操作 抛出异常 返回特殊值     插入 add(E) offer(E)   删除 remove() poll()   获取 element() peek()    1.2 队列进出顺序  队列通常（但不一定）以 FIFO（先进先出） 方式对元素进行排序。例外：  优先级队列：根据提供的比较器对元素进行排序，或者元素的自然排序。 后进先出队列（或 栈）：它们对元素 LIFO（后进先出） 进行排序。   在 FIFO 队列中，所有 新元素 都插入队列的 尾部。 无论使用什么顺序，队列的头部都是通过调用 remove() 或 poll() 方法来删除的元素。 其他类型的队列可能使用不同的放置规则。 每个 Queue 的实现都必须指定其排序属性。  1.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/navigableset-source-analysis/" class="link black dim">
+        NavigableSet接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.NavigableSet 接口直接继承自 java.util.SortedSet 接口。
+一、NavigableSet接口特点或规范  java.util.NavigableSet 接口在 java.util.SortedSet 基础上增加了导航功能，使用导航方法扩展的 SortedSet 报告给定搜索目标的最接近匹配。 lower()，floor()，ceiling() 和 higher() 方法返回元素分别小于，小于或等于，大于或等于，大于给定元素，如果没有这样的元素则返回 null。 此接口还定义了 pollFirst() 和 pollLast() 方法，返回并删除最低和最高元素（如果存在），否则返回 null。 任何 NavigableSet 实现类的的子集都必须实现 NavigableSet 接口。   二、方法描述 lower(E)方法 返回当前 Set 中小于指定元素的最大元素，如果没有这样的元素，则返回 null。
+E lower(E e); floor(E)方法 返回当前 Set 中小于或等于指定元素的最大元素，如果没有这样的元素，则返回 null。
+E floor(E e); ceiling(E)方法 返回当前 Set 中大于或等于指定元素的最小元素，如果没有这样的元素，则返回 null。
+E ceiling(E e); higher(E)方法 返回当前 Set 中大于指定元素的最小元素，如果没有这样的元素，则返回 null。
+E higher(E e); pollFirst()方法 检索并删除**第一个（最低）**元素，如果没有这样的元素，则返回 null。
+E pollFirst(); pollLast()方法 检索并删除**最后一个（最高）**元素，如果没有这样的元素，则返回 null。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/sortedset-source-analysis/" class="link black dim">
+        SortedSet接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.SortedSet 接口直接继承自 java.util.Set 接口。
+一、SortedSet接口特点或规范 实现规范  在 java.util.Set 基础上进一步提供其元素的总排序。元素按照 自然顺序 排序，或通过创建时提供的 比较器排序。 迭代器将按 升序 顺序遍历集合。提供了几个额外的操作以利用订购。 （此接口是SortedMap的集合模拟。） 插入到 SortedSet 中的所有元素必须实现 java.lang.Comparable 接口（或指定的比较器）。 所有元素必须可相互比较，即：e1.compareTo(e2)（或 comparator.compare(e1, e2)）。 注意，如果 SortedSet 要正确实现 Set 接口，则由 SortedSet 维护的排序（无论是否提供显式比较器）必须与 equals() 方法一致。  因为 Set 接口的不可重复性依赖于 equals() 方法，而 SortedSet 使用 compareTo() 方法进行所有元素的比较，
+构造器规范 所有 SortedSet 的实现类应提供 四个“标准”构造器：
+ 无参构造器，它根据元素的自然顺序创建一个空的 SortedSet。（Collection规范） 参数为 Collection 类型的构造器，它创建一个新的 SortedSet，其元素类型与 Collection 参数中的元素类型相同，并根据元素的自然顺序进行排序。（Collection规范） 参数为 Comparator 类型的构造器，它创建一个根据指定比较器排序的空的 SortedSet。 参数为 SortedSet 类型的构造器，它创建一个新的 SortedSet，其具有与输入的 SortedSet 相同的元素和相同的顺序。  由于接口不能包含构造函数，因此无法强制执行此规范。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractlist-source-analysis/" class="link black dim">
+        AbstractList源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractList 抽象类继承了 java.util.AbstractCollection 类，实现了 java.util.List 接口。
+一、AbstractList类继承规范 随机访问性与顺序访问性规范  AbstractList 类提供了 List 接口的基础实现，以最大限度地减少子类且实现了 “随机访问” 数据存储（如：数组）所需的工作量（如：ArrayList）。 对于顺序访问的数据结构（如：LinkedList），应该优先使用 java.util.AbstractSequentialList，而不是此类。  可修改性规范  如果要实现不可修改的列表，子类只需要扩展此类并提供 get(int) 方法和 size() 方法的实现。 如果要实现可修改的列表，子类必须另外覆盖 set(int, E) 方法，否则会抛出 UnsupportedOperationException 异常。  大小可变性规范  如果列表是 size 是可变的，则子类必须另外覆盖 add(int, E) 方法和 remove(int) 方法，add(E) 方法已提供实现，元素默认加入列表末尾。  子类构造器规范  子类应根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。  迭代器规范  与其他抽象集合实现不同，子类不必提供迭代器实现；迭代器（通常是：Itr） 和 列表迭代器（通常是：ListItr） 是由这个类的 “随机访问” 方法实现的：get(int) set(int, E) add(int, E) remove(int)。  可覆盖性规范  此类中每个非抽象方法的实现。子类都可以以更高效的方式或特有的方式进行覆盖。   二、成员分析 2.
+    </div>
+  </div>
+</div>
+</div>
+      
+    </section>
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+    <a href="/posts/" class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/posts/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/3/">3</a></li>
+    
+    
+    <li class="page-item">
+    <a href="/posts/page/3/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/posts/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+</article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

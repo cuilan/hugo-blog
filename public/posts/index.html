@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+      <link href="/posts/index.xml" rel="alternate" type="application/rss+xml" title="翠兰 - Greenland" />
+      <link href="/posts/index.xml" rel="feed" type="application/rss+xml" title="翠兰 - Greenland" />
+      
+    
+    
+    <meta property="og:title" content="Posts" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://cuilan.github.io/posts/" />
+<meta property="og:updated_time" content="2019-09-17T16:00:00+00:00" />
+<meta itemprop="name" content="Posts">
+<meta itemprop="description" content=""><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content=""/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+
+  <header>
+    <div class="pb3-m pb6-l bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+      <div class="tc-l pv3 ph3 ph4-ns">
+        <h1 class="f2 f-subheadline-l fw2 light-silver mb0 lh-title">
+          Posts
+        </h1>
+        
+      </div>
+    </div>
+  </header>
+
+
+    <main class="pb7" role="main">
+      
+  <article class="pa3 pa4-ns nested-copy-line-height nested-img">
+    <section class="cf ph3 ph5-l pv3 pv4-l f4 tc-l center measure-wide lh-copy mid-gray"></section>
+    <section class="flex-ns flex-wrap justify-around mt5">
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/dictionary-source-analysis/" class="link black dim">
+        Dictionary抽象类源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      一、Dictionary特点或规范 Dictionary 抽象类形式上等同于一个接口，其全部方法都是抽象方法。它是 Hashtable 的父类，它将 键 映射到 值。每个键和每个值都是一个对象。在任何一个 Dictionary 对象中，每个键最多与一个值相关联。给定一个 Dictionary 和一个键，可以查找关联的元素。任何非 null 对象都可以用作键和值。通常，此类的实现应使用 equals() 方法来确定两个键是否相同。
+注意：此类已过时。
+ 二、构造器 唯一空参构造器。
+public Dictionary() { }  三、方法描述 abstract public int size(); abstract public boolean isEmpty(); abstract public Enumeration&lt;K&gt; keys(); abstract public Enumeration&lt;V&gt; elements(); abstract public V get(Object key); abstract public V put(K key, V value); abstract public V remove(Object key); 
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/treemap-source-analysis/" class="link black dim">
+        TreeMap源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.TreeMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.NavigableMap、java.lang.Cloneable、java.io.Serializable 接口。
+ 一、TreeMap特点或规范 TreeMap 是基于 红黑树 的 NavigableMap 实现。根据其 key 的 自然顺序 进行排序，或者根据使用的构造器在 Map 创建时提供的比较器进行排序。
+由于底层采用了红黑树的数据结构，因此 TreeMap 的查询方法，如：containsKey()，get()，put()，remove()，其时间复杂度均为：O(logn)。
+注意：TreeMap 不同步。 如果多个线程同时访问，并且至少有一个线程进行了结构上的修改，则必须在外部进行同步；如下：
+SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...));
+注意：此类中的方法返回的所有 Map.Entry 都它们不支持 Entry.setValue() 方法；可以使用 put(K, V) 方法更改 Entry 中的值。
+ 二、成员变量 2.1 常量 // 虚拟值 private static final Object UNBOUNDED = new Object(); // 表示红色节点 private static final boolean RED = false; // 表示黑色节点 private static final boolean BLACK = true; // 指定 Map 中的比较器 private final Comparator&lt;?
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/" class="link black dim">
+        LinkedHashMap源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.LinkedHashMap 类继承了 java.util.HashMap 类，实现了 java.util.Map 接口。
+ 一、LinkedHashMap特点或规范 1.1 特点 java.util.LinkedHashMap 是 java.util.Map 接口的 链表 + 哈希 实现，具有可预测的迭代顺序；与 HashMap 的不同是在 HashMap 的基础上使用了双向链表的数据结构；并按照插入顺序排序。
+linkedHashMap 与 HashMap 比较：
+   特性 LinkedHashMap HashMap     有序性 有序 无序   数据结构 数组 - 链表 - 红黑树 数组 - 链表 - 红黑树 + 双向链表   空键 允许 允许   空值 允许 允许    1.2 LRU缓存 LinkedHashMap 提供了一个特殊的构造函数来构建 LRU 缓存（Least Recent Used最近最少使用），构造器如下：
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/hashmap-treenode/" class="link black dim">
+        HashMap.TreeNode类源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      继承关系：
+ java.util.Map.Entry Map 接口中的顶层实体接口。  java.util.HashMap.Node HashMap 中的单向链表节点。  java.util.LinkedHashMap.Entry LinkedHashMap 中的双向链表节点。  java.util.HashMap.TreeNode HashMap 中的红黑树节点。         一、HashMap节点内部类 HashMap 中节点内部类有两种实现：
+ 链表节点：HashMap.Node 红黑树节点：HashMap.TreeNode  有关 HashMap 数据结构、方法分析、哈希冲突 及 链表实现等，见：HashMap源码分析。
+ 二、链表-红黑树 相互转换的方法 treeifyBin(Node, int) 方法 转换为红黑树结构：根据 hash 值计算待转换的链表在 哈希表(table) 的位置，如果否满足转换为红黑树的条件，就进行转换。
+执行过程分析：
+ 哈希表（数组）是否已初始化：  未初始化，调用 resize() 进行初始化。 或已初始化，判断哈希表的长度是否小于 64：  小于 64，不考虑使用红黑树结构，调用 resize() 重新计算大小。 大于等于 64，转换为红黑树结构。      final void treeifyBin(Node&lt;K,V&gt;[] tab, int hash) { int n, index; Node&lt;K,V&gt; e; // 如果哈希表 tab 没有初始化，或长度小于最小 64，则 resize()  if (tab == null || (n = tab.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/hashmap-source-analysis/" class="link black dim">
+        HashMap源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.HashMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.Map、java.lang.Cloneable、java.io.Serializable 接口。
+一、HashMap特点或规范二、成员属性三、构造器四、内部类：Node，即：Map.Entry五、继承自AbstractMap的方法六、实现自Map接口的方法七、静态工具方法八、其他主要方法九、迭代器十、红黑树 一、HashMap特点或规范 HashMap 是基于 哈希表 的 Map 接口实现。无序 且不保证顺序永远保持不变。
+1.1 与Hashtable的区别    HashMap Hashtable     不同步 同步   允许空键 不允许空键   允许空值 不允许空值    1.2 性能  通常情况下，hash(Object) 方法计算得出的哈希值都均匀的分布在 哈希桶 之间，这样可以保证 get(K) 和 put(K, V) 基本操作方法的性能为恒定时间。 对集合视图：keySet()，values()，entrySet() 的 迭代时间，与 HashMap实例的容量（桶的数量）加上其大小（K-V Node 的数量）成比例的时间。因此，如果迭代性能有较高要求，则不要将 初始容量设置得太高 或 负载因子设置得太低。 影响 HashMap 性能的两个因素：初始容量 和 负载因子。  1.3 容量capacity &amp; 加载因子loadFactor  容量：哈希表中的桶数，初始容量只是创建 HashMap 时的容量。 加载因子：是一个比例值，即：已被分布的哈希桶数 / 容量；也可以描述为：扩容操作之前允许哈希桶中已被分布的桶的数量。  当 HashMap 中已被分布的桶数超过了 加载因子 * 当前容量 时，HashMap将被扩容至原来容量的两倍，并重新计算哈希值（即，重建内部数据结构）。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractmap-source-analysis/" class="link black dim">
+        AbstractMap源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractMap 抽象类实现了 java.util.Map 接口。
+一、AbstractMap特点或规范 AbstractMap 抽象类提供了 Map 接口的基础实现，以最大限度地减少实现此接口所需的工作量。
+1.1 实现不可修改的Map 要实现不可修改的 Map，子类只需要继承此类并实现 entrySet() 方法，该方法返回 Map.Entry 的 set视图。该set视图应该继承 java.util.AbstractSet，并实现抽象其方法。此set视图不应该支持 add()，remove() 方法，并且其迭代器不应支持 remove()方法。
+1.2 实现可修改的Map 要实现可修改的 Map，子类必须另外覆盖此类的 put(K, V) 方法，否则会抛出 UnsupportedOperationException 异常，以及 entrySet().iterator() 返回的迭代器必须另外实现其 remove() 方法。
+1.3 构造器规范 子类应该根据 Map接口的构造器规范 提供两个构造器：
+ 无参构造器 参数为 Map 类型的构造器   二、成员变量 仅在第一次请求 keySet() 方法时初始化实例。
+transient Set&lt;K&gt; keySet; public Set&lt;K&gt; keySet() { Set&lt;K&gt; ks = keySet; // 只读  if (ks == null) { ks = new AbstractSet()&lt;K&gt; {.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/navigablemap-source-analysis/" class="link black dim">
+        NavigableMap接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.NavigableMap 接口直接继承自 java.util.SortedMap 接口。
+一、NavigableMap特点或规范 NavigableMap 使用可导航的方法扩展了 SortedMap，返回给定搜索目标的最接近匹配结果。
+NavigableMap 定义了以下方法来根据 key 查询，如果不存在该 key，则返回 null：
+   操作 小于 小于等于 大于等于 大于     查询满足条件的 Map.Entry lowerEntry(K) floorEntry(K) ceilingEntry(K) higherEntry(K)   查询满足条件的 key lowerKey(K) floorKey(K) ceilingKey(K) higherKey(K)    有序性  可以按 升序 或 降序 key 访问或遍历 NavigableMap。 descendingMap() 方法返回 Map 的反序视图。 navigableKeySet() 方法返回 key 的 升序 视图 descendingKeySet() 方法返回 key 的 降序 视图 升序操作及视图的性能 可能比 降序操作及视图的性能 更快。  子Map视图 子 Map 视图继承自 SortedMap，两种实现不同之处在于 是否可接受包含下限和上限参数。NavigableMap 返回的子视图也都必须实现 NavigableMap 接口。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/sortedmap-source-analysis/" class="link black dim">
+        SortedMap接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.SortedMap 接口直接继承自 java.util.Map 接口。
+一、SortedMap特点或规范  SortedMap 在 Map 的基础上进一步提供其 key 的总排序。 SortedMap 默认是根据其 key 的 自然顺序 排序的，或者根据 SortedMap 在创建时提供的比较器进行排序。 SortedMap 的集合视图：entrySet()，keySet()、values() ，在迭代这些视图时会按照顺序返回。 SortedMap 在 Map 的基础上提供了几个额外的方法扩展排序相关功能。  1.1 可比较性规范 插入到 SortedMap 中的所有 key 必须实现 Comparable 接口。此外，子类实现所有的 key 必须是 可相互比较的，即：k1.compareTo(k2) 或 comparator.compare(k1, k2)，违反此规范将导致函数调用抛出 ClassCastException。
+注意：如果 SortedMap 要正确实现 Map 接口，则由 SortedMap 维护的排序（无论是否提供显式比较器）必须与 equals() 方法一致。这是因为 Map 接口是根据 equals() 方法定义的，但是有序映射使用 compareTo（或compare）方法执行所有 key 的比较，因此从 SortedMap 的角度来看，equals() 方法认为相等的两个键是相等的。
+TreeMap 比较特别，它的排序与 equals() 不一致。
+1.2 构造器规范 所有 SortedMap 实现类都应该提供 四个“标准”构造函数。由于接口无法指定构造函数，所以无法强制子类实现此规范。
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/map-source-analysis/" class="link black dim">
+        Map接口源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.Map 接口是双列集合的顶级接口。
+一、Map特点或规范  双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提供了三个集合的视图，key集合、value集合、**Entry&lt;K, V&gt;集合。 Map 的顺序定义为 集合视图 的迭代器返回其元素的顺序。 有序性  java.util.TreeMap 类有序 其他，如 java.util.HashMap 类无序    1.1 构造器规范 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
+ 无参构造器，用于创建一个空 Map。 参数类型为 Map 的构造器，它创建一个具有相同键值的新映射映射作为其论点。  1.2 key/value限制 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 NullPointerException 或 ClassCastException。
+ 二、Map.Entry接口 Map.Entry 类映射实体，即：key-value 键值对。Map.
+    </div>
+  </div>
+</div>
+</div>
+      
+        <div class="relative w-100 w-30-l mb4 bg-white"><div class="relative w-100 mb4 bg-white nested-copy-line-height">
+  <div class="bg-white mb3 pa4 gray overflow-hidden">
+    <span class="f6 db">Posts</span>
+    <h1 class="f3 near-black">
+      <a href="https://cuilan.github.io/posts/javase/abstractqueue-source-analysis/" class="link black dim">
+        AbstractQueue源码分析
+      </a>
+    </h1>
+    <div class="nested-links f5 lh-copy nested-copy-line-height">
+      java.util.AbstractQueue 类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Queue 接口。
+一、AbstractQueue特点或规范 AbstractQueue 类提供 队列Queue 操作的基础实现。此类不允许 null 元素。
+如果操作没有找到元素，则会抛出异常，而不会返回 false 或 null。
+ add(E) 依赖 offer(E) remove() 依赖 poll() element() 依赖 peek()  继承此类的 队列Queue 实现必须实现的方法：
+ Queue.offer(E) 方法，且不允许插入 null 元素 Queue.peek() Queue.poll() Collection.size() Collection.iterator()  如果无法满足特定要求，可继承 AbstractCollection。
+ 二、构造器 唯一构造器，由子类实现提供 Collection 规范中的两个构造器。
+protected AbstractQueue() { }  三、方法分析 3.1 继承自 AbstractCollection 的方法 add(E) 方法 将指定的元素插入此队列，如果插入成功，则返回 true，否则抛出 IllegalStateException 异常。
+public boolean add(E e) { if (offer(e)) return true; else throw new IllegalStateException(&#34;Queue full&#34;); } addAll(Collection) 方法 将指定集合中的所有元素添加到当前队列中。此实现迭代指定的集合，并依次将迭代器返回的每个元素添加到当前队列中。
+    </div>
+  </div>
+</div>
+</div>
+      
+    </section>
+
+<ul class="pagination">
+    
+    <li class="page-item">
+        <a href="/posts/" class="page-link" aria-label="First"><span aria-hidden="true">&laquo;&laquo;</span></a>
+    </li>
+    
+    <li class="page-item disabled">
+    <a  class="page-link" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a>
+    </li>
+    
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item active"><a class="page-link" href="/posts/">1</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/2/">2</a></li>
+    
+    
+    
+    
+    
+    
+        
+        
+    
+    
+    <li class="page-item"><a class="page-link" href="/posts/page/3/">3</a></li>
+    
+    
+    <li class="page-item">
+    <a href="/posts/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">&raquo;</span></a>
+    </li>
+    
+    <li class="page-item">
+        <a href="/posts/page/3/" class="page-link" aria-label="Last"><span aria-hidden="true">&raquo;&raquo;</span></a>
+    </li>
+    
+</ul>
+
+</article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

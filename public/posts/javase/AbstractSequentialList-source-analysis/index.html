@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>AbstractSequentialList源码分析 | 翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="AbstractSequentialList源码分析" />
+<meta property="og:description" content="java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。
+一、AbstractSequentialList特点或规范  此类以最大限度地减少实现一个 “顺序访问” 数据存储（如：链表）所需的工作量。 如需 随机访问 数据（如：数组），应优先使用 AbstractList 而不是此类。  实现此类需要实现的方法 最简实现此类，只需要提供 listIterator(int) 和 size() 方法的实现。
+随机访问 此类与 AbstractList 类相反，它在 列表迭代器 上实现了 “随机访问” 的方法：get(int index)，set(int index, E element)，add(int index, E element) 和 remove(int index)。
+可修改性规范  如果子类实现是不可修改的列表，只需要实现 ListIterator 的 hasNext()，next()，hasPrevious()，previous() 和 index() 方法。 如果子类实现需要可修改的列表，还应该实现 ListIterator 的 set() 方法。 如果子类实现需要可变大小的列表，还应该实现 ListIterator 的 remove() 和 add() 方法。  构造器规范 子类实现应根据 java.util.Collection 接口规范中的建议，提供：
+ 无参构造器 参数类型为 Collection 构造器   二、构造器 唯一构造器，protected 权限。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/" />
+<meta property="article:published_time" content="2019-08-09T12:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-09T12:00:00+00:00" />
+<meta itemprop="name" content="AbstractSequentialList源码分析">
+<meta itemprop="description" content="java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。
+一、AbstractSequentialList特点或规范  此类以最大限度地减少实现一个 “顺序访问” 数据存储（如：链表）所需的工作量。 如需 随机访问 数据（如：数组），应优先使用 AbstractList 而不是此类。  实现此类需要实现的方法 最简实现此类，只需要提供 listIterator(int) 和 size() 方法的实现。
+随机访问 此类与 AbstractList 类相反，它在 列表迭代器 上实现了 “随机访问” 的方法：get(int index)，set(int index, E element)，add(int index, E element) 和 remove(int index)。
+可修改性规范  如果子类实现是不可修改的列表，只需要实现 ListIterator 的 hasNext()，next()，hasPrevious()，previous() 和 index() 方法。 如果子类实现需要可修改的列表，还应该实现 ListIterator 的 set() 方法。 如果子类实现需要可变大小的列表，还应该实现 ListIterator 的 remove() 和 add() 方法。  构造器规范 子类实现应根据 java.util.Collection 接口规范中的建议，提供：
+ 无参构造器 参数类型为 Collection 构造器   二、构造器 唯一构造器，protected 权限。">
+<meta itemprop="datePublished" content="2019-08-09T12:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-09T12:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="307">
+
+
+
+<meta itemprop="keywords" content="Java,源码,集合框架," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="AbstractSequentialList源码分析"/>
+<meta name="twitter:description" content="java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。
+一、AbstractSequentialList特点或规范  此类以最大限度地减少实现一个 “顺序访问” 数据存储（如：链表）所需的工作量。 如需 随机访问 数据（如：数组），应优先使用 AbstractList 而不是此类。  实现此类需要实现的方法 最简实现此类，只需要提供 listIterator(int) 和 size() 方法的实现。
+随机访问 此类与 AbstractList 类相反，它在 列表迭代器 上实现了 “随机访问” 的方法：get(int index)，set(int index, E element)，add(int index, E element) 和 remove(int index)。
+可修改性规范  如果子类实现是不可修改的列表，只需要实现 ListIterator 的 hasNext()，next()，hasPrevious()，previous() 和 index() 方法。 如果子类实现需要可修改的列表，还应该实现 ListIterator 的 set() 方法。 如果子类实现需要可变大小的列表，还应该实现 ListIterator 的 remove() 和 add() 方法。  构造器规范 子类实现应根据 java.util.Collection 接口规范中的建议，提供：
+ 无参构造器 参数类型为 Collection 构造器   二、构造器 唯一构造器，protected 权限。"/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/&amp;text=AbstractSequentialList%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/&amp;title=AbstractSequentialList%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">AbstractSequentialList源码分析</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-08-09T12:00:00Z">August 9, 2019</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><strong><code>java.util.AbstractSequentialList</code></strong> 抽象类继承自 <strong><code>java.util.AbstractList</code></strong> 抽象类。</p>
+<p><img src="AbstractSequentialList-source-analysis/AbstractSequentialList1.png" alt="AbstractSequentialList继承关系" title="AbstractSequentialList继承关系"></p>
+<!-- raw HTML omitted -->
+<h2 id="一abstractsequentiallist特点或规范">一、AbstractSequentialList特点或规范</h2>
+<ul>
+<li>此类以最大限度地减少实现一个 <strong>“顺序访问”</strong> 数据存储（如：<strong>链表</strong>）所需的工作量。</li>
+<li>如需 <strong>随机访问</strong> 数据（如：<strong>数组</strong>），应<strong>优先</strong>使用 AbstractList 而不是此类。</li>
+</ul>
+<h3 id="实现此类需要实现的方法">实现此类需要实现的方法</h3>
+<p>最简实现此类，只需要提供 <strong><code>listIterator(int)</code></strong> 和 <strong><code>size()</code></strong> 方法的实现。</p>
+<h3 id="随机访问">随机访问</h3>
+<p>此类与 AbstractList 类相反，它在 <strong>列表迭代器</strong> 上实现了 “随机访问” 的方法：<strong><code>get(int index)</code></strong>，<strong><code>set(int index, E element)</code></strong>，<strong><code>add(int index, E element)</code></strong> 和 <strong><code>remove(int index)</code></strong>。</p>
+<h3 id="可修改性规范">可修改性规范</h3>
+<ul>
+<li>如果子类实现是<strong>不可修改的列表</strong>，只需要实现 <strong><code>ListIterator</code></strong> 的 <strong><code>hasNext()</code></strong>，<strong><code>next()</code></strong>，<strong><code>hasPrevious()</code></strong>，<strong><code>previous()</code></strong> 和 <strong><code>index()</code></strong> 方法。</li>
+<li>如果子类实现需要<strong>可修改的列表</strong>，还应该实现 <strong><code>ListIterator</code></strong> 的 <strong><code>set()</code></strong> 方法。</li>
+<li>如果子类实现需要<strong>可变大小的列表</strong>，还应该实现 <strong><code>ListIterator</code></strong> 的 <strong><code>remove()</code></strong> 和 <strong><code>add()</code></strong> 方法。</li>
+</ul>
+<h3 id="构造器规范">构造器规范</h3>
+<p>子类实现应根据 <strong><code>java.util.Collection</code></strong> 接口规范中的建议，提供：</p>
+<ul>
+<li>无参构造器</li>
+<li>参数类型为 <strong>Collection</strong> 构造器</li>
+</ul>
+<hr>
+<h2 id="二构造器">二、构造器</h2>
+<p>唯一构造器，<strong><code>protected</code></strong> 权限。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">protected</span> <span style="color:#a6e22e">AbstractSequentialList</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><hr>
+<h2 id="三继承自-abstractlist-方法">三、继承自 AbstractList 方法</h2>
+<h3 id="31-实现方法">3.1 实现方法</h3>
+<h4 id="getint-方法">get(int) 方法</h4>
+<p>索引随机访问：首先获取指向索引元素的列表迭代器（使用 <strong><code>listIterator(index)</code></strong>），然后使用 <strong><code>ListIterator.next()</code></strong> 方法获取元素并返回。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> listIterator<span style="color:#f92672">(</span>index<span style="color:#f92672">).</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchElementException exc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IndexOutOfBoundsException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Index: &#34;</span><span style="color:#f92672">+</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="setint-e-方法">set(int, E) 方法</h4>
+<p>修改列表：使用指定元素替换当前列表中指定位置的元素。
+首先获取指向索引元素的列表迭代器（使用 <strong><code>listIterator(index)</code></strong>），然后使用 <strong><code>ListIterator.next()</code></strong> 方法获取当前元素，并调用 <strong><code>ListIterator.set(E)</code></strong> 方法将其替换。</p>
+<p><strong>注意</strong>：如果列表迭代器未实现 <strong><code>set(E)</code></strong> 方法，则将抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">set</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> E element<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        ListIterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> e <span style="color:#f92672">=</span> listIterator<span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+        E oldVal <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+        e<span style="color:#f92672">.</span><span style="color:#a6e22e">set</span><span style="color:#f92672">(</span>element<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> oldVal<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchElementException exc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IndexOutOfBoundsException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Index: &#34;</span><span style="color:#f92672">+</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="addint-e-方法">add(int, E) 方法</h4>
+<p>大小可变：将指定元素插入到当前列表中指定位置，并将当前位置的元素（如果有）和任何后续元素向右移动（将其添加到其索引中）。
+首先获取指向索引元素的列表迭代器（使用 <strong><code>listIterator(index)</code></strong>），然后使用 <strong><code>ListIterator.add()</code></strong> 方法插入指定的元素。</p>
+<p><strong>注意</strong>：如果列表迭代器未实现 <strong><code>add(E)</code></strong> 方法，则将抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> E element<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        listIterator<span style="color:#f92672">(</span>index<span style="color:#f92672">).</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>element<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchElementException exc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IndexOutOfBoundsException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Index: &#34;</span><span style="color:#f92672">+</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="removeint-方法">remove(int) 方法</h4>
+<p>删除此列表中指定位置的元素，并返回该元素。
+将任何后续元素向左移位（从索引中减去一个）。
+首先获取指向索引元素的列表迭代器（使用 <strong><code>listIterator(index)</code></strong>），然后使用 <strong><code>ListIterator.remove()</code></strong> 方法删除该元素。</p>
+<p><strong>注意</strong>：如果列表迭代器未实现 <strong><code>remove()</code></strong> 方法，则将抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> E <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        ListIterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> e <span style="color:#f92672">=</span> listIterator<span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+        E outCast <span style="color:#f92672">=</span> e<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">();</span>
+        e<span style="color:#f92672">.</span><span style="color:#a6e22e">remove</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">return</span> outCast<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchElementException exc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IndexOutOfBoundsException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Index: &#34;</span><span style="color:#f92672">+</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="addallint-collection-extends-e-方法">addAll(int, Collection&lt;? extends E&gt;) 方法</h4>
+<p>将指定集合中所有元素插入到指定位置的当前列表中。将当前位置的元素（如果有）和任何后续元素向右移动（增加其索引）。
+新元素将按照指定集合的​​迭代器返回的顺序出现在此列表中。</p>
+<p><strong>注意</strong>：如果列表迭代器未实现 <strong><code>add(E)</code></strong> 方法，则将抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">,</span> Collection<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> c<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">boolean</span> modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+        ListIterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> e1 <span style="color:#f92672">=</span> listIterator<span style="color:#f92672">(</span>index<span style="color:#f92672">);</span>
+        Iterator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> E<span style="color:#f92672">&gt;</span> e2 <span style="color:#f92672">=</span> c<span style="color:#f92672">.</span><span style="color:#a6e22e">iterator</span><span style="color:#f92672">();</span>
+        <span style="color:#66d9ef">while</span> <span style="color:#f92672">(</span>e2<span style="color:#f92672">.</span><span style="color:#a6e22e">hasNext</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+            e1<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>e2<span style="color:#f92672">.</span><span style="color:#a6e22e">next</span><span style="color:#f92672">());</span>
+            modified <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> modified<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>NoSuchElementException exc<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> IndexOutOfBoundsException<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Index: &#34;</span><span style="color:#f92672">+</span>index<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h4 id="iterator-方法">iterator() 方法</h4>
+<p>返回当前集合的 <strong><code>ListIterator</code></strong> 列表迭代器，依赖子类实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> Iterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">iterator</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">return</span> listIterator<span style="color:#f92672">();</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="32-抽象方法">3.2 抽象方法</h3>
+<h4 id="listiteratorint-方法">listIterator(int) 方法</h4>
+<p>获取当前列表的 <strong><code>ListIterator</code></strong> 列表迭代器，此方法依赖子类实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">abstract</span> ListIterator<span style="color:#f92672">&lt;</span>E<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">listIterator</span><span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> index<span style="color:#f92672">);</span>
+</code></pre></div><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%BA%90%E7%A0%81" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">源码</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">集合框架</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/posts/javase/deque-source-analysis/">Deque接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/queue-source-analysis/">Queue接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/navigableset-source-analysis/">NavigableSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/sortedset-source-analysis/">SortedSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractlist-source-analysis/">AbstractList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractcollection-source-analysis/">AbstractCollection源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/set-source-analysis/">Set接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/list-source-analysis/">List接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/collection-source-analysis/">Collection接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/javacollectionsframework/">Java集合框架源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/iterable-source-analysis/">Iterable接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/linked-list-source-analysis/">LinkedList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/array-list-source-analysis/">ArrayList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/java-object-head/">Java对象头详解</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Map接口源码分析 | 翠兰 - Greenland</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="generator" content="Hugo 0.70.0" />
+    
+    
+      <META NAME="ROBOTS" CONTENT="NOINDEX, NOFOLLOW">
+    
+
+    
+    
+      <link href="/dist/css/app.4fc0b62e4b82c997bb0041217cd6b979.css" rel="stylesheet">
+    
+
+    
+
+    
+      
+
+    
+
+    
+    
+    <meta property="og:title" content="Map接口源码分析" />
+<meta property="og:description" content="java.util.Map 接口是双列集合的顶级接口。
+一、Map特点或规范  双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提供了三个集合的视图，key集合、value集合、**Entry&lt;K, V&gt;集合。 Map 的顺序定义为 集合视图 的迭代器返回其元素的顺序。 有序性  java.util.TreeMap 类有序 其他，如 java.util.HashMap 类无序    1.1 构造器规范 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
+ 无参构造器，用于创建一个空 Map。 参数类型为 Map 的构造器，它创建一个具有相同键值的新映射映射作为其论点。  1.2 key/value限制 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 NullPointerException 或 ClassCastException。
+ 二、Map.Entry接口 Map.Entry 类映射实体，即：key-value 键值对。Map." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cuilan.github.io/posts/javase/map-source-analysis/" />
+<meta property="article:published_time" content="2019-08-21T15:00:00+00:00" />
+<meta property="article:modified_time" content="2019-08-21T15:00:00+00:00" />
+<meta itemprop="name" content="Map接口源码分析">
+<meta itemprop="description" content="java.util.Map 接口是双列集合的顶级接口。
+一、Map特点或规范  双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提供了三个集合的视图，key集合、value集合、**Entry&lt;K, V&gt;集合。 Map 的顺序定义为 集合视图 的迭代器返回其元素的顺序。 有序性  java.util.TreeMap 类有序 其他，如 java.util.HashMap 类无序    1.1 构造器规范 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
+ 无参构造器，用于创建一个空 Map。 参数类型为 Map 的构造器，它创建一个具有相同键值的新映射映射作为其论点。  1.2 key/value限制 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 NullPointerException 或 ClassCastException。
+ 二、Map.Entry接口 Map.Entry 类映射实体，即：key-value 键值对。Map.">
+<meta itemprop="datePublished" content="2019-08-21T15:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-21T15:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="991">
+
+
+
+<meta itemprop="keywords" content="Java,源码,集合框架," /><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Map接口源码分析"/>
+<meta name="twitter:description" content="java.util.Map 接口是双列集合的顶级接口。
+一、Map特点或规范  双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提供了三个集合的视图，key集合、value集合、**Entry&lt;K, V&gt;集合。 Map 的顺序定义为 集合视图 的迭代器返回其元素的顺序。 有序性  java.util.TreeMap 类有序 其他，如 java.util.HashMap 类无序    1.1 构造器规范 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
+ 无参构造器，用于创建一个空 Map。 参数类型为 Map 的构造器，它创建一个具有相同键值的新映射映射作为其论点。  1.2 key/value限制 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 NullPointerException 或 ClassCastException。
+ 二、Map.Entry接口 Map.Entry 类映射实体，即：key-value 键值对。Map."/>
+
+	
+  </head>
+
+  <body class="ma0 avenir bg-near-white">
+
+    
+   
+  
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l justify-between items-center center">
+    <a href="/" class="f3 fw2 hover-white no-underline white-90 dib">
+      
+        翠兰 - Greenland
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+
+    <main class="pb7" role="main">
+      
+  
+  <article class="flex-l flex-wrap justify-between mw8 center ph3">
+    <header class="mt4 w-100">
+      <aside class="instapaper_ignoref b helvetica tracked">
+          
+        POSTS
+      </aside>
+      
+
+
+
+
+  <div id="sharing" class="mt3">
+
+    
+    <a href="https://www.facebook.com/sharer.php?u=https://cuilan.github.io/posts/javase/map-source-analysis/" class="facebook no-underline" aria-label="share on Facebook">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M28.765,50.32h6.744V33.998h4.499l0.596-5.624h-5.095  l0.007-2.816c0-1.466,0.14-2.253,2.244-2.253h2.812V17.68h-4.5c-5.405,0-7.307,2.729-7.307,7.317v3.377h-3.369v5.625h3.369V50.32z   M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;"/></svg>
+
+    </a>
+
+    
+    
+    <a href="https://twitter.com/share?url=https://cuilan.github.io/posts/javase/map-source-analysis/&amp;text=Map%e6%8e%a5%e5%8f%a3%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="twitter no-underline" aria-label="share on Twitter">
+      <svg height="32px"  style="enable-background:new 0 0 67 67;" version="1.1" viewBox="0 0 67 67" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><path d="M37.167,22.283c-2.619,0.953-4.274,3.411-4.086,6.101  l0.063,1.038l-1.048-0.127c-3.813-0.487-7.145-2.139-9.974-4.915l-1.383-1.377l-0.356,1.017c-0.754,2.267-0.272,4.661,1.299,6.271  c0.838,0.89,0.649,1.017-0.796,0.487c-0.503-0.169-0.943-0.296-0.985-0.233c-0.146,0.149,0.356,2.076,0.754,2.839  c0.545,1.06,1.655,2.097,2.871,2.712l1.027,0.487l-1.215,0.021c-1.173,0-1.215,0.021-1.089,0.467  c0.419,1.377,2.074,2.839,3.918,3.475l1.299,0.444l-1.131,0.678c-1.676,0.976-3.646,1.526-5.616,1.568  C19.775,43.256,19,43.341,19,43.405c0,0.211,2.557,1.397,4.044,1.864c4.463,1.377,9.765,0.783,13.746-1.568  c2.829-1.673,5.657-5,6.978-8.221c0.713-1.716,1.425-4.851,1.425-6.354c0-0.975,0.063-1.102,1.236-2.267  c0.692-0.678,1.341-1.419,1.467-1.631c0.21-0.403,0.188-0.403-0.88-0.043c-1.781,0.636-2.033,0.551-1.152-0.402  c0.649-0.678,1.425-1.907,1.425-2.267c0-0.063-0.314,0.042-0.671,0.233c-0.377,0.212-1.215,0.53-1.844,0.72l-1.131,0.361l-1.027-0.7  c-0.566-0.381-1.361-0.805-1.781-0.932C39.766,21.902,38.131,21.944,37.167,22.283z M33,64C16.432,64,3,50.569,3,34S16.432,4,33,4  s30,13.431,30,30S49.568,64,33,64z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/></svg>
+
+    </a>
+
+    
+    <a href="https://www.linkedin.com/shareArticle?mini=true&amp;url=https://cuilan.github.io/posts/javase/map-source-analysis/&amp;title=Map%e6%8e%a5%e5%8f%a3%e6%ba%90%e7%a0%81%e5%88%86%e6%9e%90" class="linkedin no-underline" aria-label="share on LinkedIn">
+      <svg  height="32px"  style="enable-background:new 0 0 65 65;" version="1.1" viewBox="0 0 65 65" width="32px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <path d="M50.837,48.137V36.425c0-6.275-3.35-9.195-7.816-9.195  c-3.604,0-5.219,1.983-6.119,3.374V27.71h-6.79c0.09,1.917,0,20.427,0,20.427h6.79V36.729c0-0.609,0.044-1.219,0.224-1.655  c0.49-1.22,1.607-2.483,3.482-2.483c2.458,0,3.44,1.873,3.44,4.618v10.929H50.837z M22.959,24.922c2.367,0,3.842-1.57,3.842-3.531  c-0.044-2.003-1.475-3.528-3.797-3.528s-3.841,1.524-3.841,3.528c0,1.961,1.474,3.531,3.753,3.531H22.959z M34,64  C17.432,64,4,50.568,4,34C4,17.431,17.432,4,34,4s30,13.431,30,30C64,50.568,50.568,64,34,64z M26.354,48.137V27.71h-6.789v20.427  H26.354z" style="fill-rule:evenodd;clip-rule:evenodd;fill:;"/>
+</svg>
+
+    </a>
+  </div>
+
+
+      <h1 class="f1 athelas mt3 mb1">Map接口源码分析</h1>
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2019-08-21T15:00:00Z">August 21, 2019</time>
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f4 nested-links nested-img mid-gray pr4-l w-two-thirds-l"><p><strong><code>java.util.Map</code></strong> 接口是双列集合的顶级接口。</p>
+<h2 id="一map特点或规范">一、Map特点或规范</h2>
+<ul>
+<li>双列集合，由 <strong>key</strong> 映射 <strong>value</strong> 的对象。</li>
+<li><strong>Map</strong> 不能包含重复的 <strong>key</strong>，且每个 <strong>key</strong> 只能映射一个 <strong>value</strong>。</li>
+<li><strong>Map</strong> 接口提供了三个集合的视图，<strong>key集合</strong>、<strong>value集合</strong>、**Entry&lt;K, V&gt;集合。</li>
+<li><strong>Map</strong> 的顺序定义为 <strong>集合视图</strong> 的迭代器返回其元素的顺序。</li>
+<li>有序性
+<ul>
+<li><strong><code>java.util.TreeMap</code></strong> 类有序</li>
+<li>其他，如 <strong><code>java.util.HashMap</code></strong> 类无序</li>
+</ul>
+</li>
+</ul>
+<!-- raw HTML omitted -->
+<h3 id="11-构造器规范">1.1 构造器规范</h3>
+<p>所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：</p>
+<ul>
+<li><strong>无参构造器</strong>，用于创建一个空 <strong>Map</strong>。</li>
+<li><strong>参数类型为 Map 的构造器</strong>，它创建一个具有相同键值的新映射映射作为其论点。</li>
+</ul>
+<h3 id="12-keyvalue限制">1.2 key/value限制</h3>
+<p>某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 <strong><code>NullPointerException</code></strong> 或 <strong><code>ClassCastException</code></strong>。</p>
+<hr>
+<h2 id="二mapentry接口">二、Map.Entry接口</h2>
+<p><strong>Map.Entry</strong> 类映射实体，即：key-value 键值对。<strong><code>Map.entrySet()</code></strong> 方法可以返回 Map 的实体集合视图，即：<strong><code>Set&lt;Map.Entry&lt;K, V&gt;&gt;</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">interface</span> <span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+
+    <span style="color:#75715e">// 返回当前实体的 key
+</span><span style="color:#75715e"></span>    K <span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">// 返回当前实体的 value
+</span><span style="color:#75715e"></span>    V <span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">// 设置当前实体的 value
+</span><span style="color:#75715e"></span>    V <span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span>V value<span style="color:#f92672">);</span>
+
+    <span style="color:#75715e">// 比较当前实体与 o 是否一致
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">);</span>
+
+    <span style="color:#75715e">// 获得当前实体的哈希值
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hashCode</span><span style="color:#f92672">();</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 返回一个比较器，用于在 key 上按自然顺序比较 Map.Entry。
+</span><span style="color:#75715e">     * 返回的比较器是可序列化的，并在将条目与null键进行比较时抛出 NullPointerException。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>K <span style="color:#66d9ef">extends</span> Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;,</span> V<span style="color:#f92672">&gt;</span> Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">comparingByKey</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> Serializable<span style="color:#f92672">)</span>
+            <span style="color:#f92672">(</span>c1<span style="color:#f92672">,</span> c2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">().</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>c2<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">/**
+</span><span style="color:#75715e">     * 返回一个比较器，用于在 value 上按自然顺序比较 Map.Entry。
+</span><span style="color:#75715e">     * 返回的比较器是可序列化的，并在将条目与空值进行比较时抛出 NullPointerException。
+</span><span style="color:#75715e">     */</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V <span style="color:#66d9ef">extends</span> Comparable<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">&gt;&gt;</span> Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span>V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">comparingByValue</span><span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> Serializable<span style="color:#f92672">)</span>
+            <span style="color:#f92672">(</span>c1<span style="color:#f92672">,</span> c2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">().</span><span style="color:#a6e22e">compareTo</span><span style="color:#f92672">(</span>c2<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 返回一个比较器，使用给定的 Comparator 按 key 比较 Map.Entry。
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">comparingByKey</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">&gt;</span> cmp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>cmp<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> Serializable<span style="color:#f92672">)</span>
+            <span style="color:#f92672">(</span>c1<span style="color:#f92672">,</span> c2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> cmp<span style="color:#f92672">.</span><span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">(),</span> c2<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+
+    <span style="color:#75715e">// 返回一个比较器，使用给定的 Comparator 按 value 将比较 Map.Entry。
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">comparingByValue</span><span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">&gt;</span> cmp<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>cmp<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#f92672">(</span>Comparator<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#f92672">&amp;</span> Serializable<span style="color:#f92672">)</span>
+            <span style="color:#f92672">(</span>c1<span style="color:#f92672">,</span> c2<span style="color:#f92672">)</span> <span style="color:#f92672">-&gt;</span> cmp<span style="color:#f92672">.</span><span style="color:#a6e22e">compare</span><span style="color:#f92672">(</span>c1<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(),</span> c2<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">());</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><hr>
+<h2 id="三方法描述">三、方法描述</h2>
+<h3 id="31-查询方法">3.1 查询方法</h3>
+<p>返回 Map 中 key-value 映射的数量。如果 Map 中包含元素多于 <strong><code>Integer.MAX_VALUE</code></strong>，则返回 <strong><code>Integer.MAX_VALUE</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">size</span><span style="color:#f92672">();</span>
+</code></pre></div><p>如果 Map 不包含 key-value 映射，则返回 <strong><code>true</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">();</span>
+</code></pre></div><p>如果 Map 包含指定 key 的映射，则返回 <strong><code>true</code></strong>，即：<strong><code>key == null ? k == null : key.equals(k)</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">containsKey</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">);</span>
+</code></pre></div><p>如果 Map 将一个或多个 key 映射到指定 value，则返回 <strong><code>true</code></strong>，即：<strong><code>value == null ? v == null : value.equals(v)</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">containsValue</span><span style="color:#f92672">(</span>Object value<span style="color:#f92672">);</span>
+</code></pre></div><p>返回指定 key 映射的 value，如果 Map 不包含 key 的映射，则返回 <strong><code>null</code></strong>，如果此 Map 允许空值，则返回值 <strong><code>null</code></strong> 不一定表示 Map 不包含该 key 的映射，Map 也可能将 key 明确映射为 <strong><code>null</code></strong>，<strong><code>containsKey()</code></strong> 方法可用于区分这两种情况。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">V <span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">);</span>
+</code></pre></div><h3 id="32-修改操作">3.2 修改操作</h3>
+<p>将指定的 value 与 Map 中的指定 key 相关联。如果 Map 先前包含 key 的映射，则指定的 value 将替换旧 value。返回之前与 key 相关联的 value，如果之前没有关联，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">V <span style="color:#a6e22e">put</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">);</span>
+</code></pre></div><p>如果存在该 key，则从 Map 中移除 key 的映射。
+返回删除之前与 key 关联的 value，如果 Map 不包含该 key 的映射，则返回 <strong><code>null</code></strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">V <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">);</span>
+</code></pre></div><h3 id="33-批量操作">3.3 批量操作</h3>
+<p>将指定 Map 中的所有实体复制到此 Map 中。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">putAll</span><span style="color:#f92672">(</span>Map<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">extends</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> m<span style="color:#f92672">);</span>
+</code></pre></div><p>将当前 Map 中所有实体删除。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">clear</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="34-视图">3.4 视图</h3>
+<p>返回 Map 中包含的 key 的 Set 视图。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#f92672">&lt;</span>K<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">keySet</span><span style="color:#f92672">();</span>
+</code></pre></div><p>返回 Map 中包含的 value 的 Collection 视图。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Collection<span style="color:#f92672">&lt;</span>V<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">values</span><span style="color:#f92672">();</span>
+</code></pre></div><p>返回 Map 中包含的 Entry 实体的 Set 视图。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Set<span style="color:#f92672">&lt;</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;&gt;</span> <span style="color:#a6e22e">entrySet</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="35-equalshashcode">3.5 equals、hashCode</h3>
+<p>将指定对象与此 Map 进行相等性比较。如果给定对象也是一个 Map，并且两个 Map 指向同一个 Map，则返回 <strong><code>true</code></strong>。
+这可确保equals方法在Map接口的不同实现中正常工作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>Object o<span style="color:#f92672">);</span>
+</code></pre></div><p>返回 Map 的哈希值。Map 的哈希值的定义为 Map 的 <strong><code>entrySet()</code></strong> 视图中每个条目的哈希值的总和。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">hashCode</span><span style="color:#f92672">();</span>
+</code></pre></div><h3 id="36-默认方法">3.6 默认方法</h3>
+<p>返回指定 key 映射到的 value，如果此 Map 不包含 key 的映射，则返回 defaultValue。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">getOrDefault</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> V defaultValue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    V v<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">(((</span>v <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">||</span> containsKey<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span>
+        <span style="color:#f92672">?</span> v
+        <span style="color:#f92672">:</span> defaultValue<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>对此 Map 中的每个条目执行给定操作，直到处理完所有条目或操作引发异常。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">forEach</span><span style="color:#f92672">(</span>BiConsumer<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">&gt;</span> action<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>action<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">:</span> entrySet<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        K k<span style="color:#f92672">;</span>
+        V v<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            k <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+            v <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span>IllegalStateException ise<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// this usually means the entry is no longer in the map.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ConcurrentModificationException<span style="color:#f92672">(</span>ise<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        action<span style="color:#f92672">.</span><span style="color:#a6e22e">accept</span><span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> v<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>将每个条目的值替换为在该条目上调用给定函数的结果，直到所有条目都已处理或函数抛出异常。函数抛出的异常将转发给调用者。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">replaceAll</span><span style="color:#f92672">(</span>BiFunction<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> function<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>function<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Map<span style="color:#f92672">.</span><span style="color:#a6e22e">Entry</span><span style="color:#f92672">&lt;</span>K<span style="color:#f92672">,</span> V<span style="color:#f92672">&gt;</span> entry <span style="color:#f92672">:</span> entrySet<span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+        K k<span style="color:#f92672">;</span>
+        V v<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            k <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getKey</span><span style="color:#f92672">();</span>
+            v <span style="color:#f92672">=</span> entry<span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">();</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span>IllegalStateException ise<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// this usually means the entry is no longer in the map.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ConcurrentModificationException<span style="color:#f92672">(</span>ise<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#75715e">// ise thrown from function is not a cme.
+</span><span style="color:#75715e"></span>        v <span style="color:#f92672">=</span> function<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>k<span style="color:#f92672">,</span> v<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            entry<span style="color:#f92672">.</span><span style="color:#a6e22e">setValue</span><span style="color:#f92672">(</span>v<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span><span style="color:#f92672">(</span>IllegalStateException ise<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// this usually means the entry is no longer in the map.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> ConcurrentModificationException<span style="color:#f92672">(</span>ise<span style="color:#f92672">);</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果指定的 key 尚未与 value 关联或映射为 null，则将其与给定 value 关联并返回 null，否则返回当前 value。默认实现不保证此方法的同步或原子性属性。提供原子性保证的任何实现都必须覆盖此方法并记录其并发属性。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">putIfAbsent</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    V v <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>v <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        v <span style="color:#f92672">=</span> put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> v<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>仅当指定 key 映射到指定 value 时才删除该条目。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">remove</span><span style="color:#f92672">(</span>Object key<span style="color:#f92672">,</span> Object value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Object curValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>curValue<span style="color:#f92672">,</span> value<span style="color:#f92672">)</span> <span style="color:#f92672">||</span>
+        <span style="color:#f92672">(</span>curValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>containsKey<span style="color:#f92672">(</span>key<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    remove<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>仅当指定 key 映射到指定 value 时才替换指定 key 的条目。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> <span style="color:#66d9ef">boolean</span> <span style="color:#a6e22e">replace</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V oldValue<span style="color:#f92672">,</span> V newValue<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Object curValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(!</span>Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">equals</span><span style="color:#f92672">(</span>curValue<span style="color:#f92672">,</span> oldValue<span style="color:#f92672">)</span> <span style="color:#f92672">||</span>
+        <span style="color:#f92672">(</span>curValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#f92672">!</span>containsKey<span style="color:#f92672">(</span>key<span style="color:#f92672">)))</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>仅当指定 key 映射到某个 value 时才替换该条目。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">replace</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    V curValue<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(((</span>curValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">||</span> containsKey<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+        curValue <span style="color:#f92672">=</span> put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> curValue<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果指定的 key 尚未与 value 关联或映射为 null，则尝试使用给定的映射函数计算其值，并将其输入此映射，除非为 null。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">computeIfAbsent</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span>
+        Function<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> mappingFunction<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>mappingFunction<span style="color:#f92672">);</span>
+    V v<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>v <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        V newValue<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>newValue <span style="color:#f92672">=</span> mappingFunction<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> newValue<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> v<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果指定 key 的 value 存在且为非 null，则尝试在给定 key 及其当前映射 value 的情况下计算新映射。如果函数返回 null，则删除映射。如果函数本身抛出异常，则重新抛出异常，并保持当前映射不变。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">computeIfPresent</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span>
+        BiFunction<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> remappingFunction<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>remappingFunction<span style="color:#f92672">);</span>
+    V oldValue<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">((</span>oldValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        V newValue <span style="color:#f92672">=</span> remappingFunction<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> oldValue<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newValue <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> newValue<span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            remove<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>尝试计算指定 key 及其当前映射 value 的映射，如果没有当前映射，则为 null。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">compute</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span>
+        BiFunction<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> K<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> remappingFunction<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>remappingFunction<span style="color:#f92672">);</span>
+    V oldValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    V newValue <span style="color:#f92672">=</span> remappingFunction<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> oldValue<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>newValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// delete mapping
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>oldValue <span style="color:#f92672">!=</span> <span style="color:#66d9ef">null</span> <span style="color:#f92672">||</span> containsKey<span style="color:#f92672">(</span>key<span style="color:#f92672">))</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// something to remove
+</span><span style="color:#75715e"></span>            remove<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            <span style="color:#75715e">// nothing to do. Leave things as they were.
+</span><span style="color:#75715e"></span>            <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// add or replace old mapping
+</span><span style="color:#75715e"></span>        put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+        <span style="color:#66d9ef">return</span> newValue<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>如果指定的 key 尚未与 value 关联或与 null 关联，则将其与给定的非空值关联。否则，将相关 value 替换为给定重映射函数的结果，或者如果结果为 null 则删除。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">default</span> V <span style="color:#a6e22e">merge</span><span style="color:#f92672">(</span>K key<span style="color:#f92672">,</span> V value<span style="color:#f92672">,</span>
+        BiFunction<span style="color:#f92672">&lt;?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">super</span> V<span style="color:#f92672">,</span> <span style="color:#f92672">?</span> <span style="color:#66d9ef">extends</span> V<span style="color:#f92672">&gt;</span> remappingFunction<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>remappingFunction<span style="color:#f92672">);</span>
+    Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>value<span style="color:#f92672">);</span>
+    V oldValue <span style="color:#f92672">=</span> get<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    V newValue <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>oldValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">?</span> value <span style="color:#f92672">:</span>
+               remappingFunction<span style="color:#f92672">.</span><span style="color:#a6e22e">apply</span><span style="color:#f92672">(</span>oldValue<span style="color:#f92672">,</span> value<span style="color:#f92672">);</span>
+    <span style="color:#66d9ef">if</span><span style="color:#f92672">(</span>newValue <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        remove<span style="color:#f92672">(</span>key<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span> <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        put<span style="color:#f92672">(</span>key<span style="color:#f92672">,</span> newValue<span style="color:#f92672">);</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">return</span> newValue<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><ul class="pa0">
+  
+   <li class="list">
+     <a href="/tags/java" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">Java</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E6%BA%90%E7%A0%81" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">源码</a>
+   </li>
+  
+   <li class="list">
+     <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" class="link f5 grow no-underline br-pill ba ph3 pv2 mb2 dib black sans-serif">集合框架</a>
+   </li>
+  
+</ul>
+<div class="mt6 instapaper_ignoref">
+      
+      
+      </div>
+    </div>
+
+    <aside class="w-30-l mt6-l">
+
+
+
+
+  <div class="bg-light-gray pa3 nested-list-reset nested-copy-line-height nested-links">
+    <p class="f5 b mb3">Related</p>
+    <ul class="pa0 list">
+	   
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractqueue-source-analysis/">AbstractQueue源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/treeset-source-analysis/">TreeSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/linkedhashset-source-analysis/">LinkedHashSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/hashset-source-analysis/">HashSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractset-source-analysis/">AbstractSet源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractsequentiallist-source-analysis/">AbstractSequentialList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/deque-source-analysis/">Deque接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/queue-source-analysis/">Queue接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/navigableset-source-analysis/">NavigableSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/sortedset-source-analysis/">SortedSet接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractlist-source-analysis/">AbstractList源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/abstractcollection-source-analysis/">AbstractCollection源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/set-source-analysis/">Set接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/list-source-analysis/">List接口源码分析</a>
+        </li>
+	    
+	     <li  class="mb2">
+          <a href="/posts/javase/collection-source-analysis/">Collection接口源码分析</a>
+        </li>
+	    
+    </ul>
+</div>
+
+</aside>
+
+  </article>
+
+    </main>
+    <footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white no-underline white-70 dn dib-ns pv2 ph3" href="https://cuilan.github.io/" >
+    &copy;  翠兰 - Greenland 2020 
+  </a>
+    <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+  </div>
+</footer>
+
+    
+
+  <script src="/dist/js/app.3fc0f988d21662902933.js"></script>
+
+
+  </body>
+</html>
