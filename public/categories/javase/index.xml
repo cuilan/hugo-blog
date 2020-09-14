@@ -5,7 +5,7 @@
     <link>https://cuilan.github.io/categories/javase/</link>
     <description>Recent content in JavaSE on 翠兰 - Greenland</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
+    <language>zh-cn</language>
     <lastBuildDate>Tue, 17 Sep 2019 16:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cuilan.github.io/categories/javase/index.xml" rel="self" type="application/rss+xml" />
@@ -338,16 +338,6 @@ boolean contains(Object o); 如果当前集合包含指定 Collection 中的所�
     </item>
     
     <item>
-      <title>Java集合框架源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/javacollectionsframework/</link>
-      <pubDate>Fri, 12 Jul 2019 16:31:00 +0000</pubDate>
-      
-      <guid>https://cuilan.github.io/posts/javase/javacollectionsframework/</guid>
-      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt;
- 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.</description>
-    </item>
-    
-    <item>
       <title>Iterable接口源码分析</title>
       <link>https://cuilan.github.io/posts/javase/iterable-source-analysis/</link>
       <pubDate>Fri, 12 Jul 2019 10:18:22 +0000</pubDate>
@@ -362,6 +352,16 @@ java.util.Iterator 接口的定义取代了 Java Collections Framework 中的 ja
  迭代器允许调用者在迭代期间使用定义良好的语义从底层集合中删除元素。 方法名称已得到改进。  方法描述 hasNext()方法 如果迭代具有更多元素，则返回true。
 boolean hasNext(); next()方法 返回迭代中的下一个元素。
 E next(); remove()方法 从当前集合中移除迭代器返回的最后一个元素（即此时 next() 返回的元素）。</description>
+    </item>
+    
+    <item>
+      <title>Java集合框架源码分析</title>
+      <link>https://cuilan.github.io/posts/javase/javacollectionsframework/</link>
+      <pubDate>Fri, 12 Jul 2019 16:31:00 +0800</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/javase/javacollectionsframework/</guid>
+      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt;
+ 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.</description>
     </item>
     
     <item>

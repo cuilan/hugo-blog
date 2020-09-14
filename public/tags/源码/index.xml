@@ -5,11 +5,54 @@
     <link>https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/</link>
     <description>Recent content in 源码 on 翠兰 - Greenland</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 17 Sep 2019 16:00:00 +0000</lastBuildDate>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>3.SpringMVC的请求如何分发？</title>
+      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-03/</link>
+      <pubDate>Thu, 14 Nov 2019 15:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-03/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>2.SpringMVC核心分发器DispatcherServlet分析</title>
+      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-02/</link>
+      <pubDate>Mon, 04 Nov 2019 15:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-02/</guid>
+      <description>一、SpringMVC入口 SpringMVC启动类为：org.springframework.web.servlet.DispatcherServlet
+由此可以看出 DispatcherServlet 本质上是继承自 javax.servlet.Servlet 顶级接口，因此其生命周期为：init() --&amp;gt; service() --&amp;gt; destory()。
+继承关系如下：
+ javax.servlet.Servlet  javax.servlet.GenericServlet  javax.servlet.http.HttpServlet  org.springframework.web.servlet.HttpServletBean  org.springframework.web.servlet.FrameworkServlet  org.springframework.web.servletDispatcherServlet            所以，SpringMVC启动时，是由 servlet容器（tomcat）调用执行 init() 方法，而 HttpServletBean 中覆盖了 init()方法，并 final 修饰，DispatcherServlet 和 FrameworkServlet 中都无法再继续覆盖，因此启动时会调用 HttpServletBean.init() 方法。
+ 二、init()方法，对初始化过程进行处理 init() 方法执行过程大概分为三步：
+1.设置web.xml中的配置参数 ServletConfigPropertyValues 是 HttpServletBean 的内部静态类，构造过程中会使用 ServletConfig 对象找出 web.xml 配置文件中的配置参数并设置到 ServletConfigPropertyValues 中。
+2.初始化BeanWrapper 使用 BeanWrapper 来构造实例化 DispatcherServlet 对象（即：this当前对象），接着通过当前 this 对象的 getServletContext() 方法获取 servlet 上下文信息，并创建 ServletContextResourceLoader 对象，给 bw 注册 Resource 类型的属性编辑器，然后调用 initBeanWrapper() 进行初始化（空方法，供子类进行扩展），初始化后，给 bw 对象设置属性值，即 web.</description>
+    </item>
+    
+    <item>
+      <title>1.SpringMVC使用示例</title>
+      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-01/</link>
+      <pubDate>Wed, 30 Oct 2019 12:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-01/</guid>
+      <description>SpringMVC项目的演示示例，包含 maven 依赖配置，web.xml 文件配置，spring-mvc.xml 文件配置等，代码部分省略。
+创建maven工程 &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd&amp;#34;&amp;gt; &amp;lt;parent&amp;gt; &amp;lt;artifactId&amp;gt;spring-all&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;cn.cuilan&amp;lt;/groupId&amp;gt; &amp;lt;version&amp;gt;1.0.0&amp;lt;/version&amp;gt; &amp;lt;/parent&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;artifactId&amp;gt;spring-mvc&amp;lt;/artifactId&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;spring-mvc&amp;lt;/name&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-webmvc&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spring.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-context-support&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spring.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.freemarker&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;freemarker&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${freemarker.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; &amp;lt;build&amp;gt; &amp;lt;finalName&amp;gt;spring-mvc&amp;lt;/finalName&amp;gt; &amp;lt;resources&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/java&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/resources&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/webapp&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;/resources&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt; &amp;lt;/project&amp;gt; 创建 spring-mvc.xml 配置文件 &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC目录</title>
+      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc/</link>
+      <pubDate>Tue, 29 Oct 2019 12:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc/</guid>
+      <description>1.SpringMVC使用示例2.SpringMVC核心分发器DispatcherServlet分析</description>
+    </item>
     
     <item>
       <title>Dictionary抽象类源码分析</title>
@@ -338,16 +381,6 @@ boolean contains(Object o); 如果当前集合包含指定 Collection 中的所�
     </item>
     
     <item>
-      <title>Java集合框架源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/javacollectionsframework/</link>
-      <pubDate>Fri, 12 Jul 2019 16:31:00 +0000</pubDate>
-      
-      <guid>https://cuilan.github.io/posts/javase/javacollectionsframework/</guid>
-      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt;
- 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.</description>
-    </item>
-    
-    <item>
       <title>Iterable接口源码分析</title>
       <link>https://cuilan.github.io/posts/javase/iterable-source-analysis/</link>
       <pubDate>Fri, 12 Jul 2019 10:18:22 +0000</pubDate>
@@ -362,6 +395,16 @@ java.util.Iterator 接口的定义取代了 Java Collections Framework 中的 ja
  迭代器允许调用者在迭代期间使用定义良好的语义从底层集合中删除元素。 方法名称已得到改进。  方法描述 hasNext()方法 如果迭代具有更多元素，则返回true。
 boolean hasNext(); next()方法 返回迭代中的下一个元素。
 E next(); remove()方法 从当前集合中移除迭代器返回的最后一个元素（即此时 next() 返回的元素）。</description>
+    </item>
+    
+    <item>
+      <title>Java集合框架源码分析</title>
+      <link>https://cuilan.github.io/posts/javase/javacollectionsframework/</link>
+      <pubDate>Fri, 12 Jul 2019 16:31:00 +0800</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/javase/javacollectionsframework/</guid>
+      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt;
+ 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.</description>
     </item>
     
     <item>

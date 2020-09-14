@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>环境搭建 on 翠兰 - Greenland</title>
+    <link>https://cuilan.github.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+    <description>Recent content in 环境搭建 on 翠兰 - Greenland</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 16 Oct 2019 15:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://cuilan.github.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Go环境搭建</title>
+      <link>https://cuilan.github.io/posts/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <pubDate>Wed, 16 Oct 2019 15:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>Go开发环境 下载并安装Go开发包 Go语言开发包：https://golang.org/
+安装并配置环境变量 # go语言安装路径GOROOT=C:\Go\# 修改gopath路径GOPATH=D:\gopath\# gopath目录结构|- gopath|- bin|- pkg|- src|- github.com|- cuilan|- go-demo|- xxx|- gitee.com安装 VSCode 下载并安装 VSCode 安装 ms-vscode.go 插件 安装 Go 插件：搜索：Go，安装：ms-vscode.go 插件。
+安装 go-tools cd %GOPATH%\src\go get -u -v golang.org/x/tools/cmd/godocgo get -u -v golang.org/x/tools/cmd/gorenamego get -u -v golang.org/x/tools/cmd/gurugo get -u -v github.com/nsf/gocodego get -u -v github.com/golang/lint/golintgo get -u -v github.</description>
+    </item>
+    
+    <item>
+      <title>Hexo常用命令</title>
+      <link>https://cuilan.github.io/posts/hexo/</link>
+      <pubDate>Tue, 06 Nov 2018 16:35:23 +0800</pubDate>
+      
+      <guid>https://cuilan.github.io/posts/hexo/</guid>
+      <description>创建任意目录
+开始安装：
+npm install hexo --save 检测安装是否成功：
+hexo -v 初始化：
+hexo init 安装所需组件：
+npm install 创建文件： layout 可省略，默认使用 _config.yml 中的 default_layout 参数代替
+hexo new [layout] &amp;lt;title&amp;gt; hexo n &amp;#34;filename&amp;#34; 生成静态页面：
+hexo generate hexo g 开启服务：
+hexo server hexo s 安装本地图片上传插件：
+npm install hexo-asset-image --save </description>
+    </item>
+    
+  </channel>
+</rss>
