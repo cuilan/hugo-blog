@@ -1,5 +1,5 @@
 ---
-title: "翠兰 - Greenland"
+title: "CUILAN"
 featured_image: '/images/notebook.jpg'
 description: "Let the cat out of the bag."
 ---

@@ -1,6 +1,6 @@
 ---
 title: AbstractCollection源码分析
-date: 2019-07-18 17:00:00
+date: 2019-07-18
 tags:
 - Java
 - 源码
