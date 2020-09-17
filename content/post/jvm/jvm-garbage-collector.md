@@ -12,16 +12,16 @@ categories:
 
 <!-- more -->
 
-![垃圾收集器](jvm-garbage-collector/jgc1.png "垃圾收集器")
+![垃圾收集器](/images/jvm/jvm-garbage-collector/jgc1.png "垃圾收集器")
 
 **上图展示了7种作用于不同分代的收集器，如果两个收集器之间存在连线，就说明它们可以搭配使用。虚拟机所处的区域，则表示它是属于新生代收集器还是老年代收集器** 。
 
 
-## Serial收集器
+# Serial收集器
 
 **Serial收集器是最基本、发展历史最悠久的收集器** ，曾经（在JDK 1.3.1之前）是虚拟机新生代收集的唯一选择。看名字就会知道， **这个收集器是一个单线程的收集器** ，但它的“单线程”的意义并不仅仅说明它只会使用一个CPU或一条收集线程去完成垃圾收集工作，更重要的是在它进行垃圾收集时，必须暂停其他所有的工作线程，直到它收集结束。“Stop The World”这个名字也许听起来很酷，但这项工作实际上是由虚拟机在后台自动发起和自动完成的，在用户不可见的情况下把用户正常工作的线程全部停掉，这对很多应用来说都是难以接受的。下图示意了Serial / Serial Old收集器的运行过程。
 
-![Serial收集器](jvm-garbage-collector/jgc2.png "Serial收集器")
+![Serial收集器](/images/jvm/jvm-garbage-collector/jgc2.png "Serial收集器")
 
 对于“Stop The World”带给用户的不良体验，虚拟机的设计者们表示完全理解，但也表示非常委屈：“你妈妈在给你打扫房间的时候，肯定也会让你老老实实地在椅子上或者房间外待着，如果她一边打扫，你一边乱扔纸屑，这房间还能打扫完？”这确实是一个合情合理的矛盾，虽然垃圾收集这项工作听起来和打扫房间属于一个性质的，但实际上肯定还要比打扫房间复杂得多！
 
@@ -30,11 +30,11 @@ categories:
 写到这里，笔者似乎已经把Serial收集器描述成一个“老而无用、食之无味弃之可惜”的鸡肋了，但实际上到现在为止，它依然是虚拟机运行在Client模式下的默认新生代收集器。它也有着优于其他收集器的地方： **_简单而高效_** （与其他收集器的单线程比），对于限定单个CPU的环境来说，Serial收集器由于没有线程交互的开销，专心做垃圾收集自然可以获得最高的单线程收集效率。在用户的桌面应用场景中，分配给虚拟机管理的内存一般来说不会很大，收集几十兆甚至一两百兆的新生代（仅仅是新生代使用的内存，桌面应用基本上不会再大了），停顿时间完全可以控制在几十毫秒最多一百多毫秒以内，只要不是频繁发生，这点停顿是可以接受的。所以，Serial收集器对于运行在Client模式下的虚拟机来说是一个很好的选择。
 
 
-## ParNew收集器
+# ParNew收集器
 
 **_ParNew收集器其实就是Serial收集器的多线程版本_** ，除了使用多条线程进行垃圾收集之外，其余行为包括Serial收集器可用的所有控制参数（例如：-XX:SurvivorRatio、 -XX:PretenureSizeThreshold、-XX:HandlePromotionFailure等）、收集算法、Stop The World、对象分配规则、回收策略等都与Serial收集器完全一样，在实现上，这两种收集器也共用了相当多的代码。ParNew收集器的工作过程如图所示。
 
-![ParNew收集器](jvm-garbage-collector/jgc3.png "ParNew收集器")
+![ParNew收集器](/images/jvm/jvm-garbage-collector/jgc3.png "ParNew收集器")
 
 ParNew收集器除了多线程收集之外，其他与Serial收集器相比并没有太多创新之处，但 **_它却是许多运行在Server模式下的虚拟机中首选的新生代收集器_** ，其中有一个与性能无关但很重要的原因是，除了Serial收集器外， **_目前只有它能与CMS收集器配合工作_** 。在JDK 1.5时期，HotSpot推出了一款在强交互应用中几乎可认为有划时代意义的垃圾收集器——CMS收集器（Concurrent Mark Sweep，本节稍后将详细介绍这款收集器），这款收集器是HotSpot虚拟机中第一款真正意义上的并发（Concurrent）收集器，它第一次实现了让垃圾收集线程与用户线程（基本上）同时工作，用前面那个例子的话来说，就是做到了在你的妈妈打扫房间的时候你还能一边往地上扔纸屑。
 
@@ -49,7 +49,7 @@ ParNew收集器在单CPU的环境中绝对不会有比Serial收集器更好的�
 -  **并发（Concurrent）** ：指用户线程与垃圾收集线程同时执行（但不一定是并行的，可能会交替执行），用户程序在继续运行，而垃圾收集程序运行于另一个CPU上。
 
 
-## Parallel Scavenge收集器
+# Parallel Scavenge收集器
 
  **_Parallel Scavenge收集器是一个新生代收集器_** ，它也是使用复制算法的收集器，又是并行的多线程收集器……看上去和ParNew都一样，那它有什么特别之处呢？
 
@@ -66,23 +66,23 @@ GCTimeRatio参数的值应当是一个大于0且小于100的整数，也就是�
 由于与吞吐量关系密切，Parallel Scavenge收集器也经常称为“吞吐量优先”收集器。除上述两个参数之外，Parallel Scavenge收集器还有一个参数-XX:+UseAdaptiveSizePolicy值得关注。这是一个开关参数，当这个参数打开之后，就不需要手工指定新生代的大小（-Xmn）、Eden与Survivor区的比例（-XX:SurvivorRatio）、晋升老年代对象年龄（-XX:PretenureSizeThreshold）等细节参数了，虚拟机会根据当前系统的运行情况收集性能监控信息，动态调整这些参数以提供最合适的停顿时间或者最大的吞吐量，这种调节方式称为GC自适应的调节策略（GC Ergonomics）。如果读者对于收集器运作原来不太了解，手工优化存在困难的时候，使用Parallel Scavenge收集器配合自适应调节策略，把内存管理的调优任务交给虚拟机去完成将是一个不错的选择。只需要把基本的内存数据设置好（如-Xmx设置最大堆），然后使用MaxGCPauseMillis参数（更关注最大停顿时间）或GCTimeRatio（更关注吞吐量）参数给虚拟机设立一个优化目标，那具体细节参数的调节工作就由虚拟机完成了。自适应调节策略也是Parallel Scavenge收集器与ParNew收集器的一个重要区别。
 
 
-## Serial Old收集器
+# Serial Old收集器
 
 **_Serial Old是Serial收集器的老年代版本，它同样是一个单线程收集器，使用“标记－整理”算法_** 。这个收集器的主要意义也是在于给Client模式下的虚拟机使用。如果在Server模式下，那么它主要还有两大用途：一种用途是在JDK 1.5以及之前的版本中与Parallel Scavenge收集器搭配使用，另一种用途就是作为CMS收集器的后备预案，在并发收集发生Concurrent Mode Failure时使用。这两点都将在后面的内容中详细讲解。Serial Old收集器的工作过程如图所示。
 
-![Serial Old收集器](jvm-garbage-collector/jgc4.png "Serial Old收集器")
+![Serial Old收集器](/images/jvm/jvm-garbage-collector/jgc4.png "Serial Old收集器")
 
 
-## Parallel Old收集器
+# Parallel Old收集器
 
  **_Parallel Old是Parallel Scavenge收集器的老年代版本，使用多线程和“标记－整理”算法_** 。这个收集器是在JDK 1.6中才开始提供的，在此之前，新生代的Parallel Scavenge收集器一直处于比较尴尬的状态。原因是，如果新生代选择了Parallel Scavenge收集器，老年代除了Serial Old（PS MarkSweep）收集器外别无选择（还记得上面说过Parallel Scavenge收集器无法与CMS收集器配合工作吗？）。由于老年代Serial Old收集器在服务端应用性能上的“拖累”，使用了Parallel Scavenge收集器也未必能在整体应用上获得吞吐量最大化的效果，由于单线程的老年代收集中无法充分利用服务器多CPU的处理能力，在老年代很大而且硬件比较高级的环境中，这种组合的吞吐量甚至还不一定有ParNew加CMS的组合“给力”。
 
 直到Parallel Old收集器出现后，“吞吐量优先”收集器终于有了比较名副其实的应用组合，在注重吞吐量以及CPU资源敏感的场合，都可以优先考虑Parallel Scavenge加Parallel Old收集器。Parallel Old收集器的工作过程如图所示。
 
-![Parallel Old收集器](jvm-garbage-collector/jgc5.png "Parallel Old收集器")
+![Parallel Old收集器](/images/jvm/jvm-garbage-collector/jgc5.png "Parallel Old收集器")
 
 
-## CMS收集器
+# CMS收集器
 
 **_CMS（Concurrent Mark Sweep）收集器是一种以获取最短回收停顿时间为目标的收集器_** 。目前很大一部分的Java应用集中在互联网站或者B/S系统的服务端上，这类应用尤其重视服务的响应速度，希望系统停顿时间最短，以给用户带来较好的体验。CMS收集器就非常符合这类应用的需求。
 从名字（包含“Mark Sweep”）上就可以看出， **_CMS收集器是基于“标记—清除”算法实现的_** ，它的运作过程相对于前面几种收集器来说更复杂一些，整个过程分为 **4个步骤** ，包括：
@@ -95,7 +95,7 @@ GCTimeRatio参数的值应当是一个大于0且小于100的整数，也就是�
 
 由于整个过程中耗时最长的并发标记和并发清除过程收集器线程都可以与用户线程一起工作，所以，从总体上来说， **_CMS收集器的内存回收过程是与用户线程一起并发执行的_** 。通过下图可以比较清楚地看到CMS收集器的运作步骤中并发和需要停顿的时间。
 
-![CMS收集器](jvm-garbage-collector/jgc6.png "CMS收集器")
+![CMS收集器](/images/jvm/jvm-garbage-collector/jgc6.png "CMS收集器")
 
 CMS是一款优秀的收集器，它的主要优点在名字上已经体现出来了： **并发收集** 、 **低停顿** ，Sun公司的一些官方文档中也称之为 **并发低停顿收集器** （Concurrent Low Pause Collector）。但是CMS还远达不到完美的程度，它有以下3个明显的 **缺点** ：
 
@@ -106,7 +106,7 @@ CMS是一款优秀的收集器，它的主要优点在名字上已经体现出�
 还有最后一个缺点，在本节开头说过，CMS是一款基于“标记—清除”算法实现的收集器，如果读者对前面这种算法介绍还有印象的话，就可能想到这意味着 **_收集结束时会有大量空间碎片产生_** 。空间碎片过多时，将会给大对象分配带来很大麻烦，往往会出现老年代还有很大空间剩余，但是无法找到足够大的连续空间来分配当前对象，不得不提前触发一次Full GC。为了解决这个问题，CMS收集器提供了一个 **-XX:+UseCMSCompactAtFullCollection** 开关参数（默认就是开启的），用于在CMS收集器顶不住要进行FullGC时开启内存碎片的合并整理过程，内存整理的过程是无法并发的，空间碎片问题没有了，但停顿时间不得不变长。虚拟机设计者还提供了另外一个参数 **-XX:CMSFullGCsBeforeCompaction** ，这个参数是用于设置执行多少次不压缩的Full GC后，跟着来一次带压缩的（默认值为0，表示每次进入Full GC时都进行碎片整理）。
 
 
-## G1收集器
+# G1收集器
 
 G1（Garbage-First）收集器是当今收集器技术发展的最前沿成果之一，早在JDK 1.7刚刚确立项目目标，Sun公司给出的JDK 1.7 RoadMap里面，它就被视为JDK 1.7中HotSpot虚拟机的一个重要进化特征。从JDK 6u14中开始就有Early Access版本的G1收集器供开发人员实验、试用，由此开始G1收集器的“Experimental”状态持续了数年时间，直至JDK 7u4，Sun公司才认为它达到足够成熟的商用程度，移除了“Experimental”的标识。
 
@@ -136,4 +136,4 @@ G1把内存“化整为零”的思路，理解起来似乎很容易，但其中
 
 对CMS收集器运作过程熟悉的读者，一定已经发现G1的前几个步骤的运作过程和CMS有很多相似之处。 **初始标记** 阶段仅仅只是标记一下GC Roots能直接关联到的对象，并且修改TAMS（Next Top at Mark Start）的值，让下一阶段用户程序并发运行时，能在正确可用的Region中创建新对象，这阶段需要停顿线程，但耗时很短。 **并发标记** 阶段是从GC Root开始对堆中对象进行可达性分析，找出存活的对象，这阶段耗时较长，但可与用户程序并发执行。而最终标记阶段则是为了修正在并发标记期间因用户程序继续运作而导致标记产生变动的那一部分标记记录，虚拟机将这段时间对象变化记录在线程Remembered Set Logs里面，最终标记阶段需要把Remembered Set Logs的数据合并到Remembered Set中，这阶段需要停顿线程，但是可并行执行。最后在 **筛选回收** 阶段首先对各个Region的回收价值和成本进行排序，根据用户所期望的GC停顿时间来制定回收计划，从Sun公司透露出来的信息来看，这个阶段其实也可以做到与用户程序一起并发执行，但是因为只回收一部分Region，时间是用户可控制的，而且停顿用户线程将大幅提高收集效率。通过下图可以比较清楚地看到G1收集器的运作步骤中并发和需要停顿的阶段。
 
-![G1收集器](jvm-garbage-collector/jgc7.png "G1收集器")
+![G1收集器](/images/jvm/jvm-garbage-collector/jgc7.png "G1收集器")

@@ -3,12 +3,12 @@ title: Nginx基础
 date: 2018-12-13 15:31:24
 tags:
 - 中间件
-- Web服务器
+- nginx
 categories:
-- Nginx
+- 中间件
 ---
 
-## 一、什么是 Nginx？
+# 一、什么是 Nginx？
 Nginx 是一款性能极高的 HTTP 反向代理服务器，Nginx 官方发布的测试数据显示，支持10000非活动的连接只需2.5M内存的性能消耗。同时也是一个邮件服务器。
 
 Nginx的进程模型：**deamon (守护)**。
@@ -17,13 +17,13 @@ Nginx的进程模型：**deamon (守护)**。
  - 1、Nginx采用多进程模型：**Master**、多个 **Worker** (独立进程，不需要锁，避免了锁带来的性能开销)
  - 2、异步非阻塞 **(NIO)**
 
-![Nginx进程模型](nginx-base/nginx1.png "Nginx进程模型")
+![Nginx进程模型](/images/中间件/nginx/nginx1.png "Nginx进程模型")
 
 <!-- more -->
 
-## 二、Nginx安装与命令
+# 二、Nginx安装与命令
 
-### 安装：
+## 安装：
 
 Linux 下安装 Nginx：
 
@@ -61,7 +61,7 @@ yum -y install gcc
 
 Windows下直接下载解压即可。
 
-### 命令：
+## 命令：
 
 **启动**：（CentOS下需要关闭防火墙）
 
@@ -92,7 +92,7 @@ Windows下直接下载解压即可。
  NGINX_HOME/sbin/nginx -t
  ```
 
-## 三、Nginx配置文件
+# 三、Nginx配置文件
 
 ```perl
 # Main 段，定义全局属性
@@ -133,7 +133,7 @@ http {
 
 ```
 
-## 四、Nginx虚拟主机配置
+# 四、Nginx虚拟主机配置
 
  - **基于域名**
 修改server_name映射域名。
@@ -144,7 +144,7 @@ http {
  - **基于IP**
 修改server_name映射为IP地址。
 
-## 五、Nginx日志管理
+# 五、Nginx日志管理
 
 ```perl
 # Log声明 路径及文件名 日志标识
@@ -155,7 +155,7 @@ http {
 #access_log  logs/host.access.log  main;
 ```
 
-## 六、location配置
+# 六、location配置
 
 location 在 server 配置中可以存在多个，主要实现定位功能，根据uri进行不同的定位。
 
@@ -182,7 +182,7 @@ location 在 server 配置中可以存在多个，主要实现定位功能，根
  **_首先会选择一般匹配过程中的大前缀匹配，但是匹配过程不会停止，最大前缀匹配只是一个临时结果，nginx还会继续检查正则location。
  按照正则location在配置文件的物理顺序做匹配，如果匹配到一条正则location，就不会考虑后面的规则。_**
 
-## 七、Rewrite重写
+# 七、Rewrite重写
 
 支持url重写。
 
@@ -215,9 +215,9 @@ if ($remote_addr = 192.168.0.120) {
 }
 ```
 
-![Rewrite重写](nginx-base/nginx2.png "Rewrite重写")
+![Rewrite重写](/images/中间件/nginx/nginx2.png "Rewrite重写")
 
-## 八、gzip压缩
+# 八、gzip压缩
 
 gizp主要对内容、静态文件做压缩，用来提升网站访问速度，节省带宽。
 gzip可以在http作用范围内配置，也可以对单独一台虚拟主机进行配置。

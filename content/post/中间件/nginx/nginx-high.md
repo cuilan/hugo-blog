@@ -3,24 +3,22 @@ title: Nginx高级
 date: 2018-12-19 12:19:23
 tags:
 - 中间件
-- Web服务器
+- nginx
 categories:
-- Nginx
+- 中间件
 ---
 
-## 一、Nginx的反向代理
+# 一、Nginx的反向代理
 
 反向代理服务器：
 
-![Nginx反向代理](nginx-high/nginx-high1.png "Nginx反向代理")
+![Nginx反向代理](/images/中间件/nginx/nginx-high1.png "Nginx反向代理")
 
 **优势：**
 1. 隔离内部服务器，提高安全性。
 2. 可以在代理服务器上增加缓存，减少后端服务器的压力，提高性能。
 3. 方便横向扩展。
 4. AIO（异步非阻塞）动静分离，提高性能。
-
-<!--more-->
 
 **反向代理配置：**
 
@@ -38,14 +36,15 @@ location /cuilan {
 }
 ```
 
-## 二、Nginx的负载均衡
+# 二、Nginx的负载均衡
 
 目前主流的负载均衡器：**Nginx、LVS、HAProxy**
 
 **upstream**：是 nginx 服务器的一个重要模块，upstream 模块实现在轮询客户端IP之间实现后端的负载均衡，**ip_hash算法**。
 **配置负载均衡**：修改 **_nginx.conf_**
 
-1. **轮询**：无法保证session。
+## 1. 轮询
+无法保证session。
 
 ```
 upstream xxx {
@@ -54,48 +53,54 @@ upstream xxx {
 }
 ```
 
-![轮询](nginx-high/nginx-high2.png "轮询")
+![轮询](/images/中间件/nginx/nginx-high2.png "轮询")
 
-2. **ip_hash**：访问固定的一台后端服务器，可以保证session。
+## 2. ip_hash
+访问固定的一台后端服务器，可以保证session。
 
-![ip_hash](nginx-high/nginx-high3.png "ip_hash")
+![ip_hash](/images/中间件/nginx/nginx-high3.png "ip_hash")
 
-3. **权重(weight)**：分配轮询的比重，weight值越高，访问的几率越大，权重值跟请求几率成正比。
+## 3. 权重(weight)
+分配轮询的比重，weight值越高，访问的几率越大，权重值跟请求几率成正比。
 
-![权重](nginx-high/nginx-high4.png "权重")
+![权重](/images/中间件/nginx/nginx-high4.png "权重")
 
-4. **响应时间**：响应时间最短的优先分配。
+## 4. 响应时间
+响应时间最短的优先分配。
 
-![响应时间](nginx-high/nginx-high5.png "响应时间")
+![响应时间](/images/中间件/nginx/nginx-high5.png "响应时间")
 
-5. **url_hash**：根据url计算来确定访问哪台主机，配置hash。
+## 5. url_hash
+根据url计算来确定访问哪台主机，配置hash。
 
-![url_hash](nginx-high/nginx-high6.png "url_hash")
+![url_hash](/images/中间件/nginx/nginx-high6.png "url_hash")
 
-## 三、进程模型及工作原理
+---
+
+# 三、进程模型及工作原理
 
 Master/Worker进程模型
 
-**Master进程：**
+## Master进程
 1. 接受外界的信号：kill -QUIT / kill -HUP
 2. 向各个Worker进程发送信号。
 3. 监控Worker的运行状态。
 4. 当Worker进程因异常退出，会自动重新启动新的Worker进程。
 
-**Worker进程：**
+## Worker进程
 1. 处理客户端请求。
 2. 同步锁。
 
-**Nginx模块：**
+## Nginx模块
 1. 核心模块：**http模块、event模块、mail模块**
 2. 基础模块
 3. 第三方模块
 
-## 四、Nginx + keepalived实现高可用
+# 四、Nginx + keepalived实现高可用
 
 keepalived：基于VRRP（虚拟路由器冗余器）来实现对web服务的高可用方案。
 
-安装：
+## 安装
 1. 下载 **keepalived**，并解压：**`tar -zxvf keepalived-1.3.4.tar.gz`**
 2. 配置：
  ```bash
@@ -126,7 +131,7 @@ chkconfig keepalived on
 sudo service keepalived start
 ```
 
-### **keepalived配置文件**
+## keepalived配置文件
 
 ```bash
 global_defs { (全局配置，配置告警邮件服务器)
@@ -162,7 +167,8 @@ virtual_server 192.168.0.100 80 {   (LVS配置，映射VRRP虚拟ip)
 }
 ```
 
-### **nginx安装目录下的检测nginx运行状态的脚本（nginx_service.sh）**
+## 检测
+**nginx安装目录下的检测nginx运行状态的脚本（nginx_service.sh）**
 
 ```bash
 #!/bin/bash
