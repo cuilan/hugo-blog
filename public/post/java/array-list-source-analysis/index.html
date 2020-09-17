@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="CUILAN">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://cuilan.github.io//img/tag-bg.jpg">
+    <meta property="twitter:image" content="https://cuilan.github.io//img/tag-bg.jpg" />
+    
+
+    
+    <meta name="title" content="ArrayList源码分析" />
+    <meta property="og:title" content="ArrayList源码分析" />
+    <meta property="twitter:title" content="ArrayList源码分析" />
+    
+
+    
+    <meta name="description" content="Java程序员">
+    <meta property="og:description" content="Java程序员" />
+    <meta property="twitter:description" content="Java程序员" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="翠兰, cuilan, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>ArrayList源码分析-EchoGreen</title>
+
+    <link rel="canonical" href="/post/java/array-list-source-analysis/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CUILAN</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/golang">golang</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java">java</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA">java虚拟机</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/spring">spring</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">并发编程</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%9D%82%E9%A1%B9">杂项</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/books/">BOOKS</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                    </div>
+                    <h1>ArrayList源码分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                CUILAN
+                         
+                        on 
+                        Thursday, November 15, 2018
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一arraylist-的特性">一、ArrayList 的特性</a></li>
+        <li><a href="#二arraylist继承关系">二、ArrayList继承关系</a></li>
+        <li><a href="#三成员变量">三、成员变量</a></li>
+        <li><a href="#四构造器">四、构造器</a></li>
+        <li><a href="#五实现方法">五、实现方法</a></li>
+        <li><a href="#六迭代器">六、迭代器</a></li>
+        <li><a href="#七jdk18新增方法">七、JDK1.8新增方法</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <p>ArrayList应该算是日常开发中使用最多的List实现类。</p>
+<h2 id="一arraylist-的特性">一、ArrayList 的特性</h2>
+<ul>
+<li>有序</li>
+<li>可重复</li>
+<li>线程不安全</li>
+<li>允许插入 <strong>null</strong> 值</li>
+<li>查询快、增删慢</li>
+<li>底层通过 <strong>Object[]</strong> 数组实现</li>
+</ul>
+<!-- raw HTML omitted -->
+<h2 id="二arraylist继承关系">二、ArrayList继承关系</h2>
+<p><strong><code>java.util.ArrayList</code></strong> 继承 <strong><code>java.util.AbstractList</code></strong>，实现了 <strong><code>java.util.List</code></strong>、<strong><code>java.util.RandomAccess</code></strong>、 <strong><code>java.io.Serializable</code></strong> 接口。</p>
+<p>
+  <figure>
+    <img src="/images/javase/array-list-source-analysis/array-list.png" alt="ArrayList继承关系">
+    <center><figcaption>ArrayList继承关系</figcaption></center>
+  </figure>
+
+</p>
+<hr>
+<h2 id="三成员变量">三、成员变量</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 序列化版本id
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">long</span> serialVersionUID <span style="color:#ff79c6">=</span> 8683452581122892189L<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">// 默认初始容量
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> DEFAULT_CAPACITY <span style="color:#ff79c6">=</span> 10<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">// 用于空实例的共享空数组实例
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> Object<span style="color:#ff79c6">[]</span> EMPTY_ELEMENTDATA <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{};</span>
+
+<span style="color:#6272a4">// 用于默认大小的空实例的共享空数组实例。
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> Object<span style="color:#ff79c6">[]</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">{};</span>
+
+<span style="color:#6272a4">// 存储 ArrayList 元素的数组缓冲区
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">transient</span> Object<span style="color:#ff79c6">[]</span> elementData<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">// ArrayList 的大小
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> size<span style="color:#ff79c6">;</span>
+
+<span style="color:#6272a4">// ArrayList 最大容量
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> MAX_ARRAY_SIZE <span style="color:#ff79c6">=</span> Integer<span style="color:#ff79c6">.</span><span style="color:#50fa7b">MAX_VALUE</span> <span style="color:#ff79c6">-</span> 8<span style="color:#ff79c6">;</span>
+</code></pre></div><hr>
+<h2 id="四构造器">四、构造器</h2>
+<p>遵循 <strong><code>java.util.Collection</code></strong> 构造器规范，提供：</p>
+<ul>
+<li>一个空参构造器</li>
+<li>参数为 Collection 的构造器</li>
+<li>定义初始容量的构造器。</li>
+</ul>
+<p>每个 ArrayList 实例都有一个  <strong><em>capacity</em></strong> （容量）。容量是用于存储在 ArrayList 中元素的数组的大小。它的大小始终大于或等于 ArrayList  的大小（size）。在调用 ArrayList 的构造方法时，可指定初始化容量大小，如果不指定则默认容量为10。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 无参构造器
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ArrayList</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 默认初始容量
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">elementData</span> <span style="color:#ff79c6">=</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 初始容量的构造器
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ArrayList</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> initialCapacity<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>initialCapacity <span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">elementData</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">new</span> Object<span style="color:#ff79c6">[</span>initialCapacity<span style="color:#ff79c6">];</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>initialCapacity <span style="color:#ff79c6">==</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">elementData</span> <span style="color:#ff79c6">=</span> EMPTY_ELEMENTDATA<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalArgumentException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Illegal Capacity: &#34;</span><span style="color:#ff79c6">+</span>
+                                           initialCapacity<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 参数为 Collection 的构造器
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#50fa7b">ArrayList</span><span style="color:#ff79c6">(</span>Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    elementData <span style="color:#ff79c6">=</span> c<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toArray</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">((</span>size <span style="color:#ff79c6">=</span> elementData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">!=</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">getClass</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">!=</span> Object<span style="color:#ff79c6">[].</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">)</span>
+            elementData <span style="color:#ff79c6">=</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">copyOf</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> size<span style="color:#ff79c6">,</span> Object<span style="color:#ff79c6">[].</span><span style="color:#50fa7b">class</span><span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 替换为空集合
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">elementData</span> <span style="color:#ff79c6">=</span> EMPTY_ELEMENTDATA<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><hr>
+<h2 id="五实现方法">五、实现方法</h2>
+<h3 id="51-capacity容量">5.1 capacity（容量）</h3>
+<h4 id="ensurecapacityint方法">ensureCapacity(int)方法</h4>
+<p>在应用程序中可以人为增加 ArrayList 实例的容量，在添加大量元素之前可使用 <strong><em>ensureCapacity()</em></strong> 方法进行扩容。优点是可以减少重新分配容量的次数，大大提高初始化速度。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">ensureCapacity</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> minCapacity<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">int</span> minExpand <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>elementData <span style="color:#ff79c6">!=</span> DEFAULTCAPACITY_EMPTY_ELEMENTDATA<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">?</span> 0 <span style="color:#ff79c6">:</span> DEFAULT_CAPACITY<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>minCapacity <span style="color:#ff79c6">&gt;</span> minExpand<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        ensureExplicitCapacity<span style="color:#ff79c6">(</span>minCapacity<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+    grow<span style="color:#ff79c6">(</span>minCapacity<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 最终调用增长方法
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">grow</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> minCapacity<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">int</span> oldCapacity <span style="color:#ff79c6">=</span> elementData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 新容量 = 旧容量 + 二分之一旧容量
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> newCapacity <span style="color:#ff79c6">=</span> oldCapacity <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span>oldCapacity <span style="color:#ff79c6">&gt;&gt;</span> 1<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 扩容量大于新容量(旧容量的1.5倍)时才会按照扩容量进行调整，否则还是按照1.5倍容量进行调节
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>newCapacity <span style="color:#ff79c6">-</span> minCapacity <span style="color:#ff79c6">&lt;</span> 0<span style="color:#ff79c6">)</span>
+        newCapacity <span style="color:#ff79c6">=</span> minCapacity<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>newCapacity <span style="color:#ff79c6">-</span> MAX_ARRAY_SIZE <span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span>
+        newCapacity <span style="color:#ff79c6">=</span> hugeCapacity<span style="color:#ff79c6">(</span>minCapacity<span style="color:#ff79c6">);</span>
+    elementData <span style="color:#ff79c6">=</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">copyOf</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> newCapacity<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>在扩容值很大的情况下使用  <strong><em>ensureCapacity()</em></strong>  方法可大大提高效率，但在扩容值较小时，其扩容耗时与正常情况下的默认调整容量所耗时几乎相差无几，所以只有在需要大量插入元素时，调用此方法进行扩容才会有显著的性能提升。</p>
+<h4 id="trimtosize方法">trimToSize()方法</h4>
+<p>与 ArrayList 容量相关的方法还有 <strong><em>trimToSize()</em></strong> ，该方法的作用是将 ArrayList 的容量压缩为实际大小，从而使空间的利用率最大化，源码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">trimToSize</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 记录操作次数自增
+</span><span style="color:#6272a4"></span>    modCount<span style="color:#ff79c6">++;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">&lt;</span> elementData<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        elementData <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">==</span> 0<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">?</span> EMPTY_ELEMENTDATA <span style="color:#ff79c6">:</span> Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">copyOf</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> size<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="52-常用方法">5.2 常用方法</h3>
+<h4 id="size方法">size()方法</h4>
+<p>返回当前实例的大小。</p>
+<h4 id="isempty方法">isEmpty()方法</h4>
+<p>判断当前实例是否为空。</p>
+<h4 id="containsobject-o方法">contains(Object o)方法</h4>
+<p>判断当前实例中是否包含  <strong>o</strong>  对象。</p>
+<h4 id="indexofobject-o方法">indexOf(Object o)方法</h4>
+<p>用于获取对象 o 第一次出现的索引位置，源码如下：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">indexOf</span><span style="color:#ff79c6">(</span>Object o<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 如果接收对象为null，则返回实例中的第一个null位置的索引 
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> size<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]==</span><span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span>
+                <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> size<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]))</span>
+                <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 如果不包含该对象，则返回-1，表明该对象在ArrayList实例的-1位置
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="lastindexofobject-o方法">lastIndexOf(Object o)方法</h4>
+<p>用于获取对象 o 最后一次出现的索引位置，与 indexOf() 方法相似，只是在内部倒序 for 循环而已。</p>
+<h4 id="getint-index方法">get(int index)方法</h4>
+<p>获取某一位置的元素，内部调用默认权限的 elementData(int index) 方法，其本质上是对数组的随机访问。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 边界检查，防止数组越界
+</span><span style="color:#6272a4"></span>    rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">return</span> elementData<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+
+E <span style="color:#50fa7b">elementData</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">(</span>E<span style="color:#ff79c6">)</span> elementData<span style="color:#ff79c6">[</span>index<span style="color:#ff79c6">];</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="setint-index-e-element方法">set(int index, E element)方法</h4>
+<p>是替换该实例某一位置的值，返回被替换的值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    E oldValue <span style="color:#ff79c6">=</span> elementData<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    elementData<span style="color:#ff79c6">[</span>index<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> element<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> oldValue<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="adde-e方法">add(E e)方法</h4>
+<p>添加元素至该实例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 先进行扩容，只扩容一个位置
+</span><span style="color:#6272a4"></span>    ensureCapacityInternal<span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 将该元素防止在 ArrayList 的末尾位置
+</span><span style="color:#6272a4"></span>    elementData<span style="color:#ff79c6">[</span>size<span style="color:#ff79c6">++]</span> <span style="color:#ff79c6">=</span> e<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="addint-index-e-element方法">add(int index, E element)方法</h4>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 为添加操作进行边界检查
+</span><span style="color:#6272a4"></span>    rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 先进行扩容，只扩容一个位置
+</span><span style="color:#6272a4"></span>    ensureCapacityInternal<span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 参数：待复制的数组，从待复制的数组的第几个开始，目标数组，从第几个开始进行复制，复制的长度
+</span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// 源数组index位置之前的元素保持不变，空出一个元素的位置，后面的元素进行复制
+</span><span style="color:#6272a4"></span>    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">arraycopy</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> index<span style="color:#ff79c6">,</span> elementData<span style="color:#ff79c6">,</span> index <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">,</span> size <span style="color:#ff79c6">-</span> index<span style="color:#ff79c6">);</span>
+    elementData<span style="color:#ff79c6">[</span>index<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> element<span style="color:#ff79c6">;</span>
+    size<span style="color:#ff79c6">++;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="removeint-index方法">remove(int index)方法</h4>
+<p>移除某一位置的元素：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">remove</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 边界检查
+</span><span style="color:#6272a4"></span>    rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 操作数自增
+</span><span style="color:#6272a4"></span>    modCount<span style="color:#ff79c6">++;</span>
+    E oldValue <span style="color:#ff79c6">=</span> elementData<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 要移动的长度
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> numMoved <span style="color:#ff79c6">=</span> size <span style="color:#ff79c6">-</span> index <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>numMoved <span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">arraycopy</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> index<span style="color:#ff79c6">+</span>1<span style="color:#ff79c6">,</span> elementData<span style="color:#ff79c6">,</span> index<span style="color:#ff79c6">,</span> numMoved<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 将该位置至为null，待GC进行回收
+</span><span style="color:#6272a4"></span>    elementData<span style="color:#ff79c6">[--</span>size<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span> <span style="color:#6272a4">// clear to let GC do its work
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> oldValue<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="removeobject-o方法">remove(Object o)方法</h4>
+<p>移除该 ArrayList 中的某一元素，如果该元素不存在则该实例保持不变，如果存在则移除该元素，且之后的元素依次前移一位，直到该实例中不包含此元素时执行完毕。</p>
+<h4 id="clear方法">clear()方法</h4>
+<p>清空该实例中的全部元素，并将 size 修改为0。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">clear</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    modCount<span style="color:#ff79c6">++;</span>
+    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> size<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span>
+        elementData<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">;</span>
+    size <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="addallcollection-extends-e-caddallint-index-collection-extends-e-c是重载方法">addAll(Collection&lt;? extends E&gt; c)、addAll(int index, Collection&lt;? extends E&gt; c)是重载方法</h4>
+<p>作用是一次性添加多个元素，本质是求 <strong>合集</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span>Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 转为对象数组
+</span><span style="color:#6272a4"></span>    Object<span style="color:#ff79c6">[]</span> a <span style="color:#ff79c6">=</span> c<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toArray</span><span style="color:#ff79c6">();</span>
+    <span style="color:#8be9fd">int</span> numNew <span style="color:#ff79c6">=</span> a<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">;</span>
+	<span style="color:#6272a4">// 扩容并增加修改次数
+</span><span style="color:#6272a4"></span>    ensureCapacityInternal<span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">+</span> numNew<span style="color:#ff79c6">);</span>  <span style="color:#6272a4">// Increments modCount
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// 复制数组
+</span><span style="color:#6272a4"></span>    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">arraycopy</span><span style="color:#ff79c6">(</span>a<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> elementData<span style="color:#ff79c6">,</span> size<span style="color:#ff79c6">,</span> numNew<span style="color:#ff79c6">);</span>
+    size <span style="color:#ff79c6">+=</span> numNew<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> numNew <span style="color:#ff79c6">!=</span> 0<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 指定位置插入全部
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 检查边界
+</span><span style="color:#6272a4"></span>	rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    Object<span style="color:#ff79c6">[]</span> a <span style="color:#ff79c6">=</span> c<span style="color:#ff79c6">.</span><span style="color:#50fa7b">toArray</span><span style="color:#ff79c6">();</span>
+    <span style="color:#8be9fd">int</span> numNew <span style="color:#ff79c6">=</span> a<span style="color:#ff79c6">.</span><span style="color:#50fa7b">length</span><span style="color:#ff79c6">;</span>
+    ensureCapacityInternal<span style="color:#ff79c6">(</span>size <span style="color:#ff79c6">+</span> numNew<span style="color:#ff79c6">);</span>  <span style="color:#6272a4">// Increments modCount
+</span><span style="color:#6272a4"></span>    <span style="color:#6272a4">// 计算移动位置
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> numMoved <span style="color:#ff79c6">=</span> size <span style="color:#ff79c6">-</span> index<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>numMoved <span style="color:#ff79c6">&gt;</span> 0<span style="color:#ff79c6">)</span>
+        System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">arraycopy</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">,</span> index<span style="color:#ff79c6">,</span> elementData<span style="color:#ff79c6">,</span> index <span style="color:#ff79c6">+</span> numNew<span style="color:#ff79c6">,</span> numMoved<span style="color:#ff79c6">);</span>
+    System<span style="color:#ff79c6">.</span><span style="color:#50fa7b">arraycopy</span><span style="color:#ff79c6">(</span>a<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> elementData<span style="color:#ff79c6">,</span> index<span style="color:#ff79c6">,</span> numNew<span style="color:#ff79c6">);</span>
+    size <span style="color:#ff79c6">+=</span> numNew<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">return</span> numNew <span style="color:#ff79c6">!=</span> 0<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="removeallcollection-c方法">removeAll(Collection&lt;?&gt; c)方法</h4>
+<p>删除子集合中全部元素（如果包含），本质是求 <strong>差集</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">removeAll</span><span style="color:#ff79c6">(</span>Collection<span style="color:#ff79c6">&lt;?&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 非空检查
+</span><span style="color:#6272a4"></span>    Objects<span style="color:#ff79c6">.</span><span style="color:#50fa7b">requireNonNull</span><span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">);</span>
+	<span style="color:#6272a4">// 批量删除操作，是否删除补集
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// 此处中不删除补集
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// 设集合A[1,2,3,4,5]，集合B[2,3]，B在A中的补集为：[1,4,5]
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// A.batchRemove(B, false)的结果为：C[1,4,5]
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> batchRemove<span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="retainallcollection-c方法">retainAll(Collection&lt;?&gt; c)方法</h4>
+<p>获取子集合与当前集合共同包含的元素，本质是求 <strong>交集</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">retainAll</span><span style="color:#ff79c6">(</span>Collection<span style="color:#ff79c6">&lt;?&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 非空检查
+</span><span style="color:#6272a4"></span>    Objects<span style="color:#ff79c6">.</span><span style="color:#50fa7b">requireNonNull</span><span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">);</span>
+	<span style="color:#6272a4">// 批量删除操作，是否删除补集
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// 此处中删除补集
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// 设集合A[1,2,3,4,5]，集合B[2,3]，B在A中的补集为：[1,4,5]
+</span><span style="color:#6272a4"></span>	<span style="color:#6272a4">// A.batchRemove(B, true)的结果为：C[2,3]
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> batchRemove<span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">,</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><hr>
+<h2 id="六迭代器">六、迭代器</h2>
+<h4 id="iterator方法">iterator()方法</h4>
+<p>返回一个实现 <strong>Iterator<!-- raw HTML omitted --></strong> 接口的迭代器 <strong>Itr</strong>，可以对集合中的元素进行操作。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> Iterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">iterator</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Itr<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Itr</span> <span style="color:#8be9fd;font-style:italic">implements</span> Iterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{}</span>
+</code></pre></div><h4 id="listiterator方法">listIterator()方法</h4>
+<p>返回一个继承 <strong>Itr</strong> 内部类，并实现了 <strong>ListIterator<!-- raw HTML omitted --></strong> 接口的迭代器 <strong>ListItr</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>index <span style="color:#ff79c6">&lt;</span> 0 <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> size<span style="color:#ff79c6">)</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;Index: &#34;</span><span style="color:#ff79c6">+</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 构造一个指定位置索引的迭代器
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ListItr<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#8be9fd;font-style:italic">public</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 构造一个以0为索引的迭代器
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ListItr<span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 源码中注释为优化版本的迭代器
+</span><span style="color:#6272a4">// An optimized version of AbstractList.ListItr
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ListItr</span> <span style="color:#8be9fd;font-style:italic">extends</span> Itr <span style="color:#8be9fd;font-style:italic">implements</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{}</span>
+</code></pre></div><h3 id="itr-迭代器与-listitr-迭代器比较">Itr 迭代器与 ListItr 迭代器比较</h3>
+<ul>
+<li>
+<p>ListItr 迭代器有 add() 方法，可以向集合中添加元素，Itr 迭代器无法添加。</p>
+</li>
+<li>
+<p>ListItr 迭代器与 Itr 迭代器都有 hasNext() 和 next() 方法，可实现向后迭代。但 ListItr 迭代器有 hasPrevious() 和 previous() 方法，可实现逆向（向前）迭代。Itr 迭代器无法逆向迭代。</p>
+</li>
+<li>
+<p>ListItr 迭代器可以定位当前的索引位置，nextIndex() 和 previousIndex() 可获取后一位与前一位的索引。Itr 迭代器无此功能。</p>
+</li>
+<li>
+<p>ListItr 迭代器与 Itr 迭代器都可删除对象，但 ListItr 迭代器可实现对象的修改，set() 方法可以实现。Itr 迭代器仅支持遍历，不支持修改操作。因为 ListItr 迭代器的这些功能，可以实现对 LinkedList 等 List 数据结构进行操作。</p>
+</li>
+</ul>
+<h2 id="七jdk18新增方法">七、JDK1.8新增方法</h2>
+<h4 id="foreach-方法">forEach() 方法</h4>
+<p><strong><em>forEach(Consumer&lt;? super E&gt; action)</em></strong>  方法用于迭代集合， forEach 方法是一个覆写方法，继承关系：</p>
+<ul>
+<li><strong>Iterable</strong>
+<ul>
+<li><strong>Collection</strong>
+<ul>
+<li><strong>AbstractCollection</strong>
+<ul>
+<li><strong>AbstractList</strong>
+<ul>
+<li><strong>ArrayList</strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Iterable 接口中的默认方法 forEach()，本质上是获得一个 iterator 迭代器，然后执行迭代。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// Iterable接口中的默认方法
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">default</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">forEach</span><span style="color:#ff79c6">(</span>Consumer<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">super</span> T<span style="color:#ff79c6">&gt;</span> action<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    Objects<span style="color:#ff79c6">.</span><span style="color:#50fa7b">requireNonNull</span><span style="color:#ff79c6">(</span>action<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 增强forEach循环实现，Iterator迭代器实现
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>T t <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        action<span style="color:#ff79c6">.</span><span style="color:#50fa7b">accept</span><span style="color:#ff79c6">(</span>t<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// ArrayList中的forEach方法
+</span><span style="color:#6272a4"></span>@Override
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">forEach</span><span style="color:#ff79c6">(</span>Consumer<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">super</span> E<span style="color:#ff79c6">&gt;</span> action<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    Objects<span style="color:#ff79c6">.</span><span style="color:#50fa7b">requireNonNull</span><span style="color:#ff79c6">(</span>action<span style="color:#ff79c6">);</span>
+    <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span>
+    @SuppressWarnings<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;unchecked&#34;</span><span style="color:#ff79c6">)</span>
+    <span style="color:#8be9fd;font-style:italic">final</span> E<span style="color:#ff79c6">[]</span> elementData <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">(</span>E<span style="color:#ff79c6">[])</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">elementData</span><span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> size <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">size</span><span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 普通for循环实现
+</span><span style="color:#6272a4"></span>	<span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i<span style="color:#ff79c6">=</span>0<span style="color:#ff79c6">;</span> modCount <span style="color:#ff79c6">==</span> expectedModCount <span style="color:#ff79c6">&amp;&amp;</span> i <span style="color:#ff79c6">&lt;</span> size<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span> <span style="color:#ff79c6">{</span>
+        action<span style="color:#ff79c6">.</span><span style="color:#50fa7b">accept</span><span style="color:#ff79c6">(</span>elementData<span style="color:#ff79c6">[</span>i<span style="color:#ff79c6">]);</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>modCount <span style="color:#ff79c6">!=</span> expectedModCount<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>增强 forEach 循环是 JDK1.5 之后的新语法，本质上是一种 Java 语言的语法糖，等同于 iterator 的方式。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 语法
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>Object obj <span style="color:#ff79c6">:</span> list<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">......</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 等同于
+</span><span style="color:#6272a4"></span><span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>Iterator i<span style="color:#ff79c6">=</span>list<span style="color:#ff79c6">.</span><span style="color:#50fa7b">iterator</span><span style="color:#ff79c6">();</span> i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">();</span> <span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p><strong>ArrayList</strong> 还实现了 <strong>RandomAccess</strong> 接口，通过索引随机访问，由此可见 ArrayList 中的 forEach() 方法运行速度要比增强 forEach 循环快一些。</p>
+<h4 id="sort-方法">sort() 方法</h4>
+<p>在JDK1.7及之前的版本中，是通过 <strong>Collections.sort()</strong> 方法实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#ff79c6">&lt;</span>T <span style="color:#8be9fd;font-style:italic">extends</span> Comparable<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">super</span> T<span style="color:#ff79c6">&gt;&gt;</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">sort</span><span style="color:#ff79c6">(</span>List<span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> list<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    list<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sort</span><span style="color:#ff79c6">(</span><span style="color:#ff79c6">null</span><span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+<span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd;font-style:italic">static</span> <span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">sort</span><span style="color:#ff79c6">(</span>List<span style="color:#ff79c6">&lt;</span>T<span style="color:#ff79c6">&gt;</span> list<span style="color:#ff79c6">,</span> Comparator<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">super</span> T<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    list<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sort</span><span style="color:#ff79c6">(</span>c<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><p>在JDK1.8之后，新增了 <strong>sort()</strong> 方法，内部排序通过 <strong>TimSort(混合排序)</strong> 算法实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">sort</span><span style="color:#ff79c6">(</span>Comparator<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">super</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// final记录排序前的modCount值
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span>
+	<span style="color:#6272a4">// 调用Arrays排序方法，TimSort实现
+</span><span style="color:#6272a4"></span>    Arrays<span style="color:#ff79c6">.</span><span style="color:#50fa7b">sort</span><span style="color:#ff79c6">((</span>E<span style="color:#ff79c6">[])</span> elementData<span style="color:#ff79c6">,</span> 0<span style="color:#ff79c6">,</span> size<span style="color:#ff79c6">,</span> c<span style="color:#ff79c6">);</span>
+	<span style="color:#6272a4">// 判断排序后的modCount与排序前是否相等，防止并发操作导致线程安全问题
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>modCount <span style="color:#ff79c6">!=</span> expectedModCount<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+    modCount<span style="color:#ff79c6">++;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://cuilan.github.io/"><img src="/img/favicon.png" />CUILAN</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/jvm/jvm-gc-log/" data-toggle="tooltip" data-placement="top" title="七、理解GC日志">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/java/linked-list-source-analysis/" data-toggle="tooltip" data-placement="top" title="LinkedList源码分析">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" title="中间件">
+                            中间件
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B" title="多线程">
+                            多线程
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B9%B6%E5%8F%91" title="并发">
+                            并发
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA" title="概率论">
+                            概率论
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%9B%AE%E5%BD%95" title="目录">
+                            目录
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6" title="统计学">
+                            统计学
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:17746598041@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/mengdond24">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/cuilan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; CUILAN 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

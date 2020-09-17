@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>并发编程 on CUILAN</title>
+    <link>https://cuilan.github.io/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
+    <description>Recent content in 并发编程 on CUILAN</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Sep 2019 12:00:00 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Java中的锁-AbstractQueuedSynchronizer队列同步器</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%BA%8C/</link>
+      <pubDate>Thu, 19 Sep 2019 12:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%BA%8C/</guid>
+      <description>AbstractQueuedSynchronizer 同步器提供了一个框架，用于构建 先进先出(FIFO) 等待队列的 阻塞锁 和 相关同步器（信号量，事件等）。它使用了一个 int 成员变量表示同步状态，通过</description>
+    </item>
+    
+    <item>
+      <title>Java并发编程目录</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9B%AE%E5%BD%95/</link>
+      <pubDate>Tue, 17 Sep 2019 23:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9B%AE%E5%BD%95/</guid>
+      <description>Java并发机制的底层实现原理（volatile）Java并发机制的底层实现原理（synchronized）Java并发机制的底层实现原理（</description>
+    </item>
+    
+    <item>
+      <title>Java中的锁（Lock接口）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%B8%80/</link>
+      <pubDate>Tue, 09 Jul 2019 19:39:01 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%B8%80/</guid>
+      <description>锁是用来控制多个线程访问共享资源的方式，一般来说，一个锁能够防止多个线程同时访问共享资源（但是有些锁可以允许多个线程并发的访问共享资源，如：</description>
+    </item>
+    
+    <item>
+      <title>Java内存模型四（volatile内存语义）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%9B%9B/</link>
+      <pubDate>Thu, 30 May 2019 23:35:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%9B%9B/</guid>
+      <description>1、volatile的特性 可见性：对一个 volatile 变量的读，总是能看到（任意线程）对这个 volatile 变量最后的写入。 原子性：对任意单个 volatile 变量的读/写具有原子性</description>
+    </item>
+    
+    <item>
+      <title>Java内存模型三（顺序一致性）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%89/</link>
+      <pubDate>Wed, 29 May 2019 23:37:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%89/</guid>
+      <description>顺序一致性内存模型 是一个理论参考模型。处理器的内存模型 和 编程语言的内存模型 都会以其作为参考。 1、数据竞争与顺序一致性 Java内存模型规范对 数</description>
+    </item>
+    
+    <item>
+      <title>Java内存模型二（重排序）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%BA%8C/</link>
+      <pubDate>Mon, 27 May 2019 23:33:46 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%BA%8C/</guid>
+      <description>重排序：指编译器和处理器为了优化程序性能而对指令序列进行重新排序的一种手段。 1、数据依赖性 如果两个操作访问同一个变量，且这两个操作中有一个为</description>
+    </item>
+    
+    <item>
+      <title>Java内存模型一（基础）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%80/</link>
+      <pubDate>Wed, 22 May 2019 22:26:01 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%80/</guid>
+      <description>Java内存模型的基础：主要介绍内存模型相关的基本概念 Java内存模型中的顺序一致性：主要介绍 重排序 与 顺序一致性内存模型 同步原语：主要介绍3</description>
+    </item>
+    
+    <item>
+      <title>Java并发机制的底层实现原理（原子操作）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%89/</link>
+      <pubDate>Mon, 01 Apr 2019 22:29:11 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%89/</guid>
+      <description>原子操作：不可被中断的一个或一系列操作。 一、处理器如何实现原子操作 使用总线锁保证原子性 第一个机制是通过总线锁保证原子性。如果多个处理器同时对</description>
+    </item>
+    
+    <item>
+      <title>Java并发机制的底层实现原理（synchronized）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%BA%8C/</link>
+      <pubDate>Thu, 21 Mar 2019 00:16:03 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%BA%8C/</guid>
+      <description>synchronized 一般称之为重量级锁，在Java1.6中对 synchronized 进行了各种优化，在有些情况下它并不那么重了。 利用synchronized实现同步的基础 在Java</description>
+    </item>
+    
+    <item>
+      <title>Java并发机制的底层实现原理（volatile）</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%80/</link>
+      <pubDate>Tue, 05 Mar 2019 23:20:27 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%80/</guid>
+      <description>Java中所使用的并发机制依赖于JVM的实现和CPU的指令。在多线程并发编程中 synchronized 和 volatile 都扮演着重要的角色。 volatile的应用 volatile 是轻量级的 s</description>
+    </item>
+    
+    <item>
+      <title>Java并发解决方案</title>
+      <link>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</link>
+      <pubDate>Mon, 04 Mar 2019 23:11:08 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</guid>
+      <description>Java并发编程的缺陷 上下文切换带来的CPU开销 死锁 物理硬件的限制 软件资源的限制 为什么需要并发？ 并发其实是一种解耦合的策略，这种策略帮助我们</description>
+    </item>
+    
+  </channel>
+</rss>

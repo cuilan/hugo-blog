@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="CUILAN">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://cuilan.github.io//img/tag-bg.jpg">
+    <meta property="twitter:image" content="https://cuilan.github.io//img/tag-bg.jpg" />
+    
+
+    
+    <meta name="title" content="2.SpringMVC核心分发器DispatcherServlet分析" />
+    <meta property="og:title" content="2.SpringMVC核心分发器DispatcherServlet分析" />
+    <meta property="twitter:title" content="2.SpringMVC核心分发器DispatcherServlet分析" />
+    
+
+    
+    <meta name="description" content="Java程序员">
+    <meta property="og:description" content="Java程序员" />
+    <meta property="twitter:description" content="Java程序员" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="翠兰, cuilan, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>2.SpringMVC核心分发器DispatcherServlet分析-EchoGreen</title>
+
+    <link rel="canonical" href="/post/spring/springmvc/springmvc-02/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CUILAN</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/golang">golang</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java">java</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA">java虚拟机</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/spring">spring</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">并发编程</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%9D%82%E9%A1%B9">杂项</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/books/">BOOKS</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        <a class="tag" href="/tags/springmvc" title="SpringMVC">
+                            SpringMVC
+                        </a>
+                        
+                    </div>
+                    <h1>2.SpringMVC核心分发器DispatcherServlet分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                CUILAN
+                         
+                        on 
+                        Monday, November 4, 2019
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一springmvc入口">一、SpringMVC入口</a></li>
+        <li><a href="#二init方法对初始化过程进行处理">二、init()方法，对初始化过程进行处理</a></li>
+        <li><a href="#三frameworkservlet中进行初始化">三、FrameworkServlet中进行初始化</a></li>
+        <li><a href="#四dispatcherservlet初始化各种接口的实现类">四、DispatcherServlet初始化各种接口的实现类</a></li>
+        <li><a href="#五总结各个servlet的作用">五、总结各个Servlet的作用</a></li>
+        <li><a href="#六dispatcherservlet处理请求过程">六、DispatcherServlet处理请求过程</a></li>
+        <li><a href="#七总结">七、总结</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <h2 id="一springmvc入口">一、SpringMVC入口</h2>
+<p>SpringMVC启动类为：<strong><code>org.springframework.web.servlet.DispatcherServlet</code></strong></p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-1.png" alt="DispatcherServlet继承关系">
+    <center><figcaption>DispatcherServlet继承关系</figcaption></center>
+  </figure>
+
+</p>
+<!-- raw HTML omitted -->
+<p>由此可以看出 <strong>DispatcherServlet</strong> 本质上是继承自 <strong><code>javax.servlet.Servlet</code></strong> 顶级接口，因此其生命周期为：<strong><code>init() --&gt; service() --&gt; destory()</code></strong>。</p>
+<p>继承关系如下：</p>
+<ul>
+<li><strong><code>javax.servlet.Servlet</code></strong>
+<ul>
+<li><strong><code>javax.servlet.GenericServlet</code></strong>
+<ul>
+<li><strong><code>javax.servlet.http.HttpServlet</code></strong>
+<ul>
+<li><strong><code>org.springframework.web.servlet.HttpServletBean</code></strong>
+<ul>
+<li><strong><code>org.springframework.web.servlet.FrameworkServlet</code></strong>
+<ul>
+<li><strong><code>org.springframework.web.servletDispatcherServlet</code></strong></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>所以，SpringMVC启动时，是由 servlet容器（tomcat）调用执行 <strong><code>init()</code></strong> 方法，而 <strong><code>HttpServletBean</code></strong> 中覆盖了 <strong><code>init()</code><strong>方法，并 <strong><code>final</code></strong> 修饰，</strong><code>DispatcherServlet</code></strong> 和 <strong><code>FrameworkServlet</code></strong> 中都无法再继续覆盖，因此启动时会调用 <strong><code>HttpServletBean.init()</code></strong> 方法。</p>
+<hr>
+<h2 id="二init方法对初始化过程进行处理">二、init()方法，对初始化过程进行处理</h2>
+<p>init() 方法执行过程大概分为三步：</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-2.png" alt="HttpServletBean.init()方法">
+    <center><figcaption>HttpServletBean.init()方法</figcaption></center>
+  </figure>
+
+</p>
+<h3 id="1设置webxml中的配置参数">1.设置web.xml中的配置参数</h3>
+<p><strong><code>ServletConfigPropertyValues</code></strong> 是 <strong><code>HttpServletBean</code></strong> 的内部静态类，构造过程中会使用 <strong><code>ServletConfig</code></strong> 对象找出 web.xml 配置文件中的配置参数并设置到 <strong><code>ServletConfigPropertyValues</code></strong> 中。</p>
+<h3 id="2初始化beanwrapper">2.初始化BeanWrapper</h3>
+<p>使用 <strong><code>BeanWrapper</code></strong> 来构造实例化 <strong><code>DispatcherServlet</code></strong> 对象（即：this当前对象），接着通过当前 this 对象的 <strong><code>getServletContext()</code></strong> 方法获取 servlet 上下文信息，并创建 <strong><code>ServletContextResourceLoader</code></strong> 对象，给 <strong>bw</strong> 注册 <strong><code>Resource</code></strong> 类型的属性编辑器，然后调用 <strong><code>initBeanWrapper()</code></strong> 进行初始化（空方法，供子类进行扩展），初始化后，给 bw 对象设置属性值，即 web.xml 中配置的参数值。</p>
+<h3 id="3调用initservletbean方法">3.调用initServletBean()方法</h3>
+<p>空方法，供子类进行扩展。</p>
+<p><strong>如</strong>：web.xml 中的 <strong><code>contextConfigLocation</code></strong> 参数，使用 <strong><code>BeanWrapper</code></strong> 构造，会将这个属性注入到子类 <strong><code>FrameworkServlet</code></strong> 的 <strong><code>contextConfigLocation</code></strong> 属性中，因为HttpServletBean中并没有定义该属性。</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-3.png" alt="web.xml配置文件">
+    <center><figcaption>web.xml配置文件</figcaption></center>
+  </figure>
+
+</p>
+<hr>
+<h2 id="三frameworkservlet中进行初始化">三、FrameworkServlet中进行初始化</h2>
+<p>由于 HttpServletBean 中的 <strong><code>initServletBean()</code></strong> 方法为空方法，<strong><code>FrameworkServlet</code></strong> 中对其进行<strong>覆写</strong>：</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-4.png" alt="initServletBean()方法">
+    <center><figcaption>initServletBean()方法</figcaption></center>
+  </figure>
+
+</p>
+<p>SpringMVC启动时的几行日志即为此处输出，此方法重点关注 <strong>try代码块</strong> 中的代码。</p>
+<p>此处代码分为两部分：</p>
+<ul>
+<li><!-- raw HTML omitted -->初始化WebApplicationContext<!-- raw HTML omitted --></li>
+<li><!-- raw HTML omitted -->初始化initFrameworkServlet<!-- raw HTML omitted --></li>
+</ul>
+<h3 id="a-name3_11初始化webapplicationcontexta"><!-- raw HTML omitted -->1.初始化WebApplicationContext<!-- raw HTML omitted --></h3>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-5.png" alt="initWebApplicationContext()方法">
+    <center><figcaption>initWebApplicationContext()方法</figcaption></center>
+  </figure>
+
+</p>
+<ul>
+<li>
+<p>第一段代码：初始化 <strong><code>webApplicationContext</code></strong> 属性，<strong><code>WebApplicationContext</code></strong> 是继承自 <strong><code>ApplicationContext</code></strong> 接口的子接口，该属性也就是 <strong>Spring容器上下文</strong>。</p>
+<p><strong>FrameworkServlet 的作用就是将 Servlet 与 Spring 容器关联</strong>。<strong><code>WebApplicationContextUtils.getWebApplicationContext(getServletContext())</code></strong> 得到根上下文。</p>
+</li>
+<li>
+<p>第二段代码：DispatcherServlet 有一个以 <strong>WebApplicationContext</strong> 为参数的构造方法，当使用有 WebApplicationContext 参数的构造方法进行构造时执行第二段代码。</p>
+</li>
+<li>
+<p>第三段代码：如果 WebApplicationContext 对象（<strong>wac</strong>）为空，则以 contextAttribute 属性（FrameworkServlet 中的 String 类型的 contextAttribute 属性）为key，在 ServletContext 中找到的 WebApplicationContext 对象。</p>
+</li>
+<li>
+<p>第四段代码：如果 WebApplicationContext 对象仍然为空， 则创建 WebApplicationContext 并设置 <strong>根上下文（容器）</strong> 为 <strong>父上下文（父容器）</strong>，然后配置 ServletConfig、ServletContext 等实例到这个上下文中。</p>
+</li>
+<li>
+<p>第五段代码：<strong><code>onRefresh(wac)</code></strong> 为模板方法，WebApplicationContext 创建成功后会进行调用，在 FrameworkServlet 中为空方法，在 <strong>子类 DispatcherServlet 中会覆写此方法</strong>。</p>
+</li>
+<li>
+<p>第六段代码：将 WebApplicationContext 以参数的形式发布（设置）到 ServletContext 中。</p>
+</li>
+</ul>
+<h3 id="a-name3_22初始化initframeworkservleta"><!-- raw HTML omitted -->2.初始化initFrameworkServlet<!-- raw HTML omitted --></h3>
+<p><strong><code>initFrameworkServlet()</code></strong> 方法并没有做任何处理，该方法主要是为了让子类覆写该方法并做一些需要处理的事情，但DispatcherServlet并未覆写该方法。</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-6.png" alt="initFrameworkServlet()方法">
+    <center><figcaption>initFrameworkServlet()方法</figcaption></center>
+  </figure>
+
+</p>
+<p><!-- raw HTML omitted -->注意：<!-- raw HTML omitted --></p>
+<p><strong>根上下文</strong> 是 web.xml 中配置的 <strong>ContextLoaderListener监听器</strong> 中根据 <strong><code>contextConfigLocation</code></strong> 路径生成的上下文。</p>
+<p>例如：以下这段配置文件中是根据 <strong><code>classpath:spring-mvc.xml</code></strong> 下的 xml 文件生成的根上下文。</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-7.png" alt="根上下文">
+    <center><figcaption>根上下文</figcaption></center>
+  </figure>
+
+</p>
+<hr>
+<h2 id="四dispatcherservlet初始化各种接口的实现类">四、DispatcherServlet初始化各种接口的实现类</h2>
+<p>DispatcherServlet 覆写了 FrameworkServlet 中的 <strong><code>onRefresh()</code></strong> 方法。</p>
+<p><strong><code>initStrategies()</code></strong> 方法内部会初始化各个 <strong>策略接口的实现类</strong>。</p>
+<ul>
+<li>异常处理初始化 <strong><code>initHandlerExceptionResolvers(context)</code></strong> 方法：SpringMVC异常处理机制。</li>
+<li>视图处理初始化 <strong><code>initViewResolvers(context)</code></strong> 方法：SpringMVC视图机制。</li>
+<li>请求映射处理初始化 <strong><code>initHandlerMappings(context)</code></strong> 方法：详解SpringMVC请求的时候是如何找到正确的Controller。</li>
+</ul>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-8.png" alt="onRefresh()方法">
+    <center><figcaption>onRefresh()方法</figcaption></center>
+  </figure>
+
+</p>
+<hr>
+<h2 id="五总结各个servlet的作用">五、总结各个Servlet的作用</h2>
+<ol>
+<li><strong>HttpServletBean</strong>
+主要做一些初始化的工作，将 web.xml 中配置的参数设置到 Servlet 中。比如 servlet 标签的子标签 init-param 标签中配置的参数。</li>
+<li><strong>FrameworkServlet</strong>
+将 Servlet 与 Spring 容器上下文关联。其实也就是初始化 FrameworkServlet 的属性 webApplicationContext，这个属性代表 SpringMVC 上下文，它有个父类上下文，既 web.xml 中配置的 ContextLoaderListener 监听器初始化的容器上下文。</li>
+<li><strong>DispatcherServlet</strong>
+初始化各个功能的实现类。比如异常处理、视图处理、请求映射处理等。</li>
+</ol>
+<hr>
+<h2 id="六dispatcherservlet处理请求过程">六、DispatcherServlet处理请求过程</h2>
+<h3 id="1doget方法">1.doGet()方法</h3>
+<p>首先，当 HTTP 请求到 Servle t后，HttpServlet 提供了 service() 方法用于处理请求，service方法使用了模板方法设计模式，在内部对于 http 的 get 请求（或其他请求）会调用 doGet() 方法，SpringMVC 在 FrameworkServlet 中对 doGet() 方法进行了覆盖，在其方法内部调用了 <strong><code>processRequest(request, response)</code></strong> 方法。</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-9.png" alt="doGet()方法">
+    <center><figcaption>doGet()方法</figcaption></center>
+  </figure>
+
+</p>
+<h3 id="2processrequest方法">2.processRequest()方法</h3>
+<p>进入 <strong><code>processRequest()</code></strong> 方法，得到与当前请求线程绑定的 LocalContext 和 ServletRequestAttributes 对象，然后执行 <strong><code>initContextHolders()</code></strong> 方法，让新构造的 LocalContext 和 ServletRequestAttributes 与当前请求线程绑定（通过ThreadLocal完成）。</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-10.png" alt="processRequest()方法">
+    <center><figcaption>processRequest()方法</figcaption></center>
+  </figure>
+
+</p>
+<h3 id="3doservice方法">3.doService()方法</h3>
+<p>DispatcherServlet覆写的 **<code>doService()</code>**方法：</p>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-11.png" alt="doService()方法">
+    <center><figcaption>doService()方法</figcaption></center>
+  </figure>
+
+</p>
+<p>在 <strong><code>doService()</code></strong> 方法中判断，如果该请求是 include 请求，那么保存一份快照版本的 request 域中的请求参数，doDispatch() 方法结束后，这个快照版本的数据将会覆盖新的 request 域中的数据。最终请求到 <strong><code>doDispatch()</code></strong> 方法。</p>
+<h3 id="4dodispatch方法">4.doDispatch()方法</h3>
+<p>
+  <figure>
+    <img src="/images/spring/SpringMVC/SpringMVC-02/02-12.png" alt="doDispatch()方法">
+    <center><figcaption>doDispatch()方法</figcaption></center>
+  </figure>
+
+</p>
+<p>首先根据请求的路径找到 HandlerMethod（带有 Method 反射属性，也就是对应 Controller 中的方法），然后匹配路径对应的拦截器，有了 HandlerMethod 和拦截器构造个 HandlerExecutionChain 对象。</p>
+<p>HandlerExecutionChain 对象的获取是通过 HandlerMapping 接口提供的方法中得到。有了 HandlerExecutionChain 之后，通过 HandlerAdapter 对象进行处理得到 ModelAndView 对象，HandlerMethod 内部 handle 的时候，使用各种 HandlerMethodArgumentResolver 实现类处理 HandlerMethod 的参数，使用各种 HandlerMethodReturnValueHandler 实现类处理返回值。</p>
+<p>最终返回值被处理成 ModelAndView 对象，这期间发生的异常会被 HandlerExceptionResolver 接口实现类进行处理。</p>
+<hr>
+<h2 id="七总结">七、总结</h2>
+<p>本文分析了 SpringMVC 的入口 Servlet -&gt; DispatcherServlet 的作用，其中分析了父类 HttpServletBean 以及 FrameworkServlet 的作用。SpringMVC 的设计与 Struts2 完全不同，Struts2 采取的是一种完全和 web 容器隔离的解耦的机制，而 SpringMVC 就是基于最基本的 request 和 response 进行设计的。</p>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://cuilan.github.io/"><img src="/img/favicon.png" />CUILAN</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/spring/springmvc/springmvc-01/" data-toggle="tooltip" data-placement="top" title="1.SpringMVC使用示例">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/spring/springmvc/springmvc-03/" data-toggle="tooltip" data-placement="top" title="3.SpringMVC的请求如何分发？">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" title="中间件">
+                            中间件
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B" title="多线程">
+                            多线程
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B9%B6%E5%8F%91" title="并发">
+                            并发
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA" title="概率论">
+                            概率论
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%9B%AE%E5%BD%95" title="目录">
+                            目录
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6" title="统计学">
+                            统计学
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:17746598041@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/mengdond24">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/cuilan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; CUILAN 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
