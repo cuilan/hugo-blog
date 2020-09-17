@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\033[0;32mDeploying updates to GitHub...\033[0m"
+echo -e "\033[0;32mAuto commit and push to GitHub...\033[0m"
 
 # delete public folder.
 rm -rf public
@@ -9,7 +9,7 @@ rm -rf public
 git add .
 
 # Commit changes.
-msg="rebuilding site `date`"
+msg="auto commit and push by zhangyan on `date`"
 if [ $# -eq 1 ]
   then msg="$1"
 fi
