@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="CUILAN">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://cuilan.github.io//img/tag-bg.jpg">
+    <meta property="twitter:image" content="https://cuilan.github.io//img/tag-bg.jpg" />
+    
+
+    
+    <meta name="title" content="七、理解GC日志" />
+    <meta property="og:title" content="七、理解GC日志" />
+    <meta property="twitter:title" content="七、理解GC日志" />
+    
+
+    
+    <meta name="description" content="Java程序员">
+    <meta property="og:description" content="Java程序员" />
+    <meta property="twitter:description" content="Java程序员" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="翠兰, cuilan, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>七、理解GC日志-EchoGreen</title>
+
+    <link rel="canonical" href="/post/jvm/jvm-gc-log/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CUILAN</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/golang">golang</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java">java</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA">java虚拟机</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/spring">spring</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">并发编程</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%9D%82%E9%A1%B9">杂项</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/books/">BOOKS</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                    </div>
+                    <h1>七、理解GC日志</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                CUILAN
+                         
+                        on 
+                        Thursday, November 8, 2018
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents"></nav>
+                
+                <p>每一种收集器的日志形式都是由它们自身的实现所决定的，换而言之，每个收集器的日志格式都可以不一样。但虚拟机设计者为了方便用户阅读，将各个收集器的日志都维持一定的共性，例如以下两段典型的GC日志：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">33.125: <span style="color:#ff79c6">[</span>GC <span style="color:#ff79c6">[</span>DefNew: 3324K-&gt;152K<span style="color:#ff79c6">(</span>3712K<span style="color:#ff79c6">)</span>, 0.0025925 secs<span style="color:#ff79c6">]</span> 3324K-&gt;152K<span style="color:#ff79c6">(</span>11904K<span style="color:#ff79c6">)</span>, 0.0031680 secs<span style="color:#ff79c6">]</span>
+100.667: <span style="color:#ff79c6">[</span>Full GC <span style="color:#ff79c6">[</span>Tenured: 0K-&gt;210K<span style="color:#ff79c6">(</span>10240K<span style="color:#ff79c6">)</span>, 0.0149142 secs<span style="color:#ff79c6">]</span> 4603K-&gt;210K<span style="color:#ff79c6">(</span>19456K<span style="color:#ff79c6">)</span>, <span style="color:#ff79c6">[</span>Perm : 2999K-&gt;2999K<span style="color:#ff79c6">(</span>21248K<span style="color:#ff79c6">)]</span>, 0.0150007 secs<span style="color:#ff79c6">]</span> <span style="color:#ff79c6">[</span>Times: <span style="color:#8be9fd;font-style:italic">user</span><span style="color:#ff79c6">=</span>0.01 <span style="color:#8be9fd;font-style:italic">sys</span><span style="color:#ff79c6">=</span>0.00, <span style="color:#8be9fd;font-style:italic">real</span><span style="color:#ff79c6">=</span>0.02 secs<span style="color:#ff79c6">]</span>
+</code></pre></div><!-- raw HTML omitted -->
+<p>最前面的数字“33.125：”和“100.667：”代表了 <strong>GC发生的时间</strong> ，这个数字的含义是 <strong><em>从Java虚拟机启动以来经过的秒数</em></strong> 。</p>
+<p>GC日志开头的“ <strong>［GC</strong> ”和“ <strong>［Full GC</strong> ”说明了这次垃圾收集的停顿类型， <strong><em>而不是用来区分新生代GC还是老年代GC的</em></strong> 。如果有“Full”，说明这次GC是发生了Stop-The-World的，例如下面这段新生代收集器ParNew的日志也会出现“［Full GC”（这一般是因为出现了分配担保失败之类的问题，所以才导致STW）。 <strong><em>如果是调用System.gc()方法所触发的收集，那么在这里将显示“［Full GC (System)”</em></strong> 。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash"><span style="color:#ff79c6">[</span>Full GC 283.736: <span style="color:#ff79c6">[</span>ParNew: 261599K-&gt;261599K<span style="color:#ff79c6">(</span>261952K<span style="color:#ff79c6">)</span>, 0.0000288 secs<span style="color:#ff79c6">]</span> 
+</code></pre></div><p>接下来的“［ <strong>DefNew</strong> ”、“ <strong>［Tenured</strong> ”、“ <strong>［Perm</strong> ”表示 <strong>GC发生的区域</strong> ， <strong><em>这里显示的区域名称与使用的GC收集器是密切相关的</em></strong> ，例如上面样例所使用的Serial收集器中的新生代名为“Default New Generation”，所以显示的是“［DefNew”。如果是ParNew收集器，新生代名称就会变为“［ParNew”，意为“Parallel New Generation”。如果采用Parallel Scavenge收集器，那它配套的新生代称为“PSYoungGen”，老年代和永久代同理，名称也是由收集器决定的。</p>
+<p>后面方括号内部的“ <strong>3324K-&gt;152K(3712K)</strong> ”含义是“ <strong>GC前该内存区域已使用容量-&gt; GC后该内存区域已使用容量 (该内存区域总容量)</strong> ”。而在方括号之外的“ <strong>3324K-&gt;152K(11904K)</strong> ”表示“ <strong>GC前Java堆已使用容量 -&gt; GC后Java堆已使用容量 (Java堆总容量)</strong> ”。</p>
+<p>再往后，“ <strong>0.0025925 secs</strong> ”表示 <strong>该内存区域GC所占用的时间，单位是秒</strong> 。有的收集器会给出更具体的时间数据，如“［Times： user=0.01 sys=0.00， real=0.02 secs］”，这里面的 <strong>user、sys和real</strong> 与Linux的time命令所输出的时间含义一致，分别代表 <strong>用户态消耗的CPU时间、内核态消耗的CPU时间和操作从开始到结束所经过的墙钟时间</strong> （Wall Clock Time）。CPU时间与墙钟时间的区别是，墙钟时间包括各种非运算的等待耗时，例如等待磁盘I/O、等待线程阻塞，而CPU时间不包括这些耗时，但当系统有多CPU或者多核的话，多线程操作会叠加这些CPU时间，所以读者看到user或sys时间超过real时间是完全正常的。</p>
+
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://cuilan.github.io/"><img src="/img/favicon.png" />CUILAN</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/jvm/jvm-garbage-collector/" data-toggle="tooltip" data-placement="top" title="六、垃圾收集器">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/java/array-list-source-analysis/" data-toggle="tooltip" data-placement="top" title="ArrayList源码分析">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" title="中间件">
+                            中间件
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B" title="多线程">
+                            多线程
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B9%B6%E5%8F%91" title="并发">
+                            并发
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA" title="概率论">
+                            概率论
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%9B%AE%E5%BD%95" title="目录">
+                            目录
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6" title="统计学">
+                            统计学
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:17746598041@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/mengdond24">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/cuilan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; CUILAN 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

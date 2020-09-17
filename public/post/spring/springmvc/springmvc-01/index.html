@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="CUILAN">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://cuilan.github.io//img/tag-bg.jpg">
+    <meta property="twitter:image" content="https://cuilan.github.io//img/tag-bg.jpg" />
+    
+
+    
+    <meta name="title" content="1.SpringMVC使用示例" />
+    <meta property="og:title" content="1.SpringMVC使用示例" />
+    <meta property="twitter:title" content="1.SpringMVC使用示例" />
+    
+
+    
+    <meta name="description" content="Java程序员">
+    <meta property="og:description" content="Java程序员" />
+    <meta property="twitter:description" content="Java程序员" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="翠兰, cuilan, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>1.SpringMVC使用示例-EchoGreen</title>
+
+    <link rel="canonical" href="/post/spring/springmvc/springmvc-01/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CUILAN</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/golang">golang</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java">java</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA">java虚拟机</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/spring">spring</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">并发编程</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%9D%82%E9%A1%B9">杂项</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/books/">BOOKS</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        <a class="tag" href="/tags/springmvc" title="SpringMVC">
+                            SpringMVC
+                        </a>
+                        
+                    </div>
+                    <h1>1.SpringMVC使用示例</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                CUILAN
+                         
+                        on 
+                        Wednesday, October 30, 2019
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li><a href="#创建maven工程">创建maven工程</a></li>
+    <li><a href="#创建-spring-mvcxml-配置文件">创建 <code>spring-mvc.xml</code> 配置文件</a></li>
+    <li><a href="#配置-webxml-文件">配置 <code>web.xml</code> 文件</a></li>
+  </ul>
+</nav>
+                
+                <p>SpringMVC项目的演示示例，包含 maven 依赖配置，web.xml 文件配置，spring-mvc.xml 文件配置等，代码部分省略。</p>
+<!-- raw HTML omitted -->
+<h1 id="创建maven工程">创建maven工程</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;project</span> <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;http://maven.apache.org/POM/4.0.0&#34;</span> <span style="color:#50fa7b">xmlns:xsi=</span><span style="color:#f1fa8c">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+        <span style="color:#50fa7b">xsi:schemaLocation=</span><span style="color:#f1fa8c">&#34;http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd&#34;</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;parent&gt;</span>
+        <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-all<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+        <span style="color:#ff79c6">&lt;groupId&gt;</span>cn.cuilan<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+        <span style="color:#ff79c6">&lt;version&gt;</span>1.0.0<span style="color:#ff79c6">&lt;/version&gt;</span>
+    <span style="color:#ff79c6">&lt;/parent&gt;</span>
+    <span style="color:#ff79c6">&lt;modelVersion&gt;</span>4.0.0<span style="color:#ff79c6">&lt;/modelVersion&gt;</span>
+    <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-mvc<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+    <span style="color:#ff79c6">&lt;packaging&gt;</span>war<span style="color:#ff79c6">&lt;/packaging&gt;</span>
+    <span style="color:#ff79c6">&lt;name&gt;</span>spring-mvc<span style="color:#ff79c6">&lt;/name&gt;</span>
+    <span style="color:#ff79c6">&lt;dependencies&gt;</span>
+        <span style="color:#ff79c6">&lt;dependency&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId&gt;</span>org.springframework<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-webmvc<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;version&gt;</span>${spring.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+        <span style="color:#ff79c6">&lt;dependency&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId&gt;</span>org.springframework<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>spring-context-support<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;version&gt;</span>${spring.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+        <span style="color:#ff79c6">&lt;dependency&gt;</span>
+            <span style="color:#ff79c6">&lt;groupId&gt;</span>org.freemarker<span style="color:#ff79c6">&lt;/groupId&gt;</span>
+            <span style="color:#ff79c6">&lt;artifactId&gt;</span>freemarker<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;version&gt;</span>${freemarker.version}<span style="color:#ff79c6">&lt;/version&gt;</span>
+        <span style="color:#ff79c6">&lt;/dependency&gt;</span>
+    <span style="color:#ff79c6">&lt;/dependencies&gt;</span>
+    <span style="color:#ff79c6">&lt;build&gt;</span>
+        <span style="color:#ff79c6">&lt;finalName&gt;</span>spring-mvc<span style="color:#ff79c6">&lt;/finalName&gt;</span>
+        <span style="color:#ff79c6">&lt;resources&gt;</span>
+            <span style="color:#ff79c6">&lt;resource&gt;</span>
+                <span style="color:#ff79c6">&lt;directory&gt;</span>src/main/java<span style="color:#ff79c6">&lt;/directory&gt;</span>
+            <span style="color:#ff79c6">&lt;/resource&gt;</span>
+            <span style="color:#ff79c6">&lt;resource&gt;</span>
+                <span style="color:#ff79c6">&lt;directory&gt;</span>src/main/resources<span style="color:#ff79c6">&lt;/directory&gt;</span>
+            <span style="color:#ff79c6">&lt;/resource&gt;</span>
+            <span style="color:#ff79c6">&lt;resource&gt;</span>
+                <span style="color:#ff79c6">&lt;directory&gt;</span>src/main/webapp<span style="color:#ff79c6">&lt;/directory&gt;</span>
+            <span style="color:#ff79c6">&lt;/resource&gt;</span>
+        <span style="color:#ff79c6">&lt;/resources&gt;</span>
+        <span style="color:#ff79c6">&lt;plugins&gt;</span>
+            <span style="color:#ff79c6">&lt;plugin&gt;</span>
+                <span style="color:#ff79c6">&lt;artifactId&gt;</span>maven-war-plugin<span style="color:#ff79c6">&lt;/artifactId&gt;</span>
+            <span style="color:#ff79c6">&lt;/plugin&gt;</span>
+        <span style="color:#ff79c6">&lt;/plugins&gt;</span>
+    <span style="color:#ff79c6">&lt;/build&gt;</span>
+<span style="color:#ff79c6">&lt;/project&gt;</span>
+</code></pre></div><h1 id="创建-spring-mvcxml-配置文件">创建 <code>spring-mvc.xml</code> 配置文件</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;beans</span>  <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;http://www.springframework.org/schema/beans&#34;</span>
+        <span style="color:#50fa7b">xmlns:xsi=</span><span style="color:#f1fa8c">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+        <span style="color:#50fa7b">xmlns:context=</span><span style="color:#f1fa8c">&#34;http://www.springframework.org/schema/context&#34;</span>
+        <span style="color:#50fa7b">xsi:schemaLocation=</span><span style="color:#f1fa8c">&#34;
+</span><span style="color:#f1fa8c">        http://www.springframework.org/schema/beans
+</span><span style="color:#f1fa8c">        http://www.springframework.org/schema/beans/spring-beans.xsd
+</span><span style="color:#f1fa8c">        http://www.springframework.org/schema/context
+</span><span style="color:#f1fa8c">        http://www.springframework.org/schema/context/spring-context.xsd&#34;</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#6272a4">&lt;!-- 开启组件自动扫描 --&gt;</span>
+    <span style="color:#ff79c6">&lt;context:component-scan</span> <span style="color:#50fa7b">base-package=</span><span style="color:#f1fa8c">&#34;cn.cuilan&#34;</span><span style="color:#ff79c6">/&gt;</span>
+    <span style="color:#ff79c6">&lt;mvc:annotation-driven/&gt;</span>
+
+    <span style="color:#6272a4">&lt;!-- freemarker配置类 --&gt;</span>
+    <span style="color:#ff79c6">&lt;bean</span> <span style="color:#50fa7b">id=</span><span style="color:#f1fa8c">&#34;freeMarkerConfigurer&#34;</span>
+			<span style="color:#50fa7b">class=</span><span style="color:#f1fa8c">&#34;org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer&#34;</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;templateLoaderPath&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;/WEB-INF/ftl/&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;defaultEncoding&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;UTF-8&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;freemarkerSettings&#34;</span><span style="color:#ff79c6">&gt;</span>
+            <span style="color:#ff79c6">&lt;props&gt;</span>
+                <span style="color:#ff79c6">&lt;prop</span> <span style="color:#50fa7b">key=</span><span style="color:#f1fa8c">&#34;locale&#34;</span><span style="color:#ff79c6">&gt;</span>zh_CN<span style="color:#ff79c6">&lt;/prop&gt;</span>
+            <span style="color:#ff79c6">&lt;/props&gt;</span>
+        <span style="color:#ff79c6">&lt;/property&gt;</span>
+    <span style="color:#ff79c6">&lt;/bean&gt;</span>
+
+    <span style="color:#6272a4">&lt;!-- freemarker视图解析器 --&gt;</span>
+    <span style="color:#ff79c6">&lt;bean</span> <span style="color:#50fa7b">id=</span><span style="color:#f1fa8c">&#34;freeMarkerViewResolver&#34;</span>
+			<span style="color:#50fa7b">class=</span><span style="color:#f1fa8c">&#34;org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver&#34;</span><span style="color:#ff79c6">&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;cache&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;prefix&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;&#34;</span><span style="color:#ff79c6">/&gt;</span><span style="color:#6272a4">&lt;!-- 上面配置，此处不能重复配置 --&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;suffix&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;.ftl&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;contentType&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;text/html;charset=UTF-8&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;allowSessionOverride&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;allowRequestOverride&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;exposeSpringMacroHelpers&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;exposeRequestAttributes&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;exposeSessionAttributes&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;true&#34;</span><span style="color:#ff79c6">/&gt;</span>
+        <span style="color:#ff79c6">&lt;property</span> <span style="color:#50fa7b">name=</span><span style="color:#f1fa8c">&#34;requestContextAttribute&#34;</span> <span style="color:#50fa7b">value=</span><span style="color:#f1fa8c">&#34;request&#34;</span><span style="color:#ff79c6">/&gt;</span>
+    <span style="color:#ff79c6">&lt;/bean&gt;</span>
+<span style="color:#ff79c6">&lt;/beans&gt;</span>
+</code></pre></div><h1 id="配置-webxml-文件">配置 <code>web.xml</code> 文件</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#ff79c6">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#ff79c6">&lt;web-app</span> <span style="color:#50fa7b">xmlns=</span><span style="color:#f1fa8c">&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;</span>
+         <span style="color:#50fa7b">xmlns:xsi=</span><span style="color:#f1fa8c">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+         <span style="color:#50fa7b">xsi:schemaLocation=</span><span style="color:#f1fa8c">&#34;http://xmlns.jcp.org/xml/ns/javaee
+</span><span style="color:#f1fa8c">			 http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&#34;</span>
+         <span style="color:#50fa7b">metadata-complete=</span><span style="color:#f1fa8c">&#34;true&#34;</span> <span style="color:#50fa7b">version=</span><span style="color:#f1fa8c">&#34;3.1&#34;</span><span style="color:#ff79c6">&gt;</span>
+    <span style="color:#ff79c6">&lt;display-name&gt;</span>spring-mvc<span style="color:#ff79c6">&lt;/display-name&gt;</span>
+    <span style="color:#ff79c6">&lt;servlet&gt;</span>
+        <span style="color:#ff79c6">&lt;servlet-name&gt;</span>dispatcherServlet<span style="color:#ff79c6">&lt;/servlet-name&gt;</span>
+        <span style="color:#ff79c6">&lt;servlet-class&gt;</span>org.springframework.web.servlet.DispatcherServlet<span style="color:#ff79c6">&lt;/servlet-class&gt;</span>
+        <span style="color:#ff79c6">&lt;init-param&gt;</span>
+            <span style="color:#ff79c6">&lt;param-name&gt;</span>contextConfigLocation<span style="color:#ff79c6">&lt;/param-name&gt;</span>
+            <span style="color:#ff79c6">&lt;param-value&gt;</span>classpath:spring-mvc.xml<span style="color:#ff79c6">&lt;/param-value&gt;</span>
+        <span style="color:#ff79c6">&lt;/init-param&gt;</span>
+        <span style="color:#ff79c6">&lt;load-on-startup&gt;</span>1<span style="color:#ff79c6">&lt;/load-on-startup&gt;</span>
+    <span style="color:#ff79c6">&lt;/servlet&gt;</span>
+    <span style="color:#ff79c6">&lt;servlet-mapping&gt;</span>
+        <span style="color:#ff79c6">&lt;servlet-name&gt;</span>dispatcherServlet<span style="color:#ff79c6">&lt;/servlet-name&gt;</span>
+        <span style="color:#ff79c6">&lt;url-pattern&gt;</span>/<span style="color:#ff79c6">&lt;/url-pattern&gt;</span>
+    <span style="color:#ff79c6">&lt;/servlet-mapping&gt;</span>
+<span style="color:#ff79c6">&lt;/web-app&gt;</span>
+</code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://cuilan.github.io/"><img src="/img/favicon.png" />CUILAN</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/spring/springmvc/springmvc/" data-toggle="tooltip" data-placement="top" title="SpringMVC目录">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/spring/springmvc/springmvc-02/" data-toggle="tooltip" data-placement="top" title="2.SpringMVC核心分发器DispatcherServlet分析">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" title="中间件">
+                            中间件
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B" title="多线程">
+                            多线程
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B9%B6%E5%8F%91" title="并发">
+                            并发
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA" title="概率论">
+                            概率论
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%9B%AE%E5%BD%95" title="目录">
+                            目录
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6" title="统计学">
+                            统计学
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:17746598041@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/mengdond24">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/cuilan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; CUILAN 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>

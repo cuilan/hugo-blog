@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>虚拟机 on CUILAN</title>
+    <link>https://cuilan.github.io/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/</link>
+    <description>Recent content in 虚拟机 on CUILAN</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 08 Nov 2018 15:13:38 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>七、理解GC日志</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-gc-log/</link>
+      <pubDate>Thu, 08 Nov 2018 15:13:38 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-gc-log/</guid>
+      <description>每一种收集器的日志形式都是由它们自身的实现所决定的，换而言之，每个收集器的日志格式都可以不一样。但虚拟机设计者为了方便用户阅读，将各个收集器</description>
+    </item>
+    
+    <item>
+      <title>六、垃圾收集器</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-garbage-collector/</link>
+      <pubDate>Thu, 08 Nov 2018 15:12:57 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-garbage-collector/</guid>
+      <description>收集算法是内存回收的方法论，而 垃圾收集器就是内存回收的具体实现 。Java虚拟机规范中对垃圾收集器应该如何实现并没有任何规定，因此不同的厂商、</description>
+    </item>
+    
+    <item>
+      <title>五、HotSpot的算法实现</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-hotspot-algorithm/</link>
+      <pubDate>Thu, 08 Nov 2018 14:24:45 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-hotspot-algorithm/</guid>
+      <description>枚举根节点 以可达性分析中从GC Roots节点找引用链这个操作为例， 可作为GC Roots的节点主要在全局性的引用（如常量或类静态属性）与执行上</description>
+    </item>
+    
+    <item>
+      <title>四、垃圾回收算法</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-gc-algorithm/</link>
+      <pubDate>Thu, 08 Nov 2018 12:14:26 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-gc-algorithm/</guid>
+      <description>标记-清除算法 最基础的收集算法是“ 标记-清除 ”（Mark-Sweep）算法，如同它的名字一样，算法分为“标记”和“清除”两个阶段： 首先标记出</description>
+    </item>
+    
+    <item>
+      <title>三、垃圾收集器与内存分配策略</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-gc-memory-strategy/</link>
+      <pubDate>Wed, 07 Nov 2018 17:29:52 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-gc-memory-strategy/</guid>
+      <description>1、概述 第一门正真使用内存动态分配和垃圾回收技术的语言是Lisp语言。 在Java各内存区域中，程序计数器、虚拟机栈、本地方法区3个区域随线程</description>
+    </item>
+    
+    <item>
+      <title>二、HotSpot虚拟机对象模型</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-object-model/</link>
+      <pubDate>Wed, 07 Nov 2018 16:35:23 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-object-model/</guid>
+      <description>虚拟机内部细节，各虚拟机厂商的实现略有差异，因此以主流的Oracle HotSpot虚拟机为例分析。 1、对象的创建 Java是一门面向对象的编程</description>
+    </item>
+    
+    <item>
+      <title>一、Java内存区域与内存溢出异常</title>
+      <link>https://cuilan.github.io/post/jvm/jvm-memory-exceptions/</link>
+      <pubDate>Wed, 07 Nov 2018 15:37:29 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/jvm/jvm-memory-exceptions/</guid>
+      <description>1、概述 Java虚拟机自动内存管理机制，不需要为每一个new操作去写配对的delete/free代码，不容易出现内存泄露和内存溢出的问题，由</description>
+    </item>
+    
+  </channel>
+</rss>
