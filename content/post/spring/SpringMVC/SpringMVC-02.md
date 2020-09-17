@@ -9,7 +9,7 @@ categories:
 - SPRING
 ---
 
-## 一、SpringMVC入口
+# 一、SpringMVC入口
 
 SpringMVC启动类为：**`org.springframework.web.servlet.DispatcherServlet`**
 
@@ -33,21 +33,21 @@ SpringMVC启动类为：**`org.springframework.web.servlet.DispatcherServlet`**
 
 ---
 
-## 二、init()方法，对初始化过程进行处理
+# 二、init()方法，对初始化过程进行处理
 
 init() 方法执行过程大概分为三步：
 
 ![HttpServletBean.init()方法](/images/spring/SpringMVC/SpringMVC-02/02-2.png "HttpServletBean.init()方法")
 
-### 1.设置web.xml中的配置参数
+## 1.设置web.xml中的配置参数
 
 **`ServletConfigPropertyValues`** 是 **`HttpServletBean`** 的内部静态类，构造过程中会使用 **`ServletConfig`** 对象找出 web.xml 配置文件中的配置参数并设置到 **`ServletConfigPropertyValues`** 中。
 
-### 2.初始化BeanWrapper
+## 2.初始化BeanWrapper
 
 使用 **`BeanWrapper`** 来构造实例化 **`DispatcherServlet`** 对象（即：this当前对象），接着通过当前 this 对象的 **`getServletContext()`** 方法获取 servlet 上下文信息，并创建 **`ServletContextResourceLoader`** 对象，给 **bw** 注册 **`Resource`** 类型的属性编辑器，然后调用 **`initBeanWrapper()`** 进行初始化（空方法，供子类进行扩展），初始化后，给 bw 对象设置属性值，即 web.xml 中配置的参数值。
 
-### 3.调用initServletBean()方法
+## 3.调用initServletBean()方法
 
 空方法，供子类进行扩展。
 
@@ -57,7 +57,7 @@ init() 方法执行过程大概分为三步：
 
 ---
 
-## 三、FrameworkServlet中进行初始化
+# 三、FrameworkServlet中进行初始化
 
 由于 HttpServletBean 中的 **`initServletBean()`** 方法为空方法，**`FrameworkServlet`** 中对其进行**覆写**：
 
@@ -70,7 +70,7 @@ SpringMVC启动时的几行日志即为此处输出，此方法重点关注 **tr
 - <a href="#3_1">初始化WebApplicationContext</a>
 - <a href="#3_2">初始化initFrameworkServlet</a>
 
-### <a name="3_1">1.初始化WebApplicationContext</a>
+## 1.初始化WebApplicationContext
 
 ![initWebApplicationContext()方法](/images/spring/SpringMVC/SpringMVC-02/02-5.png "initWebApplicationContext()方法")
 
@@ -89,7 +89,7 @@ SpringMVC启动时的几行日志即为此处输出，此方法重点关注 **tr
 - 第六段代码：将 WebApplicationContext 以参数的形式发布（设置）到 ServletContext 中。
 
 
-### <a name="3_2">2.初始化initFrameworkServlet</a>
+## 2.初始化initFrameworkServlet
 
 **`initFrameworkServlet()`** 方法并没有做任何处理，该方法主要是为了让子类覆写该方法并做一些需要处理的事情，但DispatcherServlet并未覆写该方法。
 
@@ -105,7 +105,7 @@ SpringMVC启动时的几行日志即为此处输出，此方法重点关注 **tr
 
 ---
 
-## 四、DispatcherServlet初始化各种接口的实现类
+# 四、DispatcherServlet初始化各种接口的实现类
 
 DispatcherServlet 覆写了 FrameworkServlet 中的 **`onRefresh()`** 方法。
 
@@ -119,7 +119,7 @@ DispatcherServlet 覆写了 FrameworkServlet 中的 **`onRefresh()`** 方法。
 
 ---
 
-## 五、总结各个Servlet的作用
+# 五、总结各个Servlet的作用
 
 1. **HttpServletBean**
     主要做一些初始化的工作，将 web.xml 中配置的参数设置到 Servlet 中。比如 servlet 标签的子标签 init-param 标签中配置的参数。
@@ -130,21 +130,21 @@ DispatcherServlet 覆写了 FrameworkServlet 中的 **`onRefresh()`** 方法。
 
 ---
 
-## 六、DispatcherServlet处理请求过程
+# 六、DispatcherServlet处理请求过程
 
-### 1.doGet()方法
+## 1.doGet()方法
 
 首先，当 HTTP 请求到 Servle t后，HttpServlet 提供了 service() 方法用于处理请求，service方法使用了模板方法设计模式，在内部对于 http 的 get 请求（或其他请求）会调用 doGet() 方法，SpringMVC 在 FrameworkServlet 中对 doGet() 方法进行了覆盖，在其方法内部调用了 **`processRequest(request, response)`** 方法。
 
 ![doGet()方法](/images/spring/SpringMVC/SpringMVC-02/02-9.png "doGet()方法")
 
-### 2.processRequest()方法
+## 2.processRequest()方法
 
 进入 **`processRequest()`** 方法，得到与当前请求线程绑定的 LocalContext 和 ServletRequestAttributes 对象，然后执行 **`initContextHolders()`** 方法，让新构造的 LocalContext 和 ServletRequestAttributes 与当前请求线程绑定（通过ThreadLocal完成）。
 
 ![processRequest()方法](/images/spring/SpringMVC/SpringMVC-02/02-10.png "processRequest()方法")
 
-### 3.doService()方法
+## 3.doService()方法
 
 DispatcherServlet覆写的 **`doService()`**方法：
 
@@ -152,7 +152,7 @@ DispatcherServlet覆写的 **`doService()`**方法：
 
 在 **`doService()`** 方法中判断，如果该请求是 include 请求，那么保存一份快照版本的 request 域中的请求参数，doDispatch() 方法结束后，这个快照版本的数据将会覆盖新的 request 域中的数据。最终请求到 **`doDispatch()`** 方法。
 
-### 4.doDispatch()方法
+## 4.doDispatch()方法
 
 ![doDispatch()方法](/images/spring/SpringMVC/SpringMVC-02/02-12.png "doDispatch()方法")
 
@@ -164,6 +164,6 @@ HandlerExecutionChain 对象的获取是通过 HandlerMapping 接口提供的方
 
 ---
 
-## 七、总结
+# 七、总结
 
 本文分析了 SpringMVC 的入口 Servlet -> DispatcherServlet 的作用，其中分析了父类 HttpServletBean 以及 FrameworkServlet 的作用。SpringMVC 的设计与 Struts2 完全不同，Struts2 采取的是一种完全和 web 容器隔离的解耦的机制，而 SpringMVC 就是基于最基本的 request 和 response 进行设计的。

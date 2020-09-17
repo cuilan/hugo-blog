@@ -10,10 +10,8 @@ categories:
 - SPRING
 ---
 
-<font style="font-size:18px;">
+# 目录
 
-<a href="/blog/2019/10/30/spring/SpringMVC/SpringMVC-01/">1.SpringMVC使用示例</a>
-<a href="/blog/2019/11/04/spring/SpringMVC/SpringMVC-02/">2.SpringMVC核心分发器DispatcherServlet分析</a>
-
-
-</font>
+* [1.SpringMVC使用示例](/post/spring/springmvc/springmvc-01/)
+* [2.SpringMVC核心分发器DispatcherServlet分析](/post/spring/springmvc/springmvc-02/)
+* [3.SpringMVC的请求如何分发](/post/spring/springmvc/springmvc-03/)
