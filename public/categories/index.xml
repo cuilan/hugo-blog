@@ -1,18 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Categories on 翠兰 - Greenland</title>
+    <title>Categories on CUILAN</title>
     <link>https://cuilan.github.io/categories/</link>
-    <description>Recent content in Categories on 翠兰 - Greenland</description>
+    <description>Recent content in Categories on CUILAN</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://cuilan.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language>
+    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Spring</title>
+      <title>SPRING</title>
       <link>https://cuilan.github.io/categories/spring/</link>
       <pubDate>Thu, 14 Nov 2019 15:00:00 +0000</pubDate>
       
@@ -21,56 +17,47 @@
     </item>
     
     <item>
-      <title>环境搭建</title>
-      <link>https://cuilan.github.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <title>GOLANG</title>
+      <link>https://cuilan.github.io/categories/golang/</link>
       <pubDate>Wed, 16 Oct 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <guid>https://cuilan.github.io/categories/golang/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Java并发编程</title>
-      <link>https://cuilan.github.io/categories/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
+      <title>并发编程</title>
+      <link>https://cuilan.github.io/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</link>
       <pubDate>Thu, 19 Sep 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/categories/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
+      <guid>https://cuilan.github.io/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>JavaSE</title>
-      <link>https://cuilan.github.io/categories/javase/</link>
+      <title>JAVA</title>
+      <link>https://cuilan.github.io/categories/java/</link>
       <pubDate>Tue, 17 Sep 2019 16:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/categories/javase/</guid>
+      <guid>https://cuilan.github.io/categories/java/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>概率论与数理统计</title>
-      <link>https://cuilan.github.io/categories/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</link>
+      <title>杂项</title>
+      <link>https://cuilan.github.io/categories/%E6%9D%82%E9%A1%B9/</link>
       <pubDate>Wed, 09 Jan 2019 00:34:59 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/categories/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</guid>
+      <guid>https://cuilan.github.io/categories/%E6%9D%82%E9%A1%B9/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Nginx</title>
-      <link>https://cuilan.github.io/categories/nginx/</link>
+      <title>中间件</title>
+      <link>https://cuilan.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/</link>
       <pubDate>Wed, 19 Dec 2018 12:19:23 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/categories/nginx/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>随笔</title>
-      <link>https://cuilan.github.io/categories/%E9%9A%8F%E7%AC%94/</link>
-      <pubDate>Fri, 07 Dec 2018 00:26:17 +0000</pubDate>
-      
-      <guid>https://cuilan.github.io/categories/%E9%9A%8F%E7%AC%94/</guid>
+      <guid>https://cuilan.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/</guid>
       <description></description>
     </item>
     

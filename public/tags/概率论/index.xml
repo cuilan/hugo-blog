@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>概率论 on 翠兰 - Greenland</title>
+    <title>概率论 on CUILAN</title>
     <link>https://cuilan.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/</link>
-    <description>Recent content in 概率论 on 翠兰 - Greenland</description>
+    <description>Recent content in 概率论 on CUILAN</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 09 Jan 2019 00:34:59 +0000</lastBuildDate>
-    
-	<atom:link href="https://cuilan.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language>
+    <lastBuildDate>Wed, 09 Jan 2019 00:34:59 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>二、随机事件间的运算律</title>
-      <link>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</link>
+      <link>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</link>
       <pubDate>Wed, 09 Jan 2019 00:34:59 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</guid>
+      <guid>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</guid>
       <description>&lt;h2 id=&#34;基本定律&#34;&gt;基本定律：&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;幂等律&lt;/strong&gt;：A∪A = A，A∩A = A
 &lt;strong&gt;交换律&lt;/strong&gt;：A∪B = B∪A，A∩B = B∩A
@@ -24,19 +20,43 @@
 &lt;strong&gt;分配律&lt;/strong&gt;：A∩(B∪C) = (A∩B)∪(A∩C)，A∪(B∩C) = (A∪B)∩(A∪C)&lt;/p&gt;
 &lt;h2 id=&#34;demorgan德摩根定律&#34;&gt;De·Morgan（德·摩根）定律：&lt;/h2&gt;
 &lt;p&gt;非(A且B) = 非A或非B
-&lt;img src=&#34;%E4%BA%8C%E3%80%81%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/1.png&#34; alt=&#34;德·摩根&#34; title=&#34;德·摩根&#34;&gt;&lt;/p&gt;
+
+  &lt;figure&gt;
+    &lt;img src=&#34;https://cuilan.github.io/images/%e6%9d%82%e9%a1%b9/%e4%ba%8c%e3%80%81%e9%9a%8f%e6%9c%ba%e4%ba%8b%e4%bb%b6%e9%97%b4%e7%9a%84%e8%bf%90%e7%ae%97%e5%be%8b/1.png&#34; alt=&#34;德·摩根&#34;&gt;
+    &lt;center&gt;&lt;figcaption&gt;德·摩根&lt;/figcaption&gt;&lt;/center&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
 &lt;p&gt;非(A或B) = 非A且非B
-&lt;img src=&#34;%E4%BA%8C%E3%80%81%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/2.png&#34; alt=&#34;德·摩根&#34; title=&#34;德·摩根&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;%E4%BA%8C%E3%80%81%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/3.png&#34; alt=&#34;德·摩根&#34; title=&#34;德·摩根&#34;&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src=&#34;%E4%BA%8C%E3%80%81%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/4.png&#34; alt=&#34;德·摩根&#34; title=&#34;德·摩根&#34;&gt;&lt;/p&gt;</description>
+
+  &lt;figure&gt;
+    &lt;img src=&#34;https://cuilan.github.io/images/%e6%9d%82%e9%a1%b9/%e4%ba%8c%e3%80%81%e9%9a%8f%e6%9c%ba%e4%ba%8b%e4%bb%b6%e9%97%b4%e7%9a%84%e8%bf%90%e7%ae%97%e5%be%8b/2.png&#34; alt=&#34;德·摩根&#34;&gt;
+    &lt;center&gt;&lt;figcaption&gt;德·摩根&lt;/figcaption&gt;&lt;/center&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;figure&gt;
+    &lt;img src=&#34;https://cuilan.github.io/images/%e6%9d%82%e9%a1%b9/%e4%ba%8c%e3%80%81%e9%9a%8f%e6%9c%ba%e4%ba%8b%e4%bb%b6%e9%97%b4%e7%9a%84%e8%bf%90%e7%ae%97%e5%be%8b/3.png&#34; alt=&#34;德·摩根&#34;&gt;
+    &lt;center&gt;&lt;figcaption&gt;德·摩根&lt;/figcaption&gt;&lt;/center&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;
+&lt;p&gt;
+  &lt;figure&gt;
+    &lt;img src=&#34;https://cuilan.github.io/images/%e6%9d%82%e9%a1%b9/%e4%ba%8c%e3%80%81%e9%9a%8f%e6%9c%ba%e4%ba%8b%e4%bb%b6%e9%97%b4%e7%9a%84%e8%bf%90%e7%ae%97%e5%be%8b/4.png&#34; alt=&#34;德·摩根&#34;&gt;
+    &lt;center&gt;&lt;figcaption&gt;德·摩根&lt;/figcaption&gt;&lt;/center&gt;
+  &lt;/figure&gt;
+
+&lt;/p&gt;</description>
     </item>
     
     <item>
       <title>一、概率与随机事件</title>
-      <link>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</link>
+      <link>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</link>
       <pubDate>Mon, 07 Jan 2019 23:36:54 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</guid>
+      <guid>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</guid>
       <description>&lt;h2 id=&#34;随机试验experiment&#34;&gt;随机试验（Experiment）&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;定义：对事物的某一特征的观察。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;其典型的例子有：&lt;/em&gt;&lt;/p&gt;

@@ -1,25 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Go on 翠兰 - Greenland</title>
+    <title>Go on CUILAN</title>
     <link>https://cuilan.github.io/tags/go/</link>
-    <description>Recent content in Go on 翠兰 - Greenland</description>
+    <description>Recent content in Go on CUILAN</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Wed, 16 Oct 2019 15:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://cuilan.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language>
+    <lastBuildDate>Wed, 16 Oct 2019 15:00:00 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Go环境搭建</title>
-      <link>https://cuilan.github.io/posts/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
+      <link>https://cuilan.github.io/post/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Wed, 16 Oct 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
-      <description>Go开发环境 下载并安装Go开发包 Go语言开发包：https://golang.org/
-安装并配置环境变量 # go语言安装路径GOROOT=C:\Go\# 修改gopath路径GOPATH=D:\gopath\# gopath目录结构|- gopath|- bin|- pkg|- src|- github.com|- cuilan|- go-demo|- xxx|- gitee.com安装 VSCode 下载并安装 VSCode 安装 ms-vscode.go 插件 安装 Go 插件：搜索：Go，安装：ms-vscode.go 插件。
-安装 go-tools cd %GOPATH%\src\go get -u -v golang.org/x/tools/cmd/godocgo get -u -v golang.org/x/tools/cmd/gorenamego get -u -v golang.org/x/tools/cmd/gurugo get -u -v github.com/nsf/gocodego get -u -v github.com/golang/lint/golintgo get -u -v github.</description>
+      <guid>https://cuilan.github.io/post/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>Go开发环境 下载并安装Go开发包 Go语言开发包：https://golang.org/ 安装并配置环境变量 # go语言安装路径 GOROOT=C:\Go\ # 修改gopat</description>
     </item>
     
   </channel>

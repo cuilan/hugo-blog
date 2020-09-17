@@ -1,432 +1,298 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>源码 on 翠兰 - Greenland</title>
+    <title>源码 on CUILAN</title>
     <link>https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/</link>
-    <description>Recent content in 源码 on 翠兰 - Greenland</description>
+    <description>Recent content in 源码 on CUILAN</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>zh-cn</language>
-    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en-us</language>
+    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>3.SpringMVC的请求如何分发？</title>
-      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-03/</link>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-03/</link>
       <pubDate>Thu, 14 Nov 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-03/</guid>
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-03/</guid>
       <description></description>
     </item>
     
     <item>
       <title>2.SpringMVC核心分发器DispatcherServlet分析</title>
-      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-02/</link>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-02/</link>
       <pubDate>Mon, 04 Nov 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-02/</guid>
-      <description>一、SpringMVC入口 SpringMVC启动类为：org.springframework.web.servlet.DispatcherServlet
-由此可以看出 DispatcherServlet 本质上是继承自 javax.servlet.Servlet 顶级接口，因此其生命周期为：init() --&amp;gt; service() --&amp;gt; destory()。
-继承关系如下：
- javax.servlet.Servlet  javax.servlet.GenericServlet  javax.servlet.http.HttpServlet  org.springframework.web.servlet.HttpServletBean  org.springframework.web.servlet.FrameworkServlet  org.springframework.web.servletDispatcherServlet            所以，SpringMVC启动时，是由 servlet容器（tomcat）调用执行 init() 方法，而 HttpServletBean 中覆盖了 init()方法，并 final 修饰，DispatcherServlet 和 FrameworkServlet 中都无法再继续覆盖，因此启动时会调用 HttpServletBean.init() 方法。
- 二、init()方法，对初始化过程进行处理 init() 方法执行过程大概分为三步：
-1.设置web.xml中的配置参数 ServletConfigPropertyValues 是 HttpServletBean 的内部静态类，构造过程中会使用 ServletConfig 对象找出 web.xml 配置文件中的配置参数并设置到 ServletConfigPropertyValues 中。
-2.初始化BeanWrapper 使用 BeanWrapper 来构造实例化 DispatcherServlet 对象（即：this当前对象），接着通过当前 this 对象的 getServletContext() 方法获取 servlet 上下文信息，并创建 ServletContextResourceLoader 对象，给 bw 注册 Resource 类型的属性编辑器，然后调用 initBeanWrapper() 进行初始化（空方法，供子类进行扩展），初始化后，给 bw 对象设置属性值，即 web.</description>
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-02/</guid>
+      <description>一、SpringMVC入口 SpringMVC启动类为：org.springframework.web.servlet.DispatcherS</description>
     </item>
     
     <item>
       <title>1.SpringMVC使用示例</title>
-      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc-01/</link>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-01/</link>
       <pubDate>Wed, 30 Oct 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc-01/</guid>
-      <description>SpringMVC项目的演示示例，包含 maven 依赖配置，web.xml 文件配置，spring-mvc.xml 文件配置等，代码部分省略。
-创建maven工程 &amp;lt;project xmlns=&amp;#34;http://maven.apache.org/POM/4.0.0&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xsi:schemaLocation=&amp;#34;http://maven.apache.org/POM/4.0.0http://maven.apache.org/maven-v4_0_0.xsd&amp;#34;&amp;gt; &amp;lt;parent&amp;gt; &amp;lt;artifactId&amp;gt;spring-all&amp;lt;/artifactId&amp;gt; &amp;lt;groupId&amp;gt;cn.cuilan&amp;lt;/groupId&amp;gt; &amp;lt;version&amp;gt;1.0.0&amp;lt;/version&amp;gt; &amp;lt;/parent&amp;gt; &amp;lt;modelVersion&amp;gt;4.0.0&amp;lt;/modelVersion&amp;gt; &amp;lt;artifactId&amp;gt;spring-mvc&amp;lt;/artifactId&amp;gt; &amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt; &amp;lt;name&amp;gt;spring-mvc&amp;lt;/name&amp;gt; &amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-webmvc&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spring.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;spring-context-support&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${spring.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.freemarker&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;freemarker&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;${freemarker.version}&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt; &amp;lt;build&amp;gt; &amp;lt;finalName&amp;gt;spring-mvc&amp;lt;/finalName&amp;gt; &amp;lt;resources&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/java&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/resources&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;resource&amp;gt; &amp;lt;directory&amp;gt;src/main/webapp&amp;lt;/directory&amp;gt; &amp;lt;/resource&amp;gt; &amp;lt;/resources&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt; &amp;lt;/project&amp;gt; 创建 spring-mvc.xml 配置文件 &amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt; &amp;lt;beans xmlns=&amp;#34;http://www.springframework.org/schema/beans&amp;#34; xmlns:xsi=&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34; xmlns:context=&amp;#34;http://www.springframework.org/schema/context&amp;#34; xsi:schemaLocation=&amp;#34; http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.</description>
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-01/</guid>
+      <description>SpringMVC项目的演示示例，包含 maven 依赖配置，web.xml 文件配置，spring-mvc.xml 文件配置等，代码部分省略。 创建mave</description>
     </item>
     
     <item>
       <title>SpringMVC目录</title>
-      <link>https://cuilan.github.io/posts/spring/springmvc/springmvc/</link>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc/</link>
       <pubDate>Tue, 29 Oct 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/spring/springmvc/springmvc/</guid>
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc/</guid>
       <description>1.SpringMVC使用示例2.SpringMVC核心分发器DispatcherServlet分析</description>
     </item>
     
     <item>
       <title>Dictionary抽象类源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/dictionary-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/dictionary-source-analysis/</link>
       <pubDate>Tue, 17 Sep 2019 16:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/dictionary-source-analysis/</guid>
-      <description>一、Dictionary特点或规范 Dictionary 抽象类形式上等同于一个接口，其全部方法都是抽象方法。它是 Hashtable 的父类，它将 键 映射到 值。每个键和每个值都是一个对象。在任何一个 Dictionary 对象中，每个键最多与一个值相关联。给定一个 Dictionary 和一个键，可以查找关联的元素。任何非 null 对象都可以用作键和值。通常，此类的实现应使用 equals() 方法来确定两个键是否相同。
-注意：此类已过时。
- 二、构造器 唯一空参构造器。
-public Dictionary() { }  三、方法描述 abstract public int size(); abstract public boolean isEmpty(); abstract public Enumeration&amp;lt;K&amp;gt; keys(); abstract public Enumeration&amp;lt;V&amp;gt; elements(); abstract public V get(Object key); abstract public V put(K key, V value); abstract public V remove(Object key); </description>
+      <guid>https://cuilan.github.io/post/java/dictionary-source-analysis/</guid>
+      <description>一、Dictionary特点或规范 Dictionary 抽象类形式上等同于一个接口，其全部方法都是抽象方法。它是 Hashtable 的父类，它将 键 映射到 值。每个键和每个值都是一个</description>
     </item>
     
     <item>
       <title>TreeMap源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/treemap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/treemap-source-analysis/</link>
       <pubDate>Tue, 17 Sep 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/treemap-source-analysis/</guid>
-      <description>java.util.TreeMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.NavigableMap、java.lang.Cloneable、java.io.Serializable 接口。
- 一、TreeMap特点或规范 TreeMap 是基于 红黑树 的 NavigableMap 实现。根据其 key 的 自然顺序 进行排序，或者根据使用的构造器在 Map 创建时提供的比较器进行排序。
-由于底层采用了红黑树的数据结构，因此 TreeMap 的查询方法，如：containsKey()，get()，put()，remove()，其时间复杂度均为：O(logn)。
-注意：TreeMap 不同步。 如果多个线程同时访问，并且至少有一个线程进行了结构上的修改，则必须在外部进行同步；如下：
-SortedMap m = Collections.synchronizedSortedMap(new TreeMap(...));
-注意：此类中的方法返回的所有 Map.Entry 都它们不支持 Entry.setValue() 方法；可以使用 put(K, V) 方法更改 Entry 中的值。
- 二、成员变量 2.1 常量 // 虚拟值 private static final Object UNBOUNDED = new Object(); // 表示红色节点 private static final boolean RED = false; // 表示黑色节点 private static final boolean BLACK = true; // 指定 Map 中的比较器 private final Comparator&amp;lt;?</description>
+      <guid>https://cuilan.github.io/post/java/treemap-source-analysis/</guid>
+      <description>java.util.TreeMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.NavigableMap、java.lang.Cloneable、java.io.Serial</description>
     </item>
     
     <item>
       <title>LinkedHashMap源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/linkedhashmap-source-analysis/</link>
       <pubDate>Sun, 15 Sep 2019 01:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/</guid>
-      <description>java.util.LinkedHashMap 类继承了 java.util.HashMap 类，实现了 java.util.Map 接口。
- 一、LinkedHashMap特点或规范 1.1 特点 java.util.LinkedHashMap 是 java.util.Map 接口的 链表 + 哈希 实现，具有可预测的迭代顺序；与 HashMap 的不同是在 HashMap 的基础上使用了双向链表的数据结构；并按照插入顺序排序。
-linkedHashMap 与 HashMap 比较：
-   特性 LinkedHashMap HashMap     有序性 有序 无序   数据结构 数组 - 链表 - 红黑树 数组 - 链表 - 红黑树 + 双向链表   空键 允许 允许   空值 允许 允许    1.2 LRU缓存 LinkedHashMap 提供了一个特殊的构造函数来构建 LRU 缓存（Least Recent Used最近最少使用），构造器如下：</description>
+      <guid>https://cuilan.github.io/post/java/linkedhashmap-source-analysis/</guid>
+      <description>java.util.LinkedHashMap 类继承了 java.util.HashMap 类，实现了 java.util.Map 接口。 LinkedHashMap继承关系 一、LinkedHashMap特点或规范 1.1 特点 java.util.LinkedHashMap 是 java.util.Map 接口的 链表 + 哈希 实现，具</description>
     </item>
     
     <item>
       <title>HashMap.TreeNode类源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/hashmap-treenode/</link>
+      <link>https://cuilan.github.io/post/java/hashmap-treenode/</link>
       <pubDate>Wed, 11 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/hashmap-treenode/</guid>
-      <description>继承关系：
- java.util.Map.Entry Map 接口中的顶层实体接口。  java.util.HashMap.Node HashMap 中的单向链表节点。  java.util.LinkedHashMap.Entry LinkedHashMap 中的双向链表节点。  java.util.HashMap.TreeNode HashMap 中的红黑树节点。         一、HashMap节点内部类 HashMap 中节点内部类有两种实现：
- 链表节点：HashMap.Node 红黑树节点：HashMap.TreeNode  有关 HashMap 数据结构、方法分析、哈希冲突 及 链表实现等，见：HashMap源码分析。
- 二、链表-红黑树 相互转换的方法 treeifyBin(Node, int) 方法 转换为红黑树结构：根据 hash 值计算待转换的链表在 哈希表(table) 的位置，如果否满足转换为红黑树的条件，就进行转换。
-执行过程分析：
- 哈希表（数组）是否已初始化：  未初始化，调用 resize() 进行初始化。 或已初始化，判断哈希表的长度是否小于 64：  小于 64，不考虑使用红黑树结构，调用 resize() 重新计算大小。 大于等于 64，转换为红黑树结构。      final void treeifyBin(Node&amp;lt;K,V&amp;gt;[] tab, int hash) { int n, index; Node&amp;lt;K,V&amp;gt; e; // 如果哈希表 tab 没有初始化，或长度小于最小 64，则 resize()  if (tab == null || (n = tab.</description>
+      <guid>https://cuilan.github.io/post/java/hashmap-treenode/</guid>
+      <description>继承关系： java.util.Map.Entry Map 接口中的顶层实体接口。 java.util.HashMap.Node HashMap 中的单向链表节点。 java.util.LinkedHashMap.Entry LinkedHashMap 中的双向链表节点。 java.util.HashMap.TreeNode HashMap 中的红黑树节点。 TreeNode继承关系 一、HashMa</description>
     </item>
     
     <item>
       <title>HashMap源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/hashmap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/hashmap-source-analysis/</link>
       <pubDate>Tue, 03 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/hashmap-source-analysis/</guid>
-      <description>java.util.HashMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.Map、java.lang.Cloneable、java.io.Serializable 接口。
-一、HashMap特点或规范二、成员属性三、构造器四、内部类：Node，即：Map.Entry五、继承自AbstractMap的方法六、实现自Map接口的方法七、静态工具方法八、其他主要方法九、迭代器十、红黑树 一、HashMap特点或规范 HashMap 是基于 哈希表 的 Map 接口实现。无序 且不保证顺序永远保持不变。
-1.1 与Hashtable的区别    HashMap Hashtable     不同步 同步   允许空键 不允许空键   允许空值 不允许空值    1.2 性能  通常情况下，hash(Object) 方法计算得出的哈希值都均匀的分布在 哈希桶 之间，这样可以保证 get(K) 和 put(K, V) 基本操作方法的性能为恒定时间。 对集合视图：keySet()，values()，entrySet() 的 迭代时间，与 HashMap实例的容量（桶的数量）加上其大小（K-V Node 的数量）成比例的时间。因此，如果迭代性能有较高要求，则不要将 初始容量设置得太高 或 负载因子设置得太低。 影响 HashMap 性能的两个因素：初始容量 和 负载因子。  1.3 容量capacity &amp;amp; 加载因子loadFactor  容量：哈希表中的桶数，初始容量只是创建 HashMap 时的容量。 加载因子：是一个比例值，即：已被分布的哈希桶数 / 容量；也可以描述为：扩容操作之前允许哈希桶中已被分布的桶的数量。  当 HashMap 中已被分布的桶数超过了 加载因子 * 当前容量 时，HashMap将被扩容至原来容量的两倍，并重新计算哈希值（即，重建内部数据结构）。</description>
+      <guid>https://cuilan.github.io/post/java/hashmap-source-analysis/</guid>
+      <description>java.util.HashMap 类继承了 java.util.AbstractMap 抽象类，实现了 java.util.Map、java.lang.Cloneable、java.io.Serializable 接口。</description>
     </item>
     
     <item>
       <title>AbstractMap源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractmap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/abstractmap-source-analysis/</link>
       <pubDate>Mon, 02 Sep 2019 17:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/abstractmap-source-analysis/</guid>
-      <description>java.util.AbstractMap 抽象类实现了 java.util.Map 接口。
-一、AbstractMap特点或规范 AbstractMap 抽象类提供了 Map 接口的基础实现，以最大限度地减少实现此接口所需的工作量。
-1.1 实现不可修改的Map 要实现不可修改的 Map，子类只需要继承此类并实现 entrySet() 方法，该方法返回 Map.Entry 的 set视图。该set视图应该继承 java.util.AbstractSet，并实现抽象其方法。此set视图不应该支持 add()，remove() 方法，并且其迭代器不应支持 remove()方法。
-1.2 实现可修改的Map 要实现可修改的 Map，子类必须另外覆盖此类的 put(K, V) 方法，否则会抛出 UnsupportedOperationException 异常，以及 entrySet().iterator() 返回的迭代器必须另外实现其 remove() 方法。
-1.3 构造器规范 子类应该根据 Map接口的构造器规范 提供两个构造器：
- 无参构造器 参数为 Map 类型的构造器   二、成员变量 仅在第一次请求 keySet() 方法时初始化实例。
-transient Set&amp;lt;K&amp;gt; keySet; public Set&amp;lt;K&amp;gt; keySet() { Set&amp;lt;K&amp;gt; ks = keySet; // 只读  if (ks == null) { ks = new AbstractSet()&amp;lt;K&amp;gt; {.</description>
+      <guid>https://cuilan.github.io/post/java/abstractmap-source-analysis/</guid>
+      <description>java.util.AbstractMap 抽象类实现了 java.util.Map 接口。 AbstractMap接口继承关系 一、AbstractMap特点或规范 AbstractMap 抽象类提供了 Map 接口的基础实现，以最大限度地减少</description>
     </item>
     
     <item>
       <title>NavigableMap接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/navigablemap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/navigablemap-source-analysis/</link>
       <pubDate>Wed, 28 Aug 2019 17:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/navigablemap-source-analysis/</guid>
-      <description>java.util.NavigableMap 接口直接继承自 java.util.SortedMap 接口。
-一、NavigableMap特点或规范 NavigableMap 使用可导航的方法扩展了 SortedMap，返回给定搜索目标的最接近匹配结果。
-NavigableMap 定义了以下方法来根据 key 查询，如果不存在该 key，则返回 null：
-   操作 小于 小于等于 大于等于 大于     查询满足条件的 Map.Entry lowerEntry(K) floorEntry(K) ceilingEntry(K) higherEntry(K)   查询满足条件的 key lowerKey(K) floorKey(K) ceilingKey(K) higherKey(K)    有序性  可以按 升序 或 降序 key 访问或遍历 NavigableMap。 descendingMap() 方法返回 Map 的反序视图。 navigableKeySet() 方法返回 key 的 升序 视图 descendingKeySet() 方法返回 key 的 降序 视图 升序操作及视图的性能 可能比 降序操作及视图的性能 更快。  子Map视图 子 Map 视图继承自 SortedMap，两种实现不同之处在于 是否可接受包含下限和上限参数。NavigableMap 返回的子视图也都必须实现 NavigableMap 接口。</description>
+      <guid>https://cuilan.github.io/post/java/navigablemap-source-analysis/</guid>
+      <description>java.util.NavigableMap 接口直接继承自 java.util.SortedMap 接口。 NavigableMap接口继承关系 一、NavigableMap特点或规范 NavigableMap 使用可导航的方法扩展了 SortedMap</description>
     </item>
     
     <item>
       <title>SortedMap接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/sortedmap-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/sortedmap-source-analysis/</link>
       <pubDate>Tue, 27 Aug 2019 23:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/sortedmap-source-analysis/</guid>
-      <description>java.util.SortedMap 接口直接继承自 java.util.Map 接口。
-一、SortedMap特点或规范  SortedMap 在 Map 的基础上进一步提供其 key 的总排序。 SortedMap 默认是根据其 key 的 自然顺序 排序的，或者根据 SortedMap 在创建时提供的比较器进行排序。 SortedMap 的集合视图：entrySet()，keySet()、values() ，在迭代这些视图时会按照顺序返回。 SortedMap 在 Map 的基础上提供了几个额外的方法扩展排序相关功能。  1.1 可比较性规范 插入到 SortedMap 中的所有 key 必须实现 Comparable 接口。此外，子类实现所有的 key 必须是 可相互比较的，即：k1.compareTo(k2) 或 comparator.compare(k1, k2)，违反此规范将导致函数调用抛出 ClassCastException。
-注意：如果 SortedMap 要正确实现 Map 接口，则由 SortedMap 维护的排序（无论是否提供显式比较器）必须与 equals() 方法一致。这是因为 Map 接口是根据 equals() 方法定义的，但是有序映射使用 compareTo（或compare）方法执行所有 key 的比较，因此从 SortedMap 的角度来看，equals() 方法认为相等的两个键是相等的。
-TreeMap 比较特别，它的排序与 equals() 不一致。
-1.2 构造器规范 所有 SortedMap 实现类都应该提供 四个“标准”构造函数。由于接口无法指定构造函数，所以无法强制子类实现此规范。</description>
+      <guid>https://cuilan.github.io/post/java/sortedmap-source-analysis/</guid>
+      <description>java.util.SortedMap 接口直接继承自 java.util.Map 接口。 SortedMap接口继承关系 一、SortedMap特点或规范 SortedMap 在 Map 的基础上进一步提供其 key 的总排序。 SortedMap 默认是根据其 key</description>
     </item>
     
     <item>
       <title>Map接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/map-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/map-source-analysis/</link>
       <pubDate>Wed, 21 Aug 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/map-source-analysis/</guid>
-      <description>java.util.Map 接口是双列集合的顶级接口。
-一、Map特点或规范  双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提供了三个集合的视图，key集合、value集合、**Entry&amp;lt;K, V&amp;gt;集合。 Map 的顺序定义为 集合视图 的迭代器返回其元素的顺序。 有序性  java.util.TreeMap 类有序 其他，如 java.util.HashMap 类无序    1.1 构造器规范 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
- 无参构造器，用于创建一个空 Map。 参数类型为 Map 的构造器，它创建一个具有相同键值的新映射映射作为其论点。  1.2 key/value限制 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 NullPointerException 或 ClassCastException。
- 二、Map.Entry接口 Map.Entry 类映射实体，即：key-value 键值对。Map.</description>
+      <guid>https://cuilan.github.io/post/java/map-source-analysis/</guid>
+      <description>java.util.Map 接口是双列集合的顶级接口。 一、Map特点或规范 双列集合，由 key 映射 value 的对象。 Map 不能包含重复的 key，且每个 key 只能映射一个 value。 Map 接口提</description>
     </item>
     
     <item>
       <title>AbstractQueue源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractqueue-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/abstractqueue-source-analysis/</link>
       <pubDate>Wed, 21 Aug 2019 11:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/abstractqueue-source-analysis/</guid>
-      <description>java.util.AbstractQueue 类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Queue 接口。
-一、AbstractQueue特点或规范 AbstractQueue 类提供 队列Queue 操作的基础实现。此类不允许 null 元素。
-如果操作没有找到元素，则会抛出异常，而不会返回 false 或 null。
- add(E) 依赖 offer(E) remove() 依赖 poll() element() 依赖 peek()  继承此类的 队列Queue 实现必须实现的方法：
- Queue.offer(E) 方法，且不允许插入 null 元素 Queue.peek() Queue.poll() Collection.size() Collection.iterator()  如果无法满足特定要求，可继承 AbstractCollection。
- 二、构造器 唯一构造器，由子类实现提供 Collection 规范中的两个构造器。
-protected AbstractQueue() { }  三、方法分析 3.1 继承自 AbstractCollection 的方法 add(E) 方法 将指定的元素插入此队列，如果插入成功，则返回 true，否则抛出 IllegalStateException 异常。
-public boolean add(E e) { if (offer(e)) return true; else throw new IllegalStateException(&amp;#34;Queue full&amp;#34;); } addAll(Collection) 方法 将指定集合中的所有元素添加到当前队列中。此实现迭代指定的集合，并依次将迭代器返回的每个元素添加到当前队列中。</description>
+      <guid>https://cuilan.github.io/post/java/abstractqueue-source-analysis/</guid>
+      <description>java.util.AbstractQueue 类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Queue 接口。 AbstractQueue继承关系 一、AbstractQueue特点或规范 AbstractQueue 类提供 队列Queue 操作的基础</description>
     </item>
     
     <item>
       <title>TreeSet源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/treeset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/treeset-source-analysis/</link>
       <pubDate>Tue, 20 Aug 2019 15:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/treeset-source-analysis/</guid>
-      <description>java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serializable 接口。
-一、TreeSet特点或规范 TreeSet 是基于 java.util.TreeMap 的 java.util.NavigableSet 实现类。
- 有序：元素按照其自然顺序排序，或在创建时指定比较器，具体实现取决于创建时调用的的构造函数。 不可重复。  1.1 时间复杂度 TreeSet 的基本操作（add(Object)、remove(Object)、contains(Object)）均保证了时间复杂度为 O(logN)。
-1.2 有序性保证 注意：子类如果要正确实现 Set 接口，则由 Set 维护的排序（无论是否提供显式比较器）必须与 equals() 方法保持一致。 因为 Set 接口的唯一性是根据 equals() 方法决定的，而 TreeSet 是使用 compareTo() 方法实现元素比较。 TreeSet 实例即使排序与 equals() 方法不一致也是正确的，只是没有遵守 Set 接口规范。
-1.3 线程不安全 注意：TreeSet 类线程不同步。 如果多个线程同时访问 TreeSet，并且至少有一个线程修改了该 Set，则必须在外部进行同步。 实现同步的方法最好在创建 TreeSet 时完成，以防止对集合的意外不同步访问：
-SortedSet s = Collections.synchronizedSortedSet(new TreeSet(...)); 1.4 并发迭代 如果在创建迭代器之后的任何时候修改了TreeSet，除了通过迭代器自己的 remove()方法之外，迭代器将抛出 ConcurrentModificationException。
- 二、成员变量 TreeSet 底层由 TreeMap 实现。</description>
+      <guid>https://cuilan.github.io/post/java/treeset-source-analysis/</guid>
+      <description>java.util.TreeSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.NavigableSet、java.lang.Cloneable、java.io.Serial</description>
     </item>
     
     <item>
       <title>LinkedHashSet源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/linkedhashset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/linkedhashset-source-analysis/</link>
       <pubDate>Mon, 19 Aug 2019 16:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/linkedhashset-source-analysis/</guid>
-      <description>java.util.LinkedHashSet 类继承自 java.util.HashSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。
-一、LinkedHashSet特点或规范 java.util.LinkedHashSet 类是 Set 接口的 哈希表 和 链表 双实现，保证迭代顺序。
-此实现与 HashSet 的不同之处在于它维护了一个双向链表。
-注意，如果将已存在的元素重新插入到集合中，不会影响插入顺序。
- 二、构造器 空参构造器（遵循 Collection 接口规范） 调用父类构造器，使用 LinkedHashSet 实例，默认初始容量为 **16 **，默认加载因子为：0.75。
-public LinkedHashSet() { super(16, .75f, true); } 参数为 Collection 类型的构造器（遵循 Collection 接口规范） 调用父类构造器，使用 LinkedHashMap 实例，初始容量为：集合的 2倍，默认加载因子为：0.75。
-public LinkedHashSet(Collection&amp;lt;? extends E&amp;gt; c) { super(Math.max(2*c.size(), 11), .75f, true); addAll(c); } 指定初始容量和加载因子的构造器 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，可指定 初始容量 和 加载因子。
-public LinkedHashSet(int initialCapacity, float loadFactor) { super(initialCapacity, loadFactor, true); } 仅指定初始容量的构造器 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，仅支持指定 初始容量，加载因子默认为：0.</description>
+      <guid>https://cuilan.github.io/post/java/linkedhashset-source-analysis/</guid>
+      <description>java.util.LinkedHashSet 类继承自 java.util.HashSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。</description>
     </item>
     
     <item>
       <title>HashSet源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/hashset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/hashset-source-analysis/</link>
       <pubDate>Mon, 19 Aug 2019 10:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/hashset-source-analysis/</guid>
-      <description>java.util.HashSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。
-一、HashSet特点或规范 HashSet 类是 Set 接口的实现类，底层由 java.util.HashMap 实现。
- 无序，不保证集合的迭代顺序 允许 null 元素。  1.1 性能  该类的基本操作（add(E)、remove(Object)、contains(Object)、size()）时间性能较高，时间复杂度为 O(1)，前提是 Hash 必须正确分布。 迭代此集合需要的时间与 HashSet 实例的大小（元素数量）加上后备 HashMap 实例的“容量”（桶数）之和成比例。因此，如果迭代性能很重要，则不要将初始容量设置得太高（或负载因子太低）。  1.2 线程不安全 注意，HashSet 线程不安全。如果多个线程同时访问，并且至少有一个线程修改了该 Set，则必须在外部进行同步。最好在创建完成时添加同步，以防止对 Set 的意外不同步访问：
-Set s = Collections.synchronizedSet(new HashSet(...)); 注意：线程并发访问，可能引发 ConcurrentModificationException 异常。
- 二、成员变量 HashSet 底层由 HashMap 实现，由此来保证不可重复性。
-private transient HashMap&amp;lt;E,Object&amp;gt; map; // 关联 HashMap 中的 Object 虚拟值 private static final Object PRESENT = new Object();  三、构造器 空参构造器（遵循 Collection 接口规范） 使用 HashMap 实例，默认初始容量为 **16 **，默认加载因子为：0.</description>
+      <guid>https://cuilan.github.io/post/java/hashset-source-analysis/</guid>
+      <description>java.util.HashSet 类继承自 java.util.AbstractSet 抽象类，实现了 java.util.Set、java.lang.Cloneable、java.io.Serializable 接口。</description>
     </item>
     
     <item>
       <title>AbstractSet源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/abstractset-source-analysis/</link>
       <pubDate>Fri, 16 Aug 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/abstractset-source-analysis/</guid>
-      <description>java.util.AbstractSet 抽象类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Set 接口。
-一、AbstractSet特点或规范 AbstractSet 类提供了 Set 接口的基础实现，以最大限度地减少实现 Set 接口所需的工作量。
- 子类通过此类实现集合 与 通过实现 AbstractCollection 类实现集合的过程相同，但必须遵循 Set 接口的规范。 AbstractSet 类不会覆盖 AbstractCollection 类中的任何实现。 只是添加了 equals() 和 hashCode() 的实现。  二、构造器 唯一构造器。
-protected AbstractSet() { } 三、实现方法 equals(Object) 方法 将指定对象与当前 Set 进行比较。
- 如果指定对象也是一个集合，且与当前 Set 引用相同则返回 true。 两个集合具有相同的大小，并且指定集合的每个成员都包含在此集合中，则返回 true。  public boolean equals(Object o) { if (o == this) return true; if (!(o instanceof Set)) return false; Collection&amp;lt;?&amp;gt; c = (Collection&amp;lt;?</description>
+      <guid>https://cuilan.github.io/post/java/abstractset-source-analysis/</guid>
+      <description>java.util.AbstractSet 抽象类继承自 java.util.AbstractCollection 抽象类，实现了 java.util.Set 接口。 AbstractSet继承关系 一、AbstractSet特点或规范 AbstractSet 类提供了 Set 接口的基础实现，以最大限</description>
     </item>
     
     <item>
       <title>AbstractSequentialList源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/abstractsequentiallist-source-analysis/</link>
       <pubDate>Fri, 09 Aug 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/</guid>
-      <description>java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。
-一、AbstractSequentialList特点或规范  此类以最大限度地减少实现一个 “顺序访问” 数据存储（如：链表）所需的工作量。 如需 随机访问 数据（如：数组），应优先使用 AbstractList 而不是此类。  实现此类需要实现的方法 最简实现此类，只需要提供 listIterator(int) 和 size() 方法的实现。
-随机访问 此类与 AbstractList 类相反，它在 列表迭代器 上实现了 “随机访问” 的方法：get(int index)，set(int index, E element)，add(int index, E element) 和 remove(int index)。
-可修改性规范  如果子类实现是不可修改的列表，只需要实现 ListIterator 的 hasNext()，next()，hasPrevious()，previous() 和 index() 方法。 如果子类实现需要可修改的列表，还应该实现 ListIterator 的 set() 方法。 如果子类实现需要可变大小的列表，还应该实现 ListIterator 的 remove() 和 add() 方法。  构造器规范 子类实现应根据 java.util.Collection 接口规范中的建议，提供：
- 无参构造器 参数类型为 Collection 构造器   二、构造器 唯一构造器，protected 权限。</description>
+      <guid>https://cuilan.github.io/post/java/abstractsequentiallist-source-analysis/</guid>
+      <description>java.util.AbstractSequentialList 抽象类继承自 java.util.AbstractList 抽象类。 AbstractSequentialList继承关系 一、AbstractSequentialList特点或规范 此类以</description>
     </item>
     
     <item>
       <title>Deque接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/deque-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/deque-source-analysis/</link>
       <pubDate>Tue, 06 Aug 2019 12:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/deque-source-analysis/</guid>
-      <description>java.util.Deque 接口直接继承自 java.util.Queue 接口。
-一、Deque接口特点或规范  Deque 是线性集合，最大的特点是支持 两端插入、移除元素。Deque 是 &amp;ldquo;double ended queue&amp;rdquo; 的缩写。 大多数 Deque 的子类实现对其包含的元素数量没有固定限制，但此接口支持：  支持容量限制的子类实现。 支持没有容量限制子类实现。   支持访问双端队列两端的元素。 提供额外的 插入，提取 和 检查 三组操作。其中每组都以两种形式存在：  一种在操作失败时抛出异常。 一种返回特殊值（null 或 false，具体取决于操作），此形式的插入操作专门用于容量限制的队列实现；在大多数实现中，插入操作不会失败。    1.1 Deque 双端队列十二种方法摘要：     第一个元素(Head)  最后一个元素(Tail)       抛出异常 返回特殊值 抛出异常 返回特殊值   插入 addFirst(e) offerFirst(e) addLast(e) offerLast(e)   删除 removeFirst() pollFirst() removeLast() pollLast()   获取 getFirst() peekFirst() getLast() peekLast()    1.</description>
+      <guid>https://cuilan.github.io/post/java/deque-source-analysis/</guid>
+      <description>java.util.Deque 接口直接继承自 java.util.Queue 接口。 Deque接口继承关系 一、Deque接口特点或规范 Deque 是线性集合，最大的特点是支持 两端插入、移除元素。Deque 是 &amp;ldquo;double ended</description>
     </item>
     
     <item>
       <title>Queue接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/queue-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/queue-source-analysis/</link>
       <pubDate>Mon, 05 Aug 2019 18:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/queue-source-analysis/</guid>
-      <description>java.util.Queue 接口直接继承自 java.util.Collection 接口。
-一、Queue接口特点或规范 除了基本的 Collection 功能外，队列还提供额外的 插入，提取 和 检查 三组操作。其中每组都以两种形式存在：
- 一种在操作失败时抛出异常。 一种返回特殊值（null 或 false，具体取决于操作），此形式的插入操作专门用于容量限制的队列实现；在大多数实现中，插入操作不会失败。  1.1 队列方法摘要    操作 抛出异常 返回特殊值     插入 add(E) offer(E)   删除 remove() poll()   获取 element() peek()    1.2 队列进出顺序  队列通常（但不一定）以 FIFO（先进先出） 方式对元素进行排序。例外：  优先级队列：根据提供的比较器对元素进行排序，或者元素的自然排序。 后进先出队列（或 栈）：它们对元素 LIFO（后进先出） 进行排序。   在 FIFO 队列中，所有 新元素 都插入队列的 尾部。 无论使用什么顺序，队列的头部都是通过调用 remove() 或 poll() 方法来删除的元素。 其他类型的队列可能使用不同的放置规则。 每个 Queue 的实现都必须指定其排序属性。  1.</description>
+      <guid>https://cuilan.github.io/post/java/queue-source-analysis/</guid>
+      <description>java.util.Queue 接口直接继承自 java.util.Collection 接口。 Queue接口继承关系 一、Queue接口特点或规范 除了基本的 Collection 功能外，队列还提供额外的 插入，提取 和 检查 三组操作。其中</description>
     </item>
     
     <item>
       <title>NavigableSet接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/navigableset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/navigableset-source-analysis/</link>
       <pubDate>Thu, 01 Aug 2019 18:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/navigableset-source-analysis/</guid>
-      <description>java.util.NavigableSet 接口直接继承自 java.util.SortedSet 接口。
-一、NavigableSet接口特点或规范  java.util.NavigableSet 接口在 java.util.SortedSet 基础上增加了导航功能，使用导航方法扩展的 SortedSet 报告给定搜索目标的最接近匹配。 lower()，floor()，ceiling() 和 higher() 方法返回元素分别小于，小于或等于，大于或等于，大于给定元素，如果没有这样的元素则返回 null。 此接口还定义了 pollFirst() 和 pollLast() 方法，返回并删除最低和最高元素（如果存在），否则返回 null。 任何 NavigableSet 实现类的的子集都必须实现 NavigableSet 接口。   二、方法描述 lower(E)方法 返回当前 Set 中小于指定元素的最大元素，如果没有这样的元素，则返回 null。
-E lower(E e); floor(E)方法 返回当前 Set 中小于或等于指定元素的最大元素，如果没有这样的元素，则返回 null。
-E floor(E e); ceiling(E)方法 返回当前 Set 中大于或等于指定元素的最小元素，如果没有这样的元素，则返回 null。
-E ceiling(E e); higher(E)方法 返回当前 Set 中大于指定元素的最小元素，如果没有这样的元素，则返回 null。
-E higher(E e); pollFirst()方法 检索并删除**第一个（最低）**元素，如果没有这样的元素，则返回 null。
-E pollFirst(); pollLast()方法 检索并删除**最后一个（最高）**元素，如果没有这样的元素，则返回 null。</description>
+      <guid>https://cuilan.github.io/post/java/navigableset-source-analysis/</guid>
+      <description>java.util.NavigableSet 接口直接继承自 java.util.SortedSet 接口。 NavigableSet接口继承关系 一、NavigableSet接口特点或规范 java.util.NavigableSet 接口在 java.util.SortedSet 基础上增加了导航功能，使用导</description>
     </item>
     
     <item>
       <title>SortedSet接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/sortedset-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/sortedset-source-analysis/</link>
       <pubDate>Tue, 30 Jul 2019 23:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/sortedset-source-analysis/</guid>
-      <description>java.util.SortedSet 接口直接继承自 java.util.Set 接口。
-一、SortedSet接口特点或规范 实现规范  在 java.util.Set 基础上进一步提供其元素的总排序。元素按照 自然顺序 排序，或通过创建时提供的 比较器排序。 迭代器将按 升序 顺序遍历集合。提供了几个额外的操作以利用订购。 （此接口是SortedMap的集合模拟。） 插入到 SortedSet 中的所有元素必须实现 java.lang.Comparable 接口（或指定的比较器）。 所有元素必须可相互比较，即：e1.compareTo(e2)（或 comparator.compare(e1, e2)）。 注意，如果 SortedSet 要正确实现 Set 接口，则由 SortedSet 维护的排序（无论是否提供显式比较器）必须与 equals() 方法一致。  因为 Set 接口的不可重复性依赖于 equals() 方法，而 SortedSet 使用 compareTo() 方法进行所有元素的比较，
-构造器规范 所有 SortedSet 的实现类应提供 四个“标准”构造器：
- 无参构造器，它根据元素的自然顺序创建一个空的 SortedSet。（Collection规范） 参数为 Collection 类型的构造器，它创建一个新的 SortedSet，其元素类型与 Collection 参数中的元素类型相同，并根据元素的自然顺序进行排序。（Collection规范） 参数为 Comparator 类型的构造器，它创建一个根据指定比较器排序的空的 SortedSet。 参数为 SortedSet 类型的构造器，它创建一个新的 SortedSet，其具有与输入的 SortedSet 相同的元素和相同的顺序。  由于接口不能包含构造函数，因此无法强制执行此规范。</description>
+      <guid>https://cuilan.github.io/post/java/sortedset-source-analysis/</guid>
+      <description>java.util.SortedSet 接口直接继承自 java.util.Set 接口。 SortedSet接口继承关系 一、SortedSet接口特点或规范 实现规范 在 java.util.Set 基础上进一步提供其元素的总排序。元素按</description>
     </item>
     
     <item>
       <title>AbstractList源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractlist-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/abstractlist-source-analysis/</link>
       <pubDate>Wed, 24 Jul 2019 10:00:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/abstractlist-source-analysis/</guid>
-      <description>java.util.AbstractList 抽象类继承了 java.util.AbstractCollection 类，实现了 java.util.List 接口。
-一、AbstractList类继承规范 随机访问性与顺序访问性规范  AbstractList 类提供了 List 接口的基础实现，以最大限度地减少子类且实现了 “随机访问” 数据存储（如：数组）所需的工作量（如：ArrayList）。 对于顺序访问的数据结构（如：LinkedList），应该优先使用 java.util.AbstractSequentialList，而不是此类。  可修改性规范  如果要实现不可修改的列表，子类只需要扩展此类并提供 get(int) 方法和 size() 方法的实现。 如果要实现可修改的列表，子类必须另外覆盖 set(int, E) 方法，否则会抛出 UnsupportedOperationException 异常。  大小可变性规范  如果列表是 size 是可变的，则子类必须另外覆盖 add(int, E) 方法和 remove(int) 方法，add(E) 方法已提供实现，元素默认加入列表末尾。  子类构造器规范  子类应根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。  迭代器规范  与其他抽象集合实现不同，子类不必提供迭代器实现；迭代器（通常是：Itr） 和 列表迭代器（通常是：ListItr） 是由这个类的 “随机访问” 方法实现的：get(int) set(int, E) add(int, E) remove(int)。  可覆盖性规范  此类中每个非抽象方法的实现。子类都可以以更高效的方式或特有的方式进行覆盖。   二、成员分析 2.</description>
-    </item>
-    
-    <item>
-      <title>AbstractCollection源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/</link>
-      <pubDate>Thu, 18 Jul 2019 17:00:00 +0000</pubDate>
-      
-      <guid>https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/</guid>
-      <description>java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。
-一、AbstractCollection类继承规范  AbstractCollection 抽象类提供了 Collection 接口的骨干实现，以最大限度地减少实现 Collection 接口所需的工作量。 如需实现一个 不可修改的集合，只需要继承此类并提供 iterator() 方法和 size() 方法的实现。（iterator() 方法返回的迭代器必须实现 hasNext() 方法和 next()方法。） 如需实现一个 可修改的集合，则必须另外覆盖此类的 add() 方法（否则会抛出 UnsupportedOperationException 异常），iterator() 方法返回的迭代器必须另外实现其 remove() 方法。 除此之外还应该根据 Collection 接口的规范提供 无参数构造器 和 参数为 Collection 的构造器。 每个非抽象的方法都有自己的实现，如果子类需要特殊的实现，则可以覆盖对应的方法。   二、成员分析 2.1 常量 集合的最大数组大小。某些虚拟机在数组中保留一些 header words。如果尝试分配更大的数组可能会导致 OutOfMemoryError：请求的数组大小超过VM限制。
-private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8; 2.2 构造方法 唯一的构造函数。
-protected AbstractCollection() { } 2.3 抽象方法 方法描述见：java.util.Collection接口。
-public abstract Iterator&amp;lt;E&amp;gt; iterator(); public abstract int size(); 2.</description>
+      <guid>https://cuilan.github.io/post/java/abstractlist-source-analysis/</guid>
+      <description>java.util.AbstractList 抽象类继承了 java.util.AbstractCollection 类，实现了 java.util.List 接口。 AbstractList继承关系 一、AbstractList类继承规范 随机访问性与顺序访问性规范 AbstractList 类提供了</description>
     </item>
     
     <item>
       <title>Set接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/set-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/set-source-analysis/</link>
       <pubDate>Thu, 18 Jul 2019 15:55:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/set-source-analysis/</guid>
-      <description>java.util.Set 接口直接继承自 java.util.Collection 接口。
-一、Set接口特点或规范   不包含重复元素。至多一个 null 元素。数学意义的集合。
-  全部方法都继承自 java.util.Collection 接口。
-  子类实现必须创建一个不包含重复元素的构造函数。
-  子类实现必须对 equals() 和 hashCode() 方法重写，对 Set 进行 “值比较”。
-  某些子类实现对其包含的元素有限制。如：
-  某些实现禁止 null 元素
-  某些实现对其元素的类型有限制
-  二、继承自 Collection 的方法 详细方法描述，见：java.util.Collection接口。
-int size(); boolean isEmpty(); boolean contains(Object o); Iterator&amp;lt;E&amp;gt; iterator(); Object[] toArray(); &amp;lt;T&amp;gt; T[] toArray(T[] a); // 修改操作 boolean add(E e); boolean remove(Object o); // 批量操作 boolean containsAll(Collection&amp;lt;?</description>
+      <guid>https://cuilan.github.io/post/java/set-source-analysis/</guid>
+      <description>java.util.Set 接口直接继承自 java.util.Collection 接口。 Set接口继承关系 一、Set接口特点或规范 不包含重复元素。至多一个 null 元素。数学意义的集合。 全部方法都继承自 java.util.Collection 接口。 子</description>
+    </item>
+    
+    <item>
+      <title>AbstractCollection源码分析</title>
+      <link>https://cuilan.github.io/post/java/abstractcollection-source-analysis/</link>
+      <pubDate>Thu, 18 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/java/abstractcollection-source-analysis/</guid>
+      <description>java.util.AbstractCollection 抽象类实现了 java.util.Collection 接口。 AbstractCollection继承关系 一、AbstractCollection类继承规范 AbstractCollection 抽象类提供了 Collection 接口的骨</description>
     </item>
     
     <item>
       <title>List接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/list-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/list-source-analysis/</link>
       <pubDate>Wed, 17 Jul 2019 15:34:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/list-source-analysis/</guid>
-      <description>java.util.List 接口直接继承自 java.util.Collection 接口，在 Collection 接口的功能之上添加了 List 功能特有的接口规范。
-一、List接口特点   有序集合。
-  该接口的子类实现可以精确控制列表中每个元素的插入位置，可以通过索引访问元素，并搜索列表中的元素。
-  与 Set 集合不同，通常允许重复元素，且允许 null 元素， null 元素也可重复。
-  List 接口提供了一个特殊的迭代器：java.util.ListIterator，它允许元素插入和替换，以及 java.util.Iterator 接口提供的常规操作之外的双向访问。
-  还提供了一种从列表的指定位置开始的迭代器：listIterator(int index)。
-   二、继承自 Collection 的方法 详细方法描述，见：java.util.Collection接口。
-int size(); boolean isEmpty(); boolean contains(Object o); Iterator&amp;lt;E&amp;gt; iterator(); Object[] toArray(); &amp;lt;T&amp;gt; T[] toArray(T[] a); // 修改操作 boolean add(E e); boolean remove(Object o); // 批量操作 boolean containsAll(Collection&amp;lt;?&amp;gt; c); boolean addAll(Collection&amp;lt;?</description>
+      <guid>https://cuilan.github.io/post/java/list-source-analysis/</guid>
+      <description>java.util.List 接口直接继承自 java.util.Collection 接口，在 Collection 接口的功能之上添加了 List 功能特有的接口规范。 List接口继承关系 一、List接口特点 有序集合。 该接口的子类实现可以</description>
     </item>
     
     <item>
       <title>Collection接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/collection-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/collection-source-analysis/</link>
       <pubDate>Mon, 15 Jul 2019 11:02:00 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/collection-source-analysis/</guid>
-      <description>java.util.Collection 接口是单列集合层次结构中的 根接口。集合表示 一组对象，称为其 元素。其有些子类集合允许重复元素，有些其他集合则不允许。有些是有序的，有些是无序的。JDK中 Collection 不提供此接口的任何直接实现：它提供了更具体的子接口（如Set和List）的实现。此接口通常用于更抽象的传递集合，并在需要最大通用性的情况下对其进行操作。
-如：
-Collection&amp;lt;?&amp;gt; c = new ArrayList(); Collection&amp;lt;?&amp;gt; c = new HashSet(); 一、Collection接口规范 Collection接口定义了一系列子类实现规范：
-1、可重复、无序的集合（可能包含重复元素的无序集合）应直接实现此接口。
-2、所 有通用Collection实现类（通常 通过其子接口间接实现Collection）应提供 两个“标准”构造函数：
- 一个无参构造函数，用它来创建一个空集合。 一个为子类类型的，参数为 Collection 的构造函数，使用与其参数相同的元素来创建新集合，允许用户复制任何集合，从而生成所需实现类型的等效集合。  Collection 接口无法强制执行此规范（因为接口不能包含构造函数），但Java平台库中的所有通用 Collection 实现都符合此规范。
- 二、方法描述 size()方法 返回当前集合中的元素数量。如果此集合包含元素数量大于 Integer.MAX_VALUE 个元素，则返回 Integer.MAX_VALUE。
-int size(); isEmpty()方法 如果当前 Collection 不包含任何元素，则返回 true。
-boolean isEmpty(); contains()方法、containsAll(Collection&amp;lt;?&amp;gt; c)方法 如果当前集合包含指定元素，则返回 true。当且仅当此集合包含至少一个元素 e 时才返回 true。(o == null ? e == null : o.equals(e))
-boolean contains(Object o); 如果当前集合包含指定 Collection 中的所有元素，则返回 true。</description>
+      <guid>https://cuilan.github.io/post/java/collection-source-analysis/</guid>
+      <description>java.util.Collection 接口是单列集合层次结构中的 根接口。集合表示 一组对象，称为其 元素。其有些子类集合允许重复元素，有些其他集合则不允许。有些是有序的，有些是无序</description>
     </item>
     
     <item>
       <title>Iterable接口源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/iterable-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/iterable-source-analysis/</link>
       <pubDate>Fri, 12 Jul 2019 10:18:22 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/iterable-source-analysis/</guid>
-      <description>实现此接口的对象成为“for-each loop”语句的目标，即具有可迭代功能。
-Iterable 接口在 java.lang 包下，java.util.Collection 接口实现了此接口，因此 Collection 及其子类都可以使用迭代器。
-一、方法描述 iterator()方法 返回 T 类型元素的迭代器。见：IteratorIterator&amp;lt;T&amp;gt; iterator(); forEach()方法 对Iterable的每个元素执行给定操作，直到处理完所有元素或操作抛出异常为止。
-default void forEach(Consumer&amp;lt;? super T&amp;gt; action) { // 验证非空  Objects.requireNonNull(action); for (T t : this) { action.accept(t); } } spliterator()方法 分割迭代器，通常由实现此接口的子类覆盖默认实现。默认实现的拆分能力较差，子类的具体实现一般性能良好，有特定的具体实现优化。
-default Spliterator&amp;lt;T&amp;gt; spliterator() { return Spliterators.spliteratorUnknownSize(iterator(), 0); }  二、Iterator迭代器 集合框架的迭代器父接口。由子类提供具体实现。
-java.util.Iterator 接口的定义取代了 Java Collections Framework 中的 java.util.Enumeration。 迭代器在两个方面与枚举不同：
- 迭代器允许调用者在迭代期间使用定义良好的语义从底层集合中删除元素。 方法名称已得到改进。  方法描述 hasNext()方法 如果迭代具有更多元素，则返回true。
-boolean hasNext(); next()方法 返回迭代中的下一个元素。
-E next(); remove()方法 从当前集合中移除迭代器返回的最后一个元素（即此时 next() 返回的元素）。</description>
+      <guid>https://cuilan.github.io/post/java/iterable-source-analysis/</guid>
+      <description>实现此接口的对象成为“for-each loop”语句的目标，即具有可迭代功能。 Iterable 接口在 java.lang 包下，java.util.Collection 接口实</description>
     </item>
     
     <item>
       <title>Java集合框架源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/javacollectionsframework/</link>
+      <link>https://cuilan.github.io/post/java/javacollectionsframework/</link>
       <pubDate>Fri, 12 Jul 2019 16:31:00 +0800</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/javacollectionsframework/</guid>
-      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt;
- 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.</description>
+      <guid>https://cuilan.github.io/post/java/javacollectionsframework/</guid>
+      <description>接口 双列集合接口 java.util.Map&amp;lt;Interface&amp;gt; java.util.SortedMap&amp;lt;Interface&amp;gt; java.util.NavigableMap&amp;lt;Interface&amp;gt; 抽象类/类，继承关系，实现接口 双列集合类 java.util.AbstractMap&amp;lt;Abstract&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;ndash; java.util.Mapjava.util.HashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.LinkedHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;- java.util.Mapjava.util.TreeMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.NavigableMapjava.util.WeakHashMap&amp;lt;Class&amp;gt; &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Mapjava.util.Dictionary&amp;lt;Abstract&amp;gt; 已过时 java.util.Hashtable&amp;lt;Class&amp;gt; 已过时 &amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash;&amp;mdash; java.util.Map</description>
     </item>
     
     <item>
       <title>LinkedList源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/linked-list-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/linked-list-source-analysis/</link>
       <pubDate>Thu, 06 Dec 2018 23:10:05 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/linked-list-source-analysis/</guid>
-      <description>一、LinkedList简介二、成员分析三、链表实现四、双端队列实现五、队列实现六、栈实现七、列表实现八、迭代器、分割器一、LinkedList简介 java.util.LinkedList 是 java.util.List 接口实现，是一个 链表 数据结构的实现，直接继承自 java.util.AbstractSequentialList 抽象有序集合，是一个有序的 List，同时实现了 java.util.List 、 java.util.Deque 接口，也具备 队列 、 双端队列 的功能。同时，LinkedList 也具有 栈 的数据结构。因此 LinkedList 可以满足多种使用场景，是一个功能齐全的集合。
-1.1 LinkedList 继承关系图 1.2 LinkedList 的特性：  实现了 双链表 结构 实现了 Queue(队列) 与 Deque(双端队列) 结构 实现了 Stack(栈) 结构 有序 可重复 线程不安全 允许 null 值 查询慢、增删快 底层通过 Node 实现  1.3 线程同步问题 由于 LinkedList 出于性能的考虑，并没有实现同步，因此在多线程环境下操作时，可能会引发线程安全问题。最好的解决办法是在创建时使用集合工具类 Collections.synchronizedList() 方法进行包装，以防止意外对列表的非同步访问。
-List list = Collections.synchronizedList(new LinkedList(...));  二、成员分析 2.1 成员变量 // 集合大小 transient int size = 0; /** * 指向第一个节点的指针 * Invariant: (first == null &amp;amp;&amp;amp; last == null) || * (first.</description>
+      <guid>https://cuilan.github.io/post/java/linked-list-source-analysis/</guid>
+      <description>一、LinkedList简介二、成员分析三、链表实现四、双端队列实现五、队列实现六、栈实现七、列表实现八、迭代器、分割器一、LinkedLi</description>
     </item>
     
     <item>
       <title>ArrayList源码分析</title>
-      <link>https://cuilan.github.io/posts/javase/array-list-source-analysis/</link>
+      <link>https://cuilan.github.io/post/java/array-list-source-analysis/</link>
       <pubDate>Thu, 15 Nov 2018 22:26:53 +0000</pubDate>
       
-      <guid>https://cuilan.github.io/posts/javase/array-list-source-analysis/</guid>
-      <description>ArrayList应该算是日常开发中使用最多的List实现类。
-一、ArrayList 的特性  有序 可重复 线程不安全 允许插入 null 值 查询快、增删慢 底层通过 Object[] 数组实现  二、ArrayList继承关系 java.util.ArrayList 继承 java.util.AbstractList，实现了 java.util.List、java.util.RandomAccess、 java.io.Serializable 接口。
- 三、成员变量 // 序列化版本id private static final long serialVersionUID = 8683452581122892189L; // 默认初始容量 private static final int DEFAULT_CAPACITY = 10; // 用于空实例的共享空数组实例 private static final Object[] EMPTY_ELEMENTDATA = {}; // 用于默认大小的空实例的共享空数组实例。 private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}; // 存储 ArrayList 元素的数组缓冲区 transient Object[] elementData; // ArrayList 的大小 private int size; // ArrayList 最大容量 private static final int MAX_ARRAY_SIZE = Integer.</description>
+      <guid>https://cuilan.github.io/post/java/array-list-source-analysis/</guid>
+      <description>ArrayList应该算是日常开发中使用最多的List实现类。 一、ArrayList 的特性 有序 可重复 线程不安全 允许插入 null 值 查询快、增删慢 底层</description>
     </item>
     
   </channel>

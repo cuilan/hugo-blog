@@ -3,603 +3,408 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://cuilan.github.io/posts/</loc>
-    <lastmod>2020-03-02T12:00:00-05:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://cuilan.github.io/</loc>
-    <lastmod>2020-03-02T12:00:00-05:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+    <lastmod>2020-09-04T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/spring/springmvc/springmvc-03/</loc>
+    <loc>https://cuilan.github.io/2020/09/04/hello-world/</loc>
+    <lastmod>2020-09-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/post/</loc>
+    <lastmod>2020-03-02T12:00:00-05:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/post/spring/springmvc/springmvc-03/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/categories/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/java/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/categories/spring/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/springmvc/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E6%BA%90%E7%A0%81/</loc>
     <lastmod>2019-11-14T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/spring/springmvc/springmvc-02/</loc>
+    <loc>https://cuilan.github.io/post/spring/springmvc/springmvc-02/</loc>
     <lastmod>2019-11-04T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/spring/springmvc/springmvc-01/</loc>
+    <loc>https://cuilan.github.io/post/spring/springmvc/springmvc-01/</loc>
     <lastmod>2019-10-30T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/spring/springmvc/springmvc/</loc>
+    <loc>https://cuilan.github.io/post/spring/springmvc/springmvc/</loc>
     <lastmod>2019-10-29T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E7%9B%AE%E5%BD%95/</loc>
     <lastmod>2019-10-29T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/go/</loc>
     <lastmod>2019-10-16T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://cuilan.github.io/categories/golang/</loc>
     <lastmod>2019-10-16T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/categories/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <loc>https://cuilan.github.io/post/go/go%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2019-10-16T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%BA%8C/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%BA%8C/</loc>
     <lastmod>2019-09-19T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/categories/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
-    <lastmod>2019-09-19T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2019-09-19T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E5%B9%B6%E5%8F%91/</loc>
     <lastmod>2019-09-19T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9B%AE%E5%BD%95/</loc>
+    <loc>https://cuilan.github.io/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/</loc>
+    <lastmod>2019-09-19T12:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E7%9B%AE%E5%BD%95/</loc>
     <lastmod>2019-09-17T23:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/dictionary-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/dictionary-source-analysis/</loc>
     <lastmod>2019-09-17T16:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/categories/javase/</loc>
+    <loc>https://cuilan.github.io/categories/java/</loc>
     <lastmod>2019-09-17T16:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/</loc>
     <lastmod>2019-09-17T16:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/treemap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/treemap-source-analysis/</loc>
     <lastmod>2019-09-17T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/linkedhashmap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/linkedhashmap-source-analysis/</loc>
     <lastmod>2019-09-15T01:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/hashmap-treenode/</loc>
+    <loc>https://cuilan.github.io/post/java/hashmap-treenode/</loc>
     <lastmod>2019-09-11T17:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/hashmap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/hashmap-source-analysis/</loc>
     <lastmod>2019-09-03T17:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractmap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractmap-source-analysis/</loc>
     <lastmod>2019-09-02T17:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/navigablemap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/navigablemap-source-analysis/</loc>
     <lastmod>2019-08-28T17:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/sortedmap-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/sortedmap-source-analysis/</loc>
     <lastmod>2019-08-27T23:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/map-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/map-source-analysis/</loc>
     <lastmod>2019-08-21T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractqueue-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractqueue-source-analysis/</loc>
     <lastmod>2019-08-21T11:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/treeset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/treeset-source-analysis/</loc>
     <lastmod>2019-08-20T15:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/linkedhashset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/linkedhashset-source-analysis/</loc>
     <lastmod>2019-08-19T16:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/hashset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/hashset-source-analysis/</loc>
     <lastmod>2019-08-19T10:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractset-source-analysis/</loc>
     <lastmod>2019-08-16T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractsequentiallist-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractsequentiallist-source-analysis/</loc>
     <lastmod>2019-08-09T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/deque-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/deque-source-analysis/</loc>
     <lastmod>2019-08-06T12:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/queue-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/queue-source-analysis/</loc>
     <lastmod>2019-08-05T18:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/navigableset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/navigableset-source-analysis/</loc>
     <lastmod>2019-08-01T18:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/sortedset-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/sortedset-source-analysis/</loc>
     <lastmod>2019-07-30T23:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractlist-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractlist-source-analysis/</loc>
     <lastmod>2019-07-24T10:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/abstractcollection-source-analysis/</loc>
-    <lastmod>2019-07-18T17:00:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/posts/javase/set-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/set-source-analysis/</loc>
     <lastmod>2019-07-18T15:55:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/list-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/abstractcollection-source-analysis/</loc>
+    <lastmod>2019-07-18T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/post/java/list-source-analysis/</loc>
     <lastmod>2019-07-17T15:34:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/collection-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/collection-source-analysis/</loc>
     <lastmod>2019-07-15T11:02:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/iterable-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/iterable-source-analysis/</loc>
     <lastmod>2019-07-12T10:18:22+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/javacollectionsframework/</loc>
+    <loc>https://cuilan.github.io/post/java/javacollectionsframework/</loc>
     <lastmod>2019-07-12T16:31:00+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%B8%80/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E4%B8%AD%E7%9A%84%E9%94%81%E4%B8%80/</loc>
     <lastmod>2019-07-09T19:39:01+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%9B%9B/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E5%9B%9B/</loc>
     <lastmod>2019-05-30T23:35:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%89/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%89/</loc>
     <lastmod>2019-05-29T23:37:00+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%BA%8C/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%BA%8C/</loc>
     <lastmod>2019-05-27T23:33:46+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%80/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B%E4%B8%80/</loc>
     <lastmod>2019-05-22T22:26:01+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%89/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%89/</loc>
     <lastmod>2019-04-01T22:29:11+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%BA%8C/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%BA%8C/</loc>
     <lastmod>2019-03-21T00:16:03+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/java-object-head/</loc>
+    <loc>https://cuilan.github.io/post/java/java-object-head/</loc>
     <lastmod>2019-03-15T11:23:51+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%80/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E6%9C%BA%E5%88%B6%E7%9A%84%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%E4%B8%80/</loc>
     <lastmod>2019-03-05T23:20:27+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/java%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
+    <loc>https://cuilan.github.io/post/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/java%E5%B9%B6%E5%8F%91%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/</loc>
     <lastmod>2019-03-04T23:11:08+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</loc>
+    <loc>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%BA%8C%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6%E9%97%B4%E7%9A%84%E8%BF%90%E7%AE%97%E5%BE%8B/</loc>
     <lastmod>2019-01-09T00:34:59+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/categories/%E6%9D%82%E9%A1%B9/</loc>
+    <lastmod>2019-01-09T00:34:59+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E6%A6%82%E7%8E%87%E8%AE%BA/</loc>
     <lastmod>2019-01-09T00:34:59+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/categories/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/</loc>
-    <lastmod>2019-01-09T00:34:59+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6/</loc>
     <lastmod>2019-01-09T00:34:59+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</loc>
+    <loc>https://cuilan.github.io/post/%E6%9D%82%E9%A1%B9/%E6%A6%82%E7%8E%87%E8%AE%BA%E4%B8%8E%E6%95%B0%E7%90%86%E7%BB%9F%E8%AE%A1/%E4%B8%80%E6%A6%82%E7%8E%87%E4%B8%8E%E9%9A%8F%E6%9C%BA%E4%BA%8B%E4%BB%B6/</loc>
     <lastmod>2019-01-07T23:36:54+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/categories/nginx/</loc>
+    <loc>https://cuilan.github.io/tags/nginx/</loc>
     <lastmod>2018-12-19T12:19:23+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/nginx/nginx-high/</loc>
+    <loc>https://cuilan.github.io/post/%E4%B8%AD%E9%97%B4%E4%BB%B6/nginx/nginx-high/</loc>
     <lastmod>2018-12-19T12:19:23+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/tags/web%E6%9C%8D%E5%8A%A1%E5%99%A8/</loc>
-    <lastmod>2018-12-19T12:19:23+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/</loc>
     <lastmod>2018-12-19T12:19:23+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/nginx/nginx-base/</loc>
+    <loc>https://cuilan.github.io/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6/</loc>
+    <lastmod>2018-12-19T12:19:23+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://cuilan.github.io/post/%E4%B8%AD%E9%97%B4%E4%BB%B6/nginx/nginx-base/</loc>
     <lastmod>2018-12-13T15:31:24+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/personal/a/</loc>
-    <lastmod>2018-12-07T00:26:17+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/categories/%E9%9A%8F%E7%AC%94/</loc>
-    <lastmod>2018-12-07T00:26:17+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/posts/javase/linked-list-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/linked-list-source-analysis/</loc>
     <lastmod>2018-12-06T23:10:05+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/javase/array-list-source-analysis/</loc>
+    <loc>https://cuilan.github.io/post/java/array-list-source-analysis/</loc>
     <lastmod>2018-11-15T22:26:53+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
     <lastmod>2018-11-08T15:13:38+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-gc-log/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-gc-log/</loc>
     <lastmod>2018-11-08T15:13:38+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://cuilan.github.io/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA/</loc>
     <lastmod>2018-11-08T15:13:38+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-garbage-collector/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-garbage-collector/</loc>
     <lastmod>2018-11-08T15:12:57+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-hotspot-algorithm/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-hotspot-algorithm/</loc>
     <lastmod>2018-11-08T14:24:45+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-gc-algorithm/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-gc-algorithm/</loc>
     <lastmod>2018-11-08T12:14:26+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-gc-memory-strategy/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-gc-memory-strategy/</loc>
     <lastmod>2018-11-07T17:29:52+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-object-model/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-object-model/</loc>
     <lastmod>2018-11-07T16:35:23+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://cuilan.github.io/posts/jvm/jvm-memory-exceptions/</loc>
+    <loc>https://cuilan.github.io/post/jvm/jvm-memory-exceptions/</loc>
     <lastmod>2018-11-07T15:37:29+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/tags/hexo/</loc>
-    <lastmod>2018-11-06T16:35:23+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/posts/hexo/</loc>
-    <lastmod>2018-11-06T16:35:23+08:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/about/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
-    <loc>https://cuilan.github.io/contact/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
   </url>
   
 </urlset>
