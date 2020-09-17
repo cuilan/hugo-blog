@@ -3,7 +3,6 @@
 echo -e "\033[0;32mAuto commit and push to GitHub...\033[0m"
 
 # delete public folder.
-rm -rf public
 
 # Add changes to git.
 git add .
