@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>SPRING on CUILAN</title>
+    <link>https://cuilan.github.io/categories/spring/</link>
+    <description>Recent content in SPRING on CUILAN</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 14 Nov 2019 15:00:00 +0000</lastBuildDate><atom:link href="https://cuilan.github.io/categories/spring/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>3.SpringMVC的请求如何分发？</title>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-03/</link>
+      <pubDate>Thu, 14 Nov 2019 15:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-03/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>2.SpringMVC核心分发器DispatcherServlet分析</title>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-02/</link>
+      <pubDate>Mon, 04 Nov 2019 15:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-02/</guid>
+      <description>一、SpringMVC入口 SpringMVC启动类为：org.springframework.web.servlet.DispatcherS</description>
+    </item>
+    
+    <item>
+      <title>1.SpringMVC使用示例</title>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc-01/</link>
+      <pubDate>Wed, 30 Oct 2019 12:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc-01/</guid>
+      <description>SpringMVC项目的演示示例，包含 maven 依赖配置，web.xml 文件配置，spring-mvc.xml 文件配置等，代码部分省略。 创建mave</description>
+    </item>
+    
+    <item>
+      <title>SpringMVC目录</title>
+      <link>https://cuilan.github.io/post/spring/springmvc/springmvc/</link>
+      <pubDate>Tue, 29 Oct 2019 12:00:00 +0000</pubDate>
+      
+      <guid>https://cuilan.github.io/post/spring/springmvc/springmvc/</guid>
+      <description>1.SpringMVC使用示例2.SpringMVC核心分发器DispatcherServlet分析</description>
+    </item>
+    
+  </channel>
+</rss>

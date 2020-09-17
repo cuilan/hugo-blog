@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="CUILAN">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://cuilan.github.io//img/tag-bg.jpg">
+    <meta property="twitter:image" content="https://cuilan.github.io//img/tag-bg.jpg" />
+    
+
+    
+    <meta name="title" content="AbstractList源码分析" />
+    <meta property="og:title" content="AbstractList源码分析" />
+    <meta property="twitter:title" content="AbstractList源码分析" />
+    
+
+    
+    <meta name="description" content="Java程序员">
+    <meta property="og:description" content="Java程序员" />
+    <meta property="twitter:description" content="Java程序员" />
+    
+
+    
+    <meta property="twitter:card" content="summary" />
+    
+    
+
+    <meta name="keyword"  content="翠兰, cuilan, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>AbstractList源码分析-EchoGreen</title>
+
+    <link rel="canonical" href="/post/java/abstractlist-source-analysis/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">CUILAN</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                        
+                        <li>
+                            <a href="/categories/golang">golang</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java">java</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/java%E8%99%9A%E6%8B%9F%E6%9C%BA">java虚拟机</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/spring">spring</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E4%B8%AD%E9%97%B4%E4%BB%B6">中间件</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B">并发编程</a>
+                        </li>
+                        
+                        <li>
+                            <a href="/categories/%E6%9D%82%E9%A1%B9">杂项</a>
+                        </li>
+                        
+                    
+                    
+		    
+                        <li><a href="/top/books/">BOOKS</a></li>
+                    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+
+                    
+		    <li>
+                        <a href="/search">SEARCH <img src="/img/search.png" height="15" style="cursor: pointer;" alt="Search"></a>
+		    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/tag-bg.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/java" title="Java">
+                            Java
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        <a class="tag" href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                    </div>
+                    <h1>AbstractList源码分析</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                                CUILAN
+                         
+                        on 
+                        Wednesday, July 24, 2019
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li><a href="#一abstractlist类继承规范">一、AbstractList类继承规范</a></li>
+        <li><a href="#二成员分析">二、成员分析</a></li>
+        <li><a href="#三迭代器">三、迭代器</a></li>
+        <li><a href="#四子列表">四、子列表</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                
+                <p><strong><code>java.util.AbstractList</code></strong> 抽象类继承了 <strong><code>java.util.AbstractCollection</code></strong> 类，实现了 <strong><code>java.util.List</code></strong> 接口。</p>
+<p>
+  <figure>
+    <img src="/images/javase/AbstractList-source-analysis/AbstractList1.png" alt="AbstractList继承关系">
+    <center><figcaption>AbstractList继承关系</figcaption></center>
+  </figure>
+
+</p>
+<!-- raw HTML omitted -->
+<h2 id="一abstractlist类继承规范">一、AbstractList类继承规范</h2>
+<h4 id="随机访问性与顺序访问性规范">随机访问性与顺序访问性规范</h4>
+<ul>
+<li><strong><code>AbstractList</code></strong> 类提供了 <strong><code>List</code></strong> 接口的基础实现，以最大限度地减少子类且实现了 <strong>“随机访问”</strong> 数据存储（如：数组）所需的工作量（如：<strong><code>ArrayList</code></strong>）。</li>
+<li>对于顺序访问的数据结构（如：<strong><code>LinkedList</code></strong>），应该优先使用 <strong><code>java.util.AbstractSequentialList</code></strong>，而不是此类。</li>
+</ul>
+<h4 id="可修改性规范">可修改性规范</h4>
+<ul>
+<li>如果要实现不可修改的列表，子类只需要扩展此类并提供 <strong><code>get(int)</code></strong> 方法和 <strong><code>size()</code></strong> 方法的实现。</li>
+<li>如果要实现可修改的列表，子类必须另外覆盖 <strong><code>set(int, E)</code></strong> 方法，否则会抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</li>
+</ul>
+<h4 id="大小可变性规范">大小可变性规范</h4>
+<ul>
+<li>如果列表是 <strong>size</strong> 是可变的，则子类必须另外覆盖 <strong><code>add(int, E)</code></strong> 方法和 <strong><code>remove(int)</code></strong> 方法，<strong><code>add(E)</code></strong> 方法已提供实现，元素默认加入列表末尾。</li>
+</ul>
+<h4 id="子类构造器规范">子类构造器规范</h4>
+<ul>
+<li>子类应根据 <strong><code>Collection</code></strong> 接口的规范提供 <strong>无参数构造器</strong> 和 <strong>参数为 Collection 的构造器</strong>。</li>
+</ul>
+<h4 id="迭代器规范">迭代器规范</h4>
+<ul>
+<li>与其他抽象集合实现不同，子类不必提供迭代器实现；<strong>迭代器（通常是：<code>Itr</code>）</strong> 和 <strong>列表迭代器（通常是：<code>ListItr</code>）</strong> 是由这个类的 <strong>“随机访问”</strong> 方法实现的：<strong><code>get(int) set(int, E) add(int, E) remove(int)</code></strong>。</li>
+</ul>
+<h4 id="可覆盖性规范">可覆盖性规范</h4>
+<ul>
+<li>此类中每个非抽象方法的实现。子类都可以以更高效的方式或特有的方式进行覆盖。</li>
+</ul>
+<hr>
+<h2 id="二成员分析">二、成员分析</h2>
+<h3 id="21-成员属性">2.1 成员属性</h3>
+<p>当前列表已被 <strong>结构修改</strong> 的次数。
+<strong>结构修改</strong>：是改变列表大小 或 以其他方式扰乱它的方式，即：正在进行的迭代可能产生不正确的结果。</p>
+<p>该字段由 <strong><code>iterator()</code></strong> 方法返回的 <strong>迭代器</strong> 和 <strong><code>listIterator()</code></strong> 方法返回 <strong>列表迭代器</strong> 使用。
+非线程安全，如果此字段的值意外更改，迭代器或列表迭代器将抛出 <strong><code>ConcurrentModificationException</code></strong> 异常。</p>
+<p><strong>快速失败</strong></p>
+<ul>
+<li>如果子类实现提供快速失败的迭代器（并列出迭代器），则只需要在其 <strong><code>add(int, E)</code></strong> 方法和 <strong><code>remove(int)</code></strong> 方法中增加该字段的值，单次调用增加的值不能超过 <strong>1</strong>，否则抛出 <strong><code>ConcurrentModificationException</code></strong> 异常。</li>
+<li>如果子类实现不提供快速失败的迭代器，则可以忽略此字段。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd;font-style:italic">transient</span> <span style="color:#8be9fd">int</span> modCount <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+</code></pre></div><h3 id="22-构造方法">2.2 构造方法</h3>
+<p>唯一的构造器。<strong>Collection</strong> 的构造器规范由子类实现。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#50fa7b">AbstractList</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="23-抽象方法">2.3 抽象方法</h3>
+<p>唯一的一个抽象方法，为调用者提供索引访问的方法。来自 <strong>java.util.List</strong> 接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">abstract</span> <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">);</span>
+</code></pre></div><h3 id="24-实现方法">2.4 实现方法</h3>
+<h4 id="set可修改性方法">set()可修改性方法</h4>
+<p>如果子类要实现一个 <strong>可修改</strong> 的列表，则必须覆盖此方法，提供可根据索引修改元素。来自 <strong>java.util.List</strong> 接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> UnsupportedOperationException<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="addremove大小可变性方法">add()、remove()大小可变性方法</h4>
+<p>如果子类要实现一个 <strong>大小可变</strong> 的列表，则必须覆盖 <strong><code>add(int, E)</code></strong> 方法和 <strong><code>remove(int)</code></strong> 方法。均来自 <strong>java.util.List</strong> 接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#6272a4">// 添加单个元素
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 默认加入列表末尾
+</span><span style="color:#6272a4"></span>    add<span style="color:#ff79c6">(</span>size<span style="color:#ff79c6">(),</span> e<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 插入指定索引位置
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> UnsupportedOperationException<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 根据索引删除指定位置的元素
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">remove</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> UnsupportedOperationException<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="indexof正序搜索">indexOf()正序搜索</h4>
+<p>返回此列表中第一次出现的指定元素的索引，如果当前列表不包含该元素，则返回-1。来自 <strong>java.util.List</strong> 接口。
+即：返回<strong>最低索引</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">indexOf</span><span style="color:#ff79c6">(</span>Object o<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> it <span style="color:#ff79c6">=</span> listIterator<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">())</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span>
+                <span style="color:#ff79c6">return</span> it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previousIndex</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">())</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">()))</span>
+                <span style="color:#ff79c6">return</span> it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previousIndex</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="lastindexof倒序搜索">lastIndexOf()倒序搜索</h4>
+<p>返回此列表中最后一次出现的指定元素的索引，如果当前列表不包含该元素，则返回-1。来自 <strong>java.util.List</strong> 接口。
+即：返回<strong>最高索引</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">lastIndexOf</span><span style="color:#ff79c6">(</span>Object o<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> it <span style="color:#ff79c6">=</span> listIterator<span style="color:#ff79c6">(</span>size<span style="color:#ff79c6">());</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasPrevious</span><span style="color:#ff79c6">())</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previous</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span><span style="color:#ff79c6">)</span>
+                <span style="color:#ff79c6">return</span> it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextIndex</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">else</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasPrevious</span><span style="color:#ff79c6">())</span>
+            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previous</span><span style="color:#ff79c6">()))</span>
+                <span style="color:#ff79c6">return</span> it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextIndex</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="clearremoverangeint-int方法">clear()、removeRange(int, int)方法</h4>
+<p>清空列表中的全部元素。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">clear</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    removeRange<span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">,</span> size<span style="color:#ff79c6">());</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 按照指定范围删除元素，操作包含头不包含尾。
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">removeRange</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 定义迭代器起始位置
+</span><span style="color:#6272a4"></span>    ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> it <span style="color:#ff79c6">=</span> listIterator<span style="color:#ff79c6">(</span>fromIndex<span style="color:#ff79c6">);</span>
+    <span style="color:#6272a4">// 计算迭代器结束位置 = toIndex - fromIndex
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">,</span> n <span style="color:#ff79c6">=</span> toIndex <span style="color:#ff79c6">-</span> fromIndex<span style="color:#ff79c6">;</span> i <span style="color:#ff79c6">&lt;</span> n<span style="color:#ff79c6">;</span> i<span style="color:#ff79c6">++)</span> <span style="color:#ff79c6">{</span>
+        it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>
+        it<span style="color:#ff79c6">.</span><span style="color:#50fa7b">remove</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="addallint-collection方法">addAll(int, Collection)方法</h4>
+<ul>
+<li>将<strong>指定集合</strong>中的<strong>所有元素</strong>插入到<strong>当前列表</strong>的<strong>指定位置</strong>中。</li>
+<li>新添加的元素将按照<strong>指定集合</strong>的迭代器返回的顺序插入至此列表中。</li>
+<li>此实现使用 <strong><code>add(int, E)</code></strong> 方法，一次一个的插入。子类实现可覆盖此方法以提高效率。</li>
+<li>注意，除非重写 <strong><code>add(int, E)</code></strong>，否则会抛出 <strong><code>UnsupportedOperationException</code></strong> 异常。</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#8be9fd">boolean</span> modified <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>E e <span style="color:#ff79c6">:</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        add<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">++,</span> e<span style="color:#ff79c6">);</span>
+        modified <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> modified<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 检查添加位置
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">rangeCheckForAdd</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 起始位置至少从0开始，不能大于size
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>index <span style="color:#ff79c6">&lt;</span> 0 <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> size<span style="color:#ff79c6">())</span>
+        <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span>outOfBoundsMsg<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">));</span>
+<span style="color:#ff79c6">}</span>
+
+<span style="color:#6272a4">// 越界异常提示信息
+</span><span style="color:#6272a4"></span><span style="color:#8be9fd;font-style:italic">private</span> String <span style="color:#50fa7b">outOfBoundsMsg</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;Index: &#34;</span><span style="color:#ff79c6">+</span>index<span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34;, Size: &#34;</span><span style="color:#ff79c6">+</span>size<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="equalsobject方法">equals(Object)方法</h4>
+<p>将指定对象与当前列表进行比较。如果指定的对象类型为 <strong>List</strong>，且两个列表大小相同，且两个列表中的所有元素的 <strong>equals()</strong> 方法相等，顺序相等，才返回 <strong><code>true</code></strong>。</p>
+<ul>
+<li>此实现方法首先检查指定的对象是否为当前列表：
+<ul>
+<li>如果是，则返回 <strong><code>true</code></strong>。</li>
+<li>如果不是，则检查指定的对象类型是否是列表：
+<ul>
+<li>如果不是，则返回 <strong><code>false</code></strong>。</li>
+<li>如果是，则迭代这两个列表，并比较相应的两个元素。
+<ul>
+<li>如果有任何一次比较返回 <strong><code>false</code></strong>，则返回 <strong><code>false</code></strong>。</li>
+<li>如果二者之一的迭代器没有下一个元素，表示两列表的大小不一致，则返回 <strong><code>false</code></strong>。</li>
+<li>最后两个迭代器都没有下一个元素，返回 <strong><code>true</code></strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>Object o<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>o <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">)</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(!(</span>o <span style="color:#ff79c6">instanceof</span> List<span style="color:#ff79c6">))</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> e1 <span style="color:#ff79c6">=</span> listIterator<span style="color:#ff79c6">();</span>
+    ListIterator<span style="color:#ff79c6">&lt;?&gt;</span> e2 <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">((</span>List<span style="color:#ff79c6">&lt;?&gt;)</span> o<span style="color:#ff79c6">).</span><span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">while</span> <span style="color:#ff79c6">(</span>e1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">&amp;&amp;</span> e2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">())</span> <span style="color:#ff79c6">{</span>
+        E o1 <span style="color:#ff79c6">=</span> e1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>
+        Object o2 <span style="color:#ff79c6">=</span> e2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(!(</span>o1 <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> o2 <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">:</span> o1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">equals</span><span style="color:#ff79c6">(</span>o2<span style="color:#ff79c6">)))</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">!(</span>e1<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">||</span> e2<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">());</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="hashcode方法">hashCode()方法</h4>
+<p>遵循 <strong>java.util.List.hashCode()</strong> 方法，确保两个列表进行 <strong>equals()</strong> 方法对比时，比较的是列表中元素的哈希值。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">hashCode</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd">int</span> hashCode <span style="color:#ff79c6">=</span> 1<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">for</span> <span style="color:#ff79c6">(</span>E e <span style="color:#ff79c6">:</span> <span style="color:#ff79c6">this</span><span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        hashCode <span style="color:#ff79c6">=</span> 31 <span style="color:#ff79c6">*</span> hashCode <span style="color:#ff79c6">+</span> <span style="color:#ff79c6">(</span>e <span style="color:#ff79c6">==</span> <span style="color:#ff79c6">null</span> <span style="color:#ff79c6">?</span> 0 <span style="color:#ff79c6">:</span> e<span style="color:#ff79c6">.</span><span style="color:#50fa7b">hashCode</span><span style="color:#ff79c6">());</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">return</span> hashCode<span style="color:#ff79c6">;</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><hr>
+<h4 id="iterator方法">iterator()方法</h4>
+<p>创建并返回一个 <strong><code>Itr</code></strong> 迭代器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> Iterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">iterator</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> Itr<span style="color:#ff79c6">();</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="listiterator方法">listIterator()方法</h4>
+<p>创建并返回一个 <strong><code>ListIterator</code></strong> 迭代器，默认从位置 <strong>0</strong> 开始迭代。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> listIterator<span style="color:#ff79c6">(</span>0<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="listiteratorint方法">listIterator(int)方法</h4>
+<p>创建并返回一个从指定索引位置开始的 <strong><code>ListIterator</code></strong> 迭代器。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 检查添加位置
+</span><span style="color:#6272a4"></span>    rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ListItr<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h4 id="sublistint-int方法">subList(int, int)方法</h4>
+<p>返回一个从 <strong>fromIndex</strong> 位置到 <strong>toIndex</strong> 位置的子 <strong>List</strong>，该子 <strong>List</strong> 继承 <strong><code>AbstractList</code></strong>。
+如果当前列表实现 <strong>java.util.RandomAccess</strong>，返回一个支持随机访问的子列表。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">public</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">subList</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span> <span style="color:#ff79c6">instanceof</span> RandomAccess <span style="color:#ff79c6">?</span>
+            <span style="color:#ff79c6">new</span> RandomAccessSubList<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> fromIndex<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">:</span>
+            <span style="color:#ff79c6">new</span> SubList<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> fromIndex<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">));</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><hr>
+<h2 id="三迭代器">三、迭代器</h2>
+<p><strong>AbstractList</strong> 抽象类内部提供了两个通用的迭代器，分别是：<strong><code>Itr</code></strong>、<strong><code>ListItr</code></strong>，子类无需实现迭代器，可直接使用。</p>
+<h3 id="31-itr">3.1 Itr</h3>
+<p>迭代器，实现了 <strong><code>java.util.Iterator</code></strong> 接口。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">Itr</span> <span style="color:#8be9fd;font-style:italic">implements</span> Iterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 游标，记录上次返回元素与下一个元素之间的位置
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> cursor <span style="color:#ff79c6">=</span> 0<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 最近一次调用（上一次）元素的位置，如果元素删除，则重置为 -1
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> lastRet <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span>
+    <span style="color:#6272a4">// 记录列表修改次数，如果两值不相同，说明发生并发操作。
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd">int</span> expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span>
+
+    <span style="color:#6272a4">// 是否有下一个元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> cursor <span style="color:#ff79c6">!=</span> size<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 返回下一个元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">next</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> cursor<span style="color:#ff79c6">;</span>
+            E next <span style="color:#ff79c6">=</span> get<span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 依赖子类实现的 get 方法
+</span><span style="color:#6272a4"></span>            lastRet <span style="color:#ff79c6">=</span> i<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 每次迭代后记录上次迭代的位置
+</span><span style="color:#6272a4"></span>            cursor <span style="color:#ff79c6">=</span> i <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">return</span> next<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IndexOutOfBoundsException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            checkForComodification<span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> NoSuchElementException<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 删除当前迭代的元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">remove</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#6272a4">// 游标起始位置为0，lastRet小于0，不可删除
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>lastRet <span style="color:#ff79c6">&lt;</span> 0<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalStateException<span style="color:#ff79c6">();</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            AbstractList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">remove</span><span style="color:#ff79c6">(</span>lastRet<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 依赖子类实现的 remove 方法
+</span><span style="color:#6272a4"></span>            <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>lastRet <span style="color:#ff79c6">&lt;</span> cursor<span style="color:#ff79c6">)</span>
+                cursor<span style="color:#ff79c6">--;</span>
+            lastRet <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 删除后，上次位置重置为-1
+</span><span style="color:#6272a4"></span>            expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IndexOutOfBoundsException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#6272a4">// 检查修改数，每次操作前调用
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">checkForComodification</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>modCount <span style="color:#ff79c6">!=</span> expectedModCount<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="32-listitr">3.2 ListItr</h3>
+<p>
+  <figure>
+    <img src="/images/javase/AbstractList-source-analysis/ListItr.png" alt="ListItr继承关系">
+    <center><figcaption>ListItr继承关系</figcaption></center>
+  </figure>
+
+</p>
+<p><strong><code>ListItr</code></strong> 继承 <strong><code>Itr</code></strong>，实现了 <strong><code>java.util.ListIterator</code></strong> 接口。支持<strong>双向迭代</strong>。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">ListItr</span> <span style="color:#8be9fd;font-style:italic">extends</span> Itr <span style="color:#8be9fd;font-style:italic">implements</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#6272a4">// 构造器，支持从指定位置开始迭代
+</span><span style="color:#6272a4"></span>    ListItr<span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        cursor <span style="color:#ff79c6">=</span> index<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 是否有前一个元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">hasPrevious</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> cursor <span style="color:#ff79c6">!=</span> 0<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 返回前一个元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">previous</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> cursor <span style="color:#ff79c6">-</span> 1<span style="color:#ff79c6">;</span>
+            E previous <span style="color:#ff79c6">=</span> get<span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 依赖子类实现的 get 方法
+</span><span style="color:#6272a4"></span>            lastRet <span style="color:#ff79c6">=</span> cursor <span style="color:#ff79c6">=</span> i<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">return</span> previous<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IndexOutOfBoundsException e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            checkForComodification<span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> NoSuchElementException<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 下一个元素的索引
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">nextIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> cursor<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 上一个元素的索引
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">previousIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> cursor<span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 当前游标-1
+</span><span style="color:#6272a4"></span>    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 替换当前位置的元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>lastRet <span style="color:#ff79c6">&lt;</span> 0<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalStateException<span style="color:#ff79c6">();</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            AbstractList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>lastRet<span style="color:#ff79c6">,</span> e<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 依赖子类实现的 set 方法
+</span><span style="color:#6272a4"></span>            expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 重新设置修改次数
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IndexOutOfBoundsException ex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+    <span style="color:#6272a4">// 在当前迭代的游标位置增加一个元素
+</span><span style="color:#6272a4"></span>    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">try</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd">int</span> i <span style="color:#ff79c6">=</span> cursor<span style="color:#ff79c6">;</span>
+            AbstractList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>i<span style="color:#ff79c6">,</span> e<span style="color:#ff79c6">);</span> <span style="color:#6272a4">// 依赖子类实现的 add 方法
+</span><span style="color:#6272a4"></span>            lastRet <span style="color:#ff79c6">=</span> <span style="color:#ff79c6">-</span>1<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 上次位置重置为-1
+</span><span style="color:#6272a4"></span>            cursor <span style="color:#ff79c6">=</span> i <span style="color:#ff79c6">+</span> 1<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 游标+1
+</span><span style="color:#6272a4"></span>            expectedModCount <span style="color:#ff79c6">=</span> modCount<span style="color:#ff79c6">;</span> <span style="color:#6272a4">// 重新设置修改次数
+</span><span style="color:#6272a4"></span>        <span style="color:#ff79c6">}</span> <span style="color:#ff79c6">catch</span> <span style="color:#ff79c6">(</span>IndexOutOfBoundsException ex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">}</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><hr>
+<h2 id="四子列表">四、子列表</h2>
+<p>调用 <strong><code>subList()</code></strong> 方法返回当前列表的子列表。</p>
+<h3 id="41-sublist">4.1 SubList</h3>
+<p><strong><code>AbstractList</code></strong> 抽象类的子类。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">SubList</span><span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#8be9fd;font-style:italic">extends</span> AbstractList<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#ff79c6">{</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">final</span> AbstractList<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> l<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> offset<span style="color:#ff79c6">;</span>
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">int</span> size<span style="color:#ff79c6">;</span>
+
+    SubList<span style="color:#ff79c6">(</span>AbstractList<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> list<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>fromIndex <span style="color:#ff79c6">&lt;</span> 0<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;fromIndex = &#34;</span> <span style="color:#ff79c6">+</span> fromIndex<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>toIndex <span style="color:#ff79c6">&gt;</span> list<span style="color:#ff79c6">.</span><span style="color:#50fa7b">size</span><span style="color:#ff79c6">())</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;toIndex = &#34;</span> <span style="color:#ff79c6">+</span> toIndex<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>fromIndex <span style="color:#ff79c6">&gt;</span> toIndex<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IllegalArgumentException<span style="color:#ff79c6">(</span><span style="color:#f1fa8c">&#34;fromIndex(&#34;</span> <span style="color:#ff79c6">+</span> fromIndex <span style="color:#ff79c6">+</span>
+                                               <span style="color:#f1fa8c">&#34;) &gt; toIndex(&#34;</span> <span style="color:#ff79c6">+</span> toIndex <span style="color:#ff79c6">+</span> <span style="color:#f1fa8c">&#34;)&#34;</span><span style="color:#ff79c6">);</span>
+        l <span style="color:#ff79c6">=</span> list<span style="color:#ff79c6">;</span>
+        offset <span style="color:#ff79c6">=</span> fromIndex<span style="color:#ff79c6">;</span>
+        size <span style="color:#ff79c6">=</span> toIndex <span style="color:#ff79c6">-</span> fromIndex<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">return</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">,</span> element<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">return</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">get</span><span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">size</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">return</span> size<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> E element<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">,</span> element<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+        size<span style="color:#ff79c6">++;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">remove</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        rangeCheck<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        E result <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">remove</span><span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+        size<span style="color:#ff79c6">--;</span>
+        <span style="color:#ff79c6">return</span> result<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">protected</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">removeRange</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">removeRange</span><span style="color:#ff79c6">(</span>fromIndex<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+        size <span style="color:#ff79c6">-=</span> <span style="color:#ff79c6">(</span>toIndex<span style="color:#ff79c6">-</span>fromIndex<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span>Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> addAll<span style="color:#ff79c6">(</span>size<span style="color:#ff79c6">,</span> c<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">,</span> Collection<span style="color:#ff79c6">&lt;?</span> <span style="color:#8be9fd;font-style:italic">extends</span> E<span style="color:#ff79c6">&gt;</span> c<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+        <span style="color:#8be9fd">int</span> cSize <span style="color:#ff79c6">=</span> c<span style="color:#ff79c6">.</span><span style="color:#50fa7b">size</span><span style="color:#ff79c6">();</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>cSize<span style="color:#ff79c6">==</span>0<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">false</span><span style="color:#ff79c6">;</span>
+
+        checkForComodification<span style="color:#ff79c6">();</span>
+        l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">addAll</span><span style="color:#ff79c6">(</span>offset<span style="color:#ff79c6">+</span>index<span style="color:#ff79c6">,</span> c<span style="color:#ff79c6">);</span>
+        <span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+        size <span style="color:#ff79c6">+=</span> cSize<span style="color:#ff79c6">;</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">true</span><span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> Iterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">iterator</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> listIterator<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd;font-style:italic">final</span> <span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        checkForComodification<span style="color:#ff79c6">();</span>
+        rangeCheckForAdd<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">);</span>
+
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;()</span> <span style="color:#ff79c6">{</span>
+            <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd;font-style:italic">final</span> ListIterator<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> i <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">listIterator</span><span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">+</span>offset<span style="color:#ff79c6">);</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">hasNext</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">return</span> nextIndex<span style="color:#ff79c6">()</span> <span style="color:#ff79c6">&lt;</span> size<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">next</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>hasNext<span style="color:#ff79c6">())</span>
+                    <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">next</span><span style="color:#ff79c6">();</span>
+                <span style="color:#ff79c6">else</span>
+                    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> NoSuchElementException<span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">boolean</span> <span style="color:#50fa7b">hasPrevious</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">return</span> previousIndex<span style="color:#ff79c6">()</span> <span style="color:#ff79c6">&gt;=</span> 0<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> E <span style="color:#50fa7b">previous</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>hasPrevious<span style="color:#ff79c6">())</span>
+                    <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previous</span><span style="color:#ff79c6">();</span>
+                <span style="color:#ff79c6">else</span>
+                    <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> NoSuchElementException<span style="color:#ff79c6">();</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">nextIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">nextIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">-</span> offset<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">int</span> <span style="color:#50fa7b">previousIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                <span style="color:#ff79c6">return</span> i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">previousIndex</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">-</span> offset<span style="color:#ff79c6">;</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">remove</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+                i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">remove</span><span style="color:#ff79c6">();</span>
+                SubList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+                size<span style="color:#ff79c6">--;</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">set</span><span style="color:#ff79c6">(</span>e<span style="color:#ff79c6">);</span>
+            <span style="color:#ff79c6">}</span>
+
+            <span style="color:#8be9fd;font-style:italic">public</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>E e<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+                i<span style="color:#ff79c6">.</span><span style="color:#50fa7b">add</span><span style="color:#ff79c6">(</span>e<span style="color:#ff79c6">);</span>
+                SubList<span style="color:#ff79c6">.</span><span style="color:#50fa7b">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">;</span>
+                size<span style="color:#ff79c6">++;</span>
+            <span style="color:#ff79c6">}</span>
+        <span style="color:#ff79c6">};</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">subList</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> SubList<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> fromIndex<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">rangeCheck</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>index <span style="color:#ff79c6">&lt;</span> 0 <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;=</span> size<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span>outOfBoundsMsg<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">));</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">rangeCheckForAdd</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span>index <span style="color:#ff79c6">&lt;</span> 0 <span style="color:#ff79c6">||</span> index <span style="color:#ff79c6">&gt;</span> size<span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> IndexOutOfBoundsException<span style="color:#ff79c6">(</span>outOfBoundsMsg<span style="color:#ff79c6">(</span>index<span style="color:#ff79c6">));</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> String <span style="color:#50fa7b">outOfBoundsMsg</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> index<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#f1fa8c">&#34;Index: &#34;</span><span style="color:#ff79c6">+</span>index<span style="color:#ff79c6">+</span><span style="color:#f1fa8c">&#34;, Size: &#34;</span><span style="color:#ff79c6">+</span>size<span style="color:#ff79c6">;</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">private</span> <span style="color:#8be9fd">void</span> <span style="color:#50fa7b">checkForComodification</span><span style="color:#ff79c6">()</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">if</span> <span style="color:#ff79c6">(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span> <span style="color:#ff79c6">!=</span> l<span style="color:#ff79c6">.</span><span style="color:#50fa7b">modCount</span><span style="color:#ff79c6">)</span>
+            <span style="color:#ff79c6">throw</span> <span style="color:#ff79c6">new</span> ConcurrentModificationException<span style="color:#ff79c6">();</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div><h3 id="42-randomaccesssublist">4.2 RandomAccessSubList</h3>
+<p>继承 <strong><code>SubList</code></strong>，实现了 <strong><code>java.util.RandomAccess</code></strong> 接口的随机访问子列表。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#8be9fd;font-style:italic">class</span> <span style="color:#50fa7b">RandomAccessSubList</span><span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#8be9fd;font-style:italic">extends</span> SubList<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#8be9fd;font-style:italic">implements</span> RandomAccess <span style="color:#ff79c6">{</span>
+    RandomAccessSubList<span style="color:#ff79c6">(</span>AbstractList<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> list<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#8be9fd;font-style:italic">super</span><span style="color:#ff79c6">(</span>list<span style="color:#ff79c6">,</span> fromIndex<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+
+    <span style="color:#8be9fd;font-style:italic">public</span> List<span style="color:#ff79c6">&lt;</span>E<span style="color:#ff79c6">&gt;</span> <span style="color:#50fa7b">subList</span><span style="color:#ff79c6">(</span><span style="color:#8be9fd">int</span> fromIndex<span style="color:#ff79c6">,</span> <span style="color:#8be9fd">int</span> toIndex<span style="color:#ff79c6">)</span> <span style="color:#ff79c6">{</span>
+        <span style="color:#ff79c6">return</span> <span style="color:#ff79c6">new</span> RandomAccessSubList<span style="color:#ff79c6">&lt;&gt;(</span><span style="color:#ff79c6">this</span><span style="color:#ff79c6">,</span> fromIndex<span style="color:#ff79c6">,</span> toIndex<span style="color:#ff79c6">);</span>
+    <span style="color:#ff79c6">}</span>
+<span style="color:#ff79c6">}</span>
+</code></pre></div>
+
+                
+                
+<div class="entry-shang text-center">
+    
+	    <p>「真诚赞赏，手留余香」</p>
+	
+	<button class="zs show-zs btn btn-bred">赞赏支持</button>
+</div>
+<div class="zs-modal-bg"></div>
+<div class="zs-modal-box">
+	<div class="zs-modal-head">
+		<button type="button" class="close">×</button>
+		<span class="author"><a href="https://cuilan.github.io/"><img src="/img/favicon.png" />CUILAN</a></span>
+        
+	        <p class="tip"><i></i><span>真诚赞赏，手留余香</span></p>
+		
+ 
+	</div>
+	<div class="zs-modal-body">
+		<div class="zs-modal-btns">
+			<button class="btn btn-blink" data-num="2">2元</button>
+			<button class="btn btn-blink" data-num="5">5元</button>
+			<button class="btn btn-blink" data-num="10">10元</button>
+			<button class="btn btn-blink" data-num="50">50元</button>
+			<button class="btn btn-blink" data-num="100">100元</button>
+			<button class="btn btn-blink" data-num="1">任意金额</button>
+		</div>
+		<div class="zs-modal-pay">
+			<button class="btn btn-bred" id="pay-text">2元</button>
+			<p>使用<span id="pay-type">微信</span>扫描二维码完成支付</p>
+			<img src="/img/reward/wechat-2.png"  id="pay-image"/>
+		</div>
+	</div>
+	<div class="zs-modal-footer">
+		<label><input type="radio" name="zs-type" value="wechat" class="zs-type" checked="checked"><span ><span class="zs-wechat"><img src="/img/reward/wechat-btn.png"/></span></label>
+		<label><input type="radio" name="zs-type" value="alipay" class="zs-type" class="zs-alipay"><img src="/img/reward/alipay-btn.png"/></span></label>
+	</div>
+</div>
+<script type="text/javascript" src="/js/reward.js"></script>
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/java/set-source-analysis/" data-toggle="tooltip" data-placement="top" title="Set接口源码分析">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/java/sortedset-source-analysis/" data-toggle="tooltip" data-placement="top" title="SortedSet接口源码分析">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                        
+                        
+                        
+                        
+                        <a href="/tags/java" title="java">
+                            java
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/nginx" title="nginx">
+                            nginx
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/springmvc" title="springmvc">
+                            springmvc
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6" title="中间件">
+                            中间件
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B" title="多线程">
+                            多线程
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E5%B9%B6%E5%8F%91" title="并发">
+                            并发
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%A6%82%E7%8E%87%E8%AE%BA" title="概率论">
+                            概率论
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E6%BA%90%E7%A0%81" title="源码">
+                            源码
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%9B%AE%E5%BD%95" title="目录">
+                            目录
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E7%BB%9F%E8%AE%A1%E5%AD%A6" title="统计学">
+                            统计学
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E8%99%9A%E6%8B%9F%E6%9C%BA" title="虚拟机">
+                            虚拟机
+                        </a>
+                        
+                        
+                        
+                        <a href="/tags/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6" title="集合框架">
+                            集合框架
+                        </a>
+                        
+                        
+                    </div>
+                </section>
+                
+
+                
+                
+                <section>
+                    <hr>
+                    <h5>FRIENDS</h5>
+                    <ul class="list-inline">
+                        
+                    </ul>
+                </section>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:17746598041@163.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    <li>
+                        <a target="_blank" href="/mengdond24">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-wechat fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/cuilan">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; CUILAN 2020
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+</body>
+</html>
