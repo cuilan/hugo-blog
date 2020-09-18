@@ -13,21 +13,19 @@ categories:
 
 ![AbstractMap接口继承关系](/images/javase/AbstractMap-source-analysis/AbstractMap1.png "AbstractMap接口继承关系")
 
-<!-- more -->
-
-## 一、AbstractMap特点或规范
+# 一、AbstractMap特点或规范
 
 **AbstractMap** 抽象类提供了 **Map** 接口的基础实现，以最大限度地减少实现此接口所需的工作量。
 
-### 1.1 实现不可修改的Map
+## 1.1 实现不可修改的Map
 
 要实现不可修改的 **Map**，子类只需要继承此类并实现 **`entrySet()`** 方法，该方法返回 **Map.Entry** 的 **set视图**。该set视图应该继承 **java.util.AbstractSet**，并实现抽象其方法。此set视图不应该支持 **`add()`**，**`remove()`** 方法，并且其迭代器不应支持 **`remove()`**方法。
 
-### 1.2 实现可修改的Map
+## 1.2 实现可修改的Map
 
 要实现可修改的 **Map**，子类必须另外覆盖此类的 **`put(K, V)`** 方法，否则会抛出 **UnsupportedOperationException** 异常，以及 **`entrySet().iterator()`** 返回的迭代器必须另外实现其 **`remove()`** 方法。
 
-### 1.3 构造器规范
+## 1.3 构造器规范
 
 子类应该根据 **Map接口的构造器规范** 提供两个构造器：
 - 无参构造器
@@ -35,7 +33,7 @@ categories:
 
 ---
 
-## 二、成员变量
+# 二、成员变量
 
 仅在第一次请求 **`keySet()`** 方法时初始化实例。
 
@@ -69,7 +67,7 @@ public Collection<V> values() {
 
 ---
 
-## 三、构造器
+# 三、构造器
 
 唯一构造器。
 
@@ -80,9 +78,9 @@ protected AbstractMap() {
 
 ---
 
-## 四、方法分析
+# 四、方法分析
 
-### 4.1 AbstractMap的方法
+## 4.1 AbstractMap的方法
 
 **`SimpleEntry`** 和 **`SimpleImmutableEntry`** 的实用方法。比较是否相等，并检查空值。
 
@@ -92,9 +90,9 @@ private static boolean eq(Object o1, Object o2) {
 }
 ```
 
-### 4.2 Map接口的实现方法
+## 4.2 Map接口的实现方法
 
-#### 全局唯一抽象方法
+### 全局唯一抽象方法
 
 返回此 Map 中包含的 Map.Entry 的 Set 视图。
 如果在对集合进行迭代时不能修改 Map（除非通过迭代器自己的 **`remove()`** 操作，或者通过迭代器返回 Entry 上的 **`setValue(V)`** 操作）。
@@ -104,7 +102,7 @@ private static boolean eq(Object o1, Object o2) {
 public abstract Set<Entry<K,V>> entrySet();
 ```
 
-#### 查询操作
+### 查询操作
 
 ```java
 // 返回 Map 的大小
@@ -171,7 +169,7 @@ public V get(Object key) {
 }
 ```
 
-#### 修改操作
+### 修改操作
 
 ```java
 // AbstractMap 抽象类不提供具体实现，实现可改变的 Map，需子类覆盖实现
@@ -204,7 +202,7 @@ public V remove(Object key) {
 }
 ```
 
-#### 批量操作
+### 批量操作
 
 ```java
 // 依赖 put(K, V) 方法，需要子类覆盖实现
@@ -218,7 +216,7 @@ public void clear() {
 }
 ```
 
-#### 转为单列集合视图
+### 转为单列集合视图
 
 ```java
 // 仅在第一次请求时，创建一个 AbstractSet 实现类初始化 keySet
@@ -241,7 +239,7 @@ public Collection<V> values() {
 }
 ```
 
-#### 比较和哈希
+### 比较和哈希
 
 **`equals()`** 方法将每一项 Entry 都进行对比
 
@@ -284,7 +282,7 @@ public int hashCode() {
 }
 ```
 
-### 4.3 继承自Object的方法
+## 4.3 继承自Object的方法
 
 ```java
 public String toString() {
@@ -314,9 +312,9 @@ protected Object clone() throws CloneNotSupportedException {
 
 ---
 
-## 五、Entry实现（内部类）
+# 五、Entry实现（内部类）
 
-### 5.1 SimpleEntry
+## 5.1 SimpleEntry
 
 ```java
 public static class SimpleEntry<K,V> implements Entry<K,V>, java.io.Serializable {
@@ -353,7 +351,7 @@ public static class SimpleEntry<K,V> implements Entry<K,V>, java.io.Serializable
 }
 ```
 
-### 5.2 SimpleImmutableEntry
+## 5.2 SimpleImmutableEntry
 
 不可变 Entry 实现类，不支持 setValue(V) 方法。
 

@@ -13,26 +13,13 @@ categories:
 
 ![HashMap继承关系](/images/javase/HashMap-source-analysis/HashMap1.png "HashMap继承关系")
 
-<!-- more -->
-
-<a href="#1">一、HashMap特点或规范</a>
-<a href="#2">二、成员属性</a>
-<a href="#3">三、构造器</a>
-<a href="#4">四、内部类：Node，即：Map.Entry</a>
-<a href="#5">五、继承自AbstractMap的方法</a>
-<a href="#6">六、实现自Map接口的方法</a>
-<a href="#7">**七、静态工具方法**</a>
-<a href="#8">**八、其他主要方法**</a>
-<a href="#9">九、迭代器</a>
-<a href="/blog/2019/09/11/javase/HashMap-TreeNode/">**十、<font color="red">红</font><font color="black">黑</font>树**</a>
-
 ---
 
-## <a name="1">一、HashMap特点或规范</a>
+# 一、HashMap特点或规范
 
 **HashMap** 是基于 **哈希表** 的 Map 接口实现。**无序** 且不保证顺序永远保持不变。
 
-### 1.1 与Hashtable的区别
+## 1.1 与Hashtable的区别
 
 | HashMap | Hashtable |
 | --- | --- |
@@ -40,13 +27,13 @@ categories:
 | 允许空键 | 不允许空键 |
 | 允许空值 | 不允许空值 |
 
-### 1.2 性能
+## 1.2 性能
 
 - 通常情况下，**`hash(Object)`** 方法计算得出的哈希值都均匀的分布在 **哈希桶** 之间，这样可以保证 **`get(K)`** 和 **`put(K, V)`** 基本操作方法的性能为恒定时间。
 - 对集合视图：**`keySet()`**，**`values()`**，**`entrySet()`** 的 **迭代时间**，与 HashMap实例的容量（桶的数量）加上其大小（K-V Node 的数量）成比例的时间。因此，如果迭代性能有较高要求，则不要将 初始容量设置得太高 或 负载因子设置得太低。
 - 影响 HashMap 性能的两个因素：**初始容量** 和 **负载因子**。
 
-### 1.3 容量capacity & 加载因子loadFactor
+## 1.3 容量capacity & 加载因子loadFactor
 
 - **容量**：哈希表中的桶数，初始容量只是创建 HashMap 时的容量。
 - **加载因子**：是一个比例值，即：已被分布的哈希桶数 / 容量；也可以描述为：**扩容操作之前允许哈希桶中已被分布的桶的数量**。
@@ -57,13 +44,13 @@ categories:
 较高的值会减少空间开销，但会增加查找成本。在设置初始容量时，应考虑 Map 中的预期 Entry 数及加载因子，以避免多次扩容带来的性能损耗。
 如果要将一个包含多个 Entry 的 Map 存储在 HashMap 中，应使用足够大的初始容量来创建，否则 HashMap 自身的扩容机制会多次进行扩容，严重影响性能。
 
-### 1.4 HashMap的数据结构
+## 1.4 HashMap的数据结构
 
-##### 1.4.1 hash算法
+### 1.4.1 hash算法
 
-HashMap 是通过对 key 进行 hash() 计算得出该节点（Node） 在 table 中的位置。详情：<a href="#hash">**hash(Object)方法**</a>。
+HashMap 是通过对 key 进行 hash() 计算得出该节点（Node） 在 table 中的位置。详情：[**hash(Object)方法**](/post/java/hashmap-source-analysis/#71-hashobject-方法)。
 
-##### 1.4.2 hash冲突及常见解决办法
+### 1.4.2 hash冲突及常见解决办法
 
 当 HashMap 中节点过多时，不可避免的会出现 hash 冲突的问题，常见解决办法有两类：
 - **开放定址法**：又有两种：
@@ -74,13 +61,13 @@ HashMap 是通过对 key 进行 hash() 计算得出该节点（Node） 在 table
 - **链地址法**：HashMap 就采用了这种方式。
   - 这种方式的哈希表有一个**桶**的概念，即：**哈希桶**，每一个链表就是一个哈希桶，链表中存放节点 Node。当发生 hash 冲突时，放入当前链表的末尾。
 
-##### 1.4.3 <font color="red">红</font>黑树
+### 1.4.3 红黑树
 
-当哈希表某一位置处的链表达到 8 个以上，并且哈希表的长度大于 64，该位置的链表会转换为一种 **平衡二叉树**：<a href="#10">**红黑树**</a>。
+当哈希表某一位置处的链表达到 8 个以上，并且哈希表的长度大于 64，该位置的链表会转换为一种 **平衡二叉树**：[**红黑树**](/post/java/hashmap-treenode/)。
 
 ![HashMap数据结构](/images/javase/HashMap-source-analysis/HashMap-Tree.png "HashMap数据结构")
 
-### 1.5 HashMap不同步
+## 1.5 HashMap不同步
 
 如果多个线程并发访问 **HashMap**，并且至少有一个线程在结构上进行了修改，则必须在外部进行同步。**结构修改** 是指 **添加**或 **删除** 一个或多个 **`Entry`** 的任何操作，仅修改 **`Entry`** 的值不是结构修改。这通常通过同步自然封装映射的某个对象来完成。
 
@@ -88,13 +75,13 @@ HashMap 是通过对 key 进行 hash() 计算得出该节点（Node） 在 table
 
 **`Map m = Collections.synchronizedMap(new HashMap(...));`**
 
-### 1.6 fail-fast快速失败机制
+## 1.6 fail-fast快速失败机制
 
 **HashMap** 的所有“集合视图方法”返回的迭代器都是 **_fail-fast_** 的：如果在创建迭代器之后的任何时候对 Map 进行结构修改，除了通过迭代器自己的 **`remove()`** 方法之外，迭代器将抛出 **`ConcurrentModificationException`** 异常。因此，在并发修改的情况下，迭代器可快速地失败。
 
 ---
 
-## <a name="2">二、成员属性</a>
+# 二、成员属性
 
 默认初始容量，必须是2的幂。
 ```java
@@ -158,9 +145,9 @@ final float loadFactor;
 
 ---
 
-## <a name="3">三、构造器</a>
+# 三、构造器
 
-### 3.1 遵循Map接口的构造器规范
+## 3.1 遵循Map接口的构造器规范
 
 **`java.util.Map`** 接口的构造器规范，提供一个 **无参构造器**，一个 **参数类型为 Map** 的构造器。初始加载因子为默认值：0.75，其余值都为默认值。
 ```java
@@ -174,7 +161,7 @@ public HashMap(Map<? extends K, ? extends V> m) {
 }
 ```
 
-### 3.2 HashMap自身构造器
+## 3.2 HashMap自身构造器
 
 支持指定 **初始容量**，加载因子为默认值：**0.75**
 ```java
@@ -202,7 +189,7 @@ public HashMap(int initialCapacity, float loadFactor) {
 
 ---
 
-## <a name="4">四、内部类：Node，即：Map.Entry</a>
+# 四、内部类：Node，即：Map.Entry
 
 ![HashMap.Node结构](/images/javase/HashMap-source-analysis/HashMap-Node.png "HashMap.Node结构")
 
@@ -253,9 +240,9 @@ static class Node<K,V> implements Map.Entry<K,V> {
 
 ---
 
-## <a name="5">五、继承自AbstractMap的方法</a>
+# 五、继承自AbstractMap的方法
 
-### 5.1 基础操作
+## 5.1 基础操作
 
 对 HashMap 的基础操作，依赖于 **`hash() / getNode() / putVal() / putMapEntries() / removeNode()`** 方法。
 
@@ -324,7 +311,7 @@ public Object clone() {
 }
 ```
 
-### 5.2 转换为单列集合视图
+## 5.2 转换为单列集合视图
 
 ```java
 // 返回 HashMap.KeySet
@@ -346,9 +333,9 @@ public Set<Map.Entry<K,V>> entrySet() {
 
 ---
 
-## <a name="6">六、实现自Map接口的方法</a>
+# 六、实现自Map接口的方法
 
-### 6.1 覆盖扩展自 JDK8 Map 的默认方法。
+## 6.1 覆盖扩展自 JDK8 Map 的默认方法。
 
 ```java
 // 返回指定 key 的 value，如果不包含 key 的映射，则返回 defaultValue
@@ -377,7 +364,7 @@ map.put(2, "b");
 map.put(3, "c");
 ```
 
-#### computeIfAbsent()
+### computeIfAbsent()
 
 如果 key 存在，则不进行计算，输出旧值。
 如果 key 不存在，否则根据 key 计算新值，设置并返回。
@@ -387,7 +374,7 @@ map.computeIfAbsent(3, key -> key.toString()); // 结果为：c
 map.computeIfAbsent(4, key -> key.toString()); // 结果为：4
 ```
 
-#### computeIfPresent()
+### computeIfPresent()
 
 如果 key 存在，则根据 key/value 计算新的值，设置并返回，如果计算结果为 null，则删除 Node。
 如果 key 不存在，不进行计算。
@@ -398,7 +385,7 @@ map.computeIfPresent(4, (key, value) -> key + value); // 无结果
 map.computeIfPresent(2, (key, value) -> null); // 将 key 为2的 Node 删除
 ```
 
-#### compute()
+### compute()
 
 **`compute()`** 方法是 **`computeIfAbsent()`** 和 **`computeIfPresent()`** 方法的合体。
 无论 key 是否存在，都根据 key/value 计算新值，如果计算结果为 null，则删除 Node。
@@ -409,7 +396,7 @@ map.compute(4, (k, v) -> k + v); // 结果为：4null
 map.compute(2, (k, v) -> null); // 将 key 为2的 Node 删除
 ```
 
-#### merge()
+### merge()
 
 无论 key 是否存在，都根据 **旧值** 与 **新值** 进行计算，设置并返回计算结果，如果计算结果为 null，则删除 Node。
 ```java
@@ -421,9 +408,9 @@ map.merge(2, "bbb", (oldV, newV) -> null); // 将 key 为2的 Node 删除
 
 ---
 
-## <a name="7">七、HashMap静态工具方法</a>
+# 七、HashMap静态工具方法
 
-### <a name="hash">7.1 hash(Object) 方法</a>
+## 7.1 hash(Object) 方法
 
 对 key 计算 hashCode 计算，int 类型的 hashCode 占 32 位，**`h >>> 16`** 将 hashCode 右移16位，再与 hashCode 进行异或运算。
 ```java
@@ -454,7 +441,7 @@ tab[(n - 1) & hash]
 
 只有最低的4位参与了计算，**该 key 在 table 的 tab[5] 位置**。
 
-### 7.2 tableSizeFor(int) 方法
+## 7.2 tableSizeFor(int) 方法
 
 此方法保证返回值是大于等于给定参数 cap 最小的2的幂次方的数值。具体算法是分别进行多次 **右移**，每次进行 **或等运算**。
 
@@ -501,9 +488,9 @@ static final int tableSizeFor(int cap) {
 
 ---
 
-## <a name="8">八、其他主要方法</a>
+# 八、其他主要方法
 
-#### putMapEntries(Map, boolean)
+## putMapEntries(Map, boolean)
 
 ```java
 // 批量放入
@@ -528,7 +515,7 @@ final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
 }
 ```
 
-#### getNode(int, Object)
+## getNode(int, Object)
 
 **执行过程分析：**
 
@@ -560,7 +547,7 @@ final Node<K,V> getNode(int hash, Object key) {
 }
 ```
 
-#### putVal(int, K, V, boolean, boolean) 方法
+## putVal(int, K, V, boolean, boolean) 方法
 
 **执行过程分析：**
 1. 先判断 table 是否为空，如果为空，进行扩容。
@@ -617,7 +604,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
 }
 ```
 
-#### resize() 方法
+## resize() 方法
 
 **执行过程分析：**
 1. 先判断旧容量是否大于 0：
@@ -722,7 +709,7 @@ final Node<K,V>[] resize() {
 }
 ```
 
-#### removeNode(int, Object, Object, boolean, boolean) 方法
+## removeNode(int, Object, Object, boolean, boolean) 方法
 
 核心删除方法，其他 remove 方法都依赖于此方法。
 **执行过程分析：**
@@ -779,7 +766,7 @@ final Node<K,V> removeNode(int hash, Object key, Object value,
 
 ---
 
-## <a name="9">九、迭代器</a>
+# 九、迭代器
 
 **`keySet()`**，**`values()`**，**`entrySet()`** 三个视图方法中的迭代器都为 **`HashIterator`** 抽象类的实例。
 

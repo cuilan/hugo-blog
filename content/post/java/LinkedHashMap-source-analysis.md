@@ -13,13 +13,11 @@ categories:
 
 ![LinkedHashMap继承关系](/images/javase/LinkedHashMap-source-analysis/LinkedHashMap1.png "LinkedHashMap继承关系")
 
-<!-- more -->
-
 ---
 
-## 一、LinkedHashMap特点或规范
+# 一、LinkedHashMap特点或规范
 
-### 1.1 特点
+## 1.1 特点
 
 **`java.util.LinkedHashMap`** 是 **`java.util.Map`** 接口的 **链表 + 哈希** 实现，具有可预测的迭代顺序；与 HashMap 的不同是在 HashMap 的基础上使用了双向链表的数据结构；并按照插入顺序排序。
 
@@ -32,7 +30,7 @@ categories:
 | 空键 | 允许 | 允许 |
 | 空值 | 允许 | 允许 |
 
-### 1.2 LRU缓存
+## 1.2 LRU缓存
 
 **LinkedHashMap** 提供了一个特殊的构造函数来构建 **LRU 缓存**（Least Recent Used最近最少使用），构造器如下：
 
@@ -44,9 +42,9 @@ categories:
 
 **<font color="red">注意</font>**：调用 **`put()`** / **`putAll()`** / **`putIfAbsent()`** / **`get()`** / **`getOrDefault()`** / **`replace()`** / **`compute()`** / **`computeIfAbsent()`** / **`computeIfPresent()`** / **`merge()`** 等方法也会对 Entry 进行访问，会对迭代顺序产生影响。
 
-关于构建LRU缓存，见文章末尾：**<a href="#LRU">构建LRU缓存</a>**
+关于构建LRU缓存，见文章末尾：[**构建LRU缓存**](/post/java/linkedhashmap-source-analysis/#五构建lru缓存)
 
-### 1.3 数据结构 & 性能
+## 1.3 数据结构 & 性能
 
 **数据结构**：
 
@@ -60,11 +58,11 @@ LinkedHashMap 的数据结构在 HashMap 的基础上增加了 **双端链表** 
 - 但对于 LinkedHashMap 的集合视图的迭代所需的时间与其的大小成正比，无论其容量多大。
 - 对 HashMap 的迭代所需的时间与其容量成正比。
 
-**<font color="red">注意</font>**：LinkedHashMap 类初始化时，选择过高的初始容量所导致的性能损耗 HashMap 严重，因为此类的迭代次数不受容量影响。
+**注意**：LinkedHashMap 类初始化时，选择过高的初始容量所导致的性能损耗 HashMap 严重，因为此类的迭代次数不受容量影响。
 
 ---
 
-## 二、成员变量
+# 二、成员变量
 
 ```java
 // 头节点，最老节点
@@ -77,9 +75,9 @@ final boolean accessOrder;
 
 ---
 
-## 三、构造器
+# 三、构造器
 
-### 3.1 遵循Map接口规范的构造器
+## 3.1 遵循Map接口规范的构造器
 
 **`java.util.Map`** 接口的构造器规范，提供一个 **无参构造器**，一个 **参数类型为 Map** 的构造器。调用父类 **`HashMap`** 的构造器，初始加载因子为默认值：0.75，其余值都为默认值。
 
@@ -95,7 +93,7 @@ public LinkedHashMap(Map<? extends K, ? extends V> m) {
 }
 ```
 
-### 3.2 继承自HashMap的构造器
+## 3.2 继承自HashMap的构造器
 
 支持指定 **初始容量**，加载因子为默认值：**0.75**
 
@@ -115,7 +113,7 @@ public LinkedHashMap(int initialCapacity, float loadFactor) {
 }
 ```
 
-### 3.3 自身构造器
+## 3.3 自身构造器
 
 ```java
 public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder) {
@@ -126,11 +124,11 @@ public LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)
 
 ---
 
-## 四、方法分析
+# 四、方法分析
 
 LinkedHashMap 大部分方法都沿用父类 HashMap 中的方法。
 
-#### afterNodeAccess(E) 方法
+## afterNodeAccess(E) 方法
 
 每次发生访问调用后，将该 Entry 移动至链表末尾（tail），代表该 Entry 最近最长使用。
 
@@ -161,7 +159,7 @@ void afterNodeAccess(Node<K,V> e) { // move node to last
 }
 ```
 
-#### afterNodeInsertion(boolean) 方法
+## afterNodeInsertion(boolean) 方法
 
 添加新 Entry 后，判断是否需要删除最不常用（head）的 Entry。
 
@@ -175,7 +173,7 @@ void afterNodeInsertion(boolean evict) { // possibly remove eldest
 }
 ```
 
-#### afterNodeRemoval(Node) 方法
+## afterNodeRemoval(Node) 方法
 
 删除 Entry 后，断开该 Entry 的头尾链接。
 ```java
@@ -193,7 +191,7 @@ void afterNodeRemoval(Node<K,V> e) { // unlink
 }
 ```
 
-#### linkNodeLast() 方法
+## linkNodeLast() 方法
 
 将 Entry 链接至链表末尾。
 
@@ -210,7 +208,7 @@ private void linkNodeLast(LinkedHashMap.Entry<K,V> p) {
 }
 ```
 
-#### transferLinks() 方法
+## transferLinks() 方法
 
 将两个 Entry 调换位置。
 
@@ -229,7 +227,7 @@ private void transferLinks(LinkedHashMap.Entry<K,V> src, LinkedHashMap.Entry<K,V
 }
 ```
 
-## <a name="LRU">五、构建LRU缓存</a>
+# 五、构建LRU缓存
 
 ```java
 public class LRUCache<K, V> {
@@ -252,7 +250,7 @@ public class LRUCache<K, V> {
 }
 ```
 
-### LRULinkedHashMap自定义Map类
+## LRULinkedHashMap自定义Map类
 
 ```java
 /**

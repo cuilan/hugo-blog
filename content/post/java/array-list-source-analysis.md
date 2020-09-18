@@ -9,9 +9,7 @@ categories:
 - JAVA
 ---
 
-ArrayList应该算是日常开发中使用最多的List实现类。
-
-## 一、ArrayList 的特性
+# 一、ArrayList 的特性
 
 - 有序
 - 可重复
@@ -20,9 +18,7 @@ ArrayList应该算是日常开发中使用最多的List实现类。
 - 查询快、增删慢
 - 底层通过 **Object[]** 数组实现
 
-<!-- more -->
-
-## 二、ArrayList继承关系
+# 二、ArrayList继承关系
 
 **`java.util.ArrayList`** 继承 **`java.util.AbstractList`**，实现了 **`java.util.List`**、**`java.util.RandomAccess`**、 **`java.io.Serializable`** 接口。
 
@@ -30,7 +26,7 @@ ArrayList应该算是日常开发中使用最多的List实现类。
 
 ---
 
-## 三、成员变量
+# 三、成员变量
 
 ```java
 // 序列化版本id
@@ -57,7 +53,7 @@ private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
 ---
 
-## 四、构造器
+# 四、构造器
 
 遵循 **`java.util.Collection`** 构造器规范，提供：
 - 一个空参构造器
@@ -99,11 +95,11 @@ public ArrayList(Collection<? extends E> c) {
 
 ---
 
-## 五、实现方法
+# 五、实现方法
 
-### 5.1 capacity（容量）
+## 5.1 capacity（容量）
 
-#### ensureCapacity(int)方法
+### ensureCapacity(int)方法
 
 在应用程序中可以人为增加 ArrayList 实例的容量，在添加大量元素之前可使用 **_ensureCapacity()_** 方法进行扩容。优点是可以减少重新分配容量的次数，大大提高初始化速度。
 ```java
@@ -131,7 +127,7 @@ private void grow(int minCapacity) {
 
 在扩容值很大的情况下使用  **_ensureCapacity()_**  方法可大大提高效率，但在扩容值较小时，其扩容耗时与正常情况下的默认调整容量所耗时几乎相差无几，所以只有在需要大量插入元素时，调用此方法进行扩容才会有显著的性能提升。
 
-#### trimToSize()方法
+### trimToSize()方法
 
 与 ArrayList 容量相关的方法还有 **_trimToSize()_** ，该方法的作用是将 ArrayList 的容量压缩为实际大小，从而使空间的利用率最大化，源码如下：
 
@@ -145,21 +141,21 @@ public void trimToSize() {
 }
 ```
 
-### 5.2 常用方法
+## 5.2 常用方法
 
-#### size()方法
+### size()方法
 
 返回当前实例的大小。
 
-#### isEmpty()方法
+### isEmpty()方法
 
 判断当前实例是否为空。
 
-#### contains(Object o)方法
+### contains(Object o)方法
 
 判断当前实例中是否包含  **o**  对象。
 
-#### indexOf(Object o)方法
+### indexOf(Object o)方法
 
 用于获取对象 o 第一次出现的索引位置，源码如下：
 
@@ -180,11 +176,11 @@ public int indexOf(Object o) {
 }
 ```
 
-#### lastIndexOf(Object o)方法
+### lastIndexOf(Object o)方法
 
 用于获取对象 o 最后一次出现的索引位置，与 indexOf() 方法相似，只是在内部倒序 for 循环而已。
 
-#### get(int index)方法
+### get(int index)方法
 
 获取某一位置的元素，内部调用默认权限的 elementData(int index) 方法，其本质上是对数组的随机访问。
 
@@ -200,7 +196,7 @@ E elementData(int index) {
 }
 ```
 
-#### set(int index, E element)方法
+### set(int index, E element)方法
 
 是替换该实例某一位置的值，返回被替换的值。
 
@@ -213,7 +209,7 @@ public E set(int index, E element) {
 }
 ```
 
-#### add(E e)方法
+### add(E e)方法
 
 添加元素至该实例：
 
@@ -227,7 +223,7 @@ public boolean add(E e) {
 }
 ```
 
-#### add(int index, E element)方法
+### add(int index, E element)方法
 
 ```java
 public void add(int index, E element) {
@@ -243,7 +239,7 @@ public void add(int index, E element) {
 }
 ```
 
-#### remove(int index)方法
+### remove(int index)方法
 
 移除某一位置的元素：
 ```java
@@ -263,11 +259,11 @@ public E remove(int index) {
 }
 ```
 
-#### remove(Object o)方法
+### remove(Object o)方法
 
 移除该 ArrayList 中的某一元素，如果该元素不存在则该实例保持不变，如果存在则移除该元素，且之后的元素依次前移一位，直到该实例中不包含此元素时执行完毕。
 
-#### clear()方法
+### clear()方法
 
 清空该实例中的全部元素，并将 size 修改为0。
 ```java
@@ -279,7 +275,7 @@ public void clear() {
 }
 ```
 
-#### addAll(Collection<? extends E> c)、addAll(int index, Collection<? extends E> c)是重载方法
+### addAll(Collection<? extends E> c)、addAll(int index, Collection<? extends E> c)是重载方法
 
 作用是一次性添加多个元素，本质是求 **合集**。
 ```java
@@ -312,7 +308,7 @@ public boolean addAll(int index, Collection<? extends E> c) {
 }
 ```
 
-#### removeAll(Collection<?> c)方法
+### removeAll(Collection<?> c)方法
 
 删除子集合中全部元素（如果包含），本质是求 **差集**。
 ```java
@@ -327,7 +323,7 @@ public boolean removeAll(Collection<?> c) {
 }
 ```
 
-#### retainAll(Collection<?> c)方法
+### retainAll(Collection<?> c)方法
 
 获取子集合与当前集合共同包含的元素，本质是求 **交集**。
 ```java
@@ -344,9 +340,9 @@ public boolean retainAll(Collection<?> c) {
 
 ---
 
-## 六、迭代器
+# 六、迭代器
 
-#### iterator()方法
+## iterator()方法
 
 返回一个实现 **Iterator<E>** 接口的迭代器 **Itr**，可以对集合中的元素进行操作。
 ```java
@@ -357,7 +353,7 @@ public Iterator<E> iterator() {
 private class Itr implements Iterator<E> {}
 ```
 
-#### listIterator()方法
+## listIterator()方法
 
 返回一个继承 **Itr** 内部类，并实现了 **ListIterator<E>** 接口的迭代器 **ListItr**。
 ```java
@@ -378,7 +374,7 @@ public ListIterator<E> listIterator() {
 private class ListItr extends Itr implements ListIterator<E> {}
 ```
 
-### Itr 迭代器与 ListItr 迭代器比较
+## Itr 迭代器与 ListItr 迭代器比较
 
  - ListItr 迭代器有 add() 方法，可以向集合中添加元素，Itr 迭代器无法添加。
 
@@ -388,9 +384,9 @@ private class ListItr extends Itr implements ListIterator<E> {}
 
  - ListItr 迭代器与 Itr 迭代器都可删除对象，但 ListItr 迭代器可实现对象的修改，set() 方法可以实现。Itr 迭代器仅支持遍历，不支持修改操作。因为 ListItr 迭代器的这些功能，可以实现对 LinkedList 等 List 数据结构进行操作。
 
-## 七、JDK1.8新增方法
+# 七、JDK1.8新增方法
 
-#### forEach() 方法
+## forEach() 方法
 
  **_forEach(Consumer<? super E> action)_**  方法用于迭代集合， forEach 方法是一个覆写方法，继承关系：
 
@@ -446,7 +442,7 @@ for (Iterator i=list.iterator(); i.hasNext(); ) {
 
 **ArrayList** 还实现了 **RandomAccess** 接口，通过索引随机访问，由此可见 ArrayList 中的 forEach() 方法运行速度要比增强 forEach 循环快一些。
 
-#### sort() 方法
+## sort() 方法
 
 在JDK1.7及之前的版本中，是通过 **Collections.sort()** 方法实现。
 

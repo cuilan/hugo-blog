@@ -13,13 +13,11 @@ categories:
 
 ![TreeMap继承关系](/images/javase/TreeMap-source-analysis/TreeMap1.png "TreeMap继承关系")
 
-<!-- more -->
-
 ---
 
-## 一、TreeMap特点或规范
+# 一、TreeMap特点或规范
 
-**`TreeMap`** 是基于 **<a href="/blog/2019/09/11/javase/HashMap-TreeNode/">红黑树</a>** 的 **NavigableMap** 实现。根据其 key 的 **自然顺序** 进行排序，或者根据使用的构造器在 Map 创建时提供的比较器进行排序。
+**`TreeMap`** 是基于 [**红黑树**](/post/java/hashmap-treenode/) 的 **NavigableMap** 实现。根据其 key 的 **自然顺序** 进行排序，或者根据使用的构造器在 Map 创建时提供的比较器进行排序。
 
 由于底层采用了红黑树的数据结构，因此 TreeMap 的查询方法，如：**`containsKey()`**，**`get()`**，**`put()`**，**`remove()`**，其时间复杂度均为：**O(logn)**。
 
@@ -32,9 +30,9 @@ categories:
 
 ---
 
-## 二、成员变量
+# 二、成员变量
 
-### 2.1 常量
+## 2.1 常量
 
 ```java
 // 虚拟值
@@ -47,7 +45,7 @@ private static final boolean BLACK = true;
 private final Comparator<? super K> comparator;
 ```
 
-### 2.2 变量
+## 2.2 变量
 
 ```java
 // 红黑树的根节点
@@ -66,9 +64,9 @@ private transient NavigableMap<K,V> descendingMap;
 
 ---
 
-## 三、构造器
+# 三、构造器
 
-### 3.1 遵循Map接口的构造器规范
+## 3.1 遵循Map接口的构造器规范
 
 ```java
 // 空参构造器
@@ -82,7 +80,7 @@ public TreeMap(Map<? extends K, ? extends V> m) {
 }
 ```
 
-### 3.2 遵循SortedMap接口的构造器规范
+## 3.2 遵循SortedMap接口的构造器规范
 
 ```java
 // 参数类型为 Comparator 的构造器，指定比较器
@@ -102,28 +100,28 @@ public TreeMap(SortedMap<K, ? extends V> m) {
 
 ---
 
-## 四、方法分析
+# 四、方法分析
 
 **TreeMap** 中的方法分为以下几类。
 
-### 4.1 实现自Map接口的方法
+## 4.1 实现自Map接口的方法
 
-见：<a href="/blog/2019/08/21/javase/Map-source-analysis/">java.util.Map</a>
+见：[java.util.Map](/post/java/map-source-analysis/)
 
-### 4.2 实现自SortedMap接口的方法
+## 4.2 实现自SortedMap接口的方法
 
-见：<a href="/blog/2019/08/27/javase/SortedMap-source-analysis/">java.util.SortedMap</a>
+见：[java.util.SortedMap](/post/java/sortedmap-source-analysis/)
 
-### 4.3 实现自NavigableMap接口的方法
+## 4.3 实现自NavigableMap接口的方法
 
-见：<a href="/blog/2019/08/28/javase/NavigableMap-source-analysis/">java.util.NavigableMap</a>
+见：[java.util.NavigableMap](/post/java/navigablemap-source-analysis/)
 
-### 4.4 继承自AbstractMap接口的方法
+## 4.4 继承自AbstractMap接口的方法
 
-见，<a href="/blog/2019/09/02/javase/AbstractMap-source-analysis/">java.util.AbstractMap</a>
+见，[java.util.AbstractMap](/post/java/abstractmap-source-analysis/)
 
-### 4.5 TreeMap自身方法
+## 4.5 TreeMap自身方法
 
-**TreeMap** 中的大部分方法与 **HashMap.TreeNode** 内部类相似，都使用了 **<font color="red">红</font>黑树** 结构，**变色**、**左旋**、**右旋** 等基本操作也十分相似。
+**TreeMap** 中的大部分方法与 **HashMap.TreeNode** 内部类相似，都使用了 **红黑树** 结构，**变色**、**左旋**、**右旋** 等基本操作也十分相似。
 
-见：<a href="/blog/2019/09/11/javase/HashMap-TreeNode/">HashMap.TreeNode</a>
+见：[HashMap.TreeNode](/post/java/hashmap-treenode/)

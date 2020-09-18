@@ -18,23 +18,21 @@ categories:
 
 ![TreeNode继承关系](/images/javase/HashMap-TreeNode/TreeNode1.png "TreeNode继承关系")
 
-<!-- more -->
-
 ---
 
-## 一、HashMap节点内部类
+# 一、HashMap节点内部类
 
 HashMap 中节点内部类有两种实现：
 - 链表节点：**`HashMap.Node`**
 - 红黑树节点：**`HashMap.TreeNode`**
 
-有关 HashMap 数据结构、方法分析、哈希冲突 及 链表实现等，见：<a href="/blog/2019/09/03/javase/HashMap-source-analysis/">**HashMap源码分析**</a>。
+有关 HashMap 数据结构、方法分析、哈希冲突 及 链表实现等，见：[**HashMap源码分析**](/post/java/hashmap-source-analysis/)。
 
 ---
 
-## 二、链表-红黑树 相互转换的方法
+# 二、链表-红黑树 相互转换的方法
 
-### treeifyBin(Node, int) 方法
+## treeifyBin(Node, int) 方法
 
 转换为红黑树结构：根据 hash 值计算待转换的链表在 哈希表(**`table`**) 的位置，如果否满足转换为红黑树的条件，就进行转换。
 
@@ -71,7 +69,7 @@ final void treeifyBin(Node<K,V>[] tab, int hash) {
 }
 ```
 
-### newTreeNode(int, K, V, Node) 方法
+## newTreeNode(int, K, V, Node) 方法
 
 创建一个新的树节点。
 ```java
@@ -80,7 +78,7 @@ TreeNode<K,V> newTreeNode(int hash, K key, V value, Node<K,V> next) {
 }
 ```
 
-### replacementNode(Node, Node) 方法
+## replacementNode(Node, Node) 方法
 
 将树节点转换为链表节点。
 ```java
@@ -89,7 +87,7 @@ Node<K,V> replacementNode(Node<K,V> p, Node<K,V> next) {
 }
 ```
 
-### replacementTreeNode(Node, Node) 方法
+## replacementTreeNode(Node, Node) 方法
 
 将链表节点转换为树节点。
 ```java
@@ -100,9 +98,9 @@ TreeNode<K,V> replacementTreeNode(Node<K,V> p, Node<K,V> next) {
 
 ---
 
-## 三、二叉树 - <font color="red">红</font>黑树
+# 三、二叉树 - 红黑树
 
-### 3.1 二叉树
+## 3.1 二叉树
 
 **二叉树** 又叫二叉排序树、二叉查找树。
 性能：
@@ -113,7 +111,7 @@ TreeNode<K,V> replacementTreeNode(Node<K,V> p, Node<K,V> next) {
 
 二叉树的缺陷就在于不能实现**自平衡**。
 
-### 3.2 红黑树
+## 3.2 红黑树
 
 红黑树是一种 **自平衡二叉查找树**，它满足 **五条规则**：
 
@@ -125,13 +123,13 @@ TreeNode<K,V> replacementTreeNode(Node<K,V> p, Node<K,V> next) {
 
 ![红黑树](/images/javase/HashMap-TreeNode/RBTree.png "红黑树")
 
-红黑树是通过 **变色、<a href="#left">左旋</a>、<a href="#right">右旋</a>** 来保持自平衡的。
+红黑树是通过 **变色、[左旋](/post/java/hashmap-treenode/#rotateleft-左旋)、[右旋](/post/java/hashmap-treenode/#rotateright-右旋)** 来保持自平衡的。
 
 ---
 
-## 四、TreeNode实现代码
+# 四、TreeNode实现代码
 
-### 4.1 成员属性
+## 4.1 成员属性
 
 ```java
 // 继承 LinkedHashMap.Entry
@@ -144,7 +142,7 @@ static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
 }
 ```
 
-### 4.2 构造器
+## 4.2 构造器
 
 ```java
 TreeNode(int hash, K key, V val, Node<K,V> next) {
@@ -152,9 +150,9 @@ TreeNode(int hash, K key, V val, Node<K,V> next) {
 }
 ```
 
-### 4.3 核心方法分析
+## 4.3 核心方法分析
 
-#### root() 根节点
+### root() 根节点
 
 根节点，其父节点 parent 必须为空。
 ```java
@@ -167,7 +165,7 @@ final TreeNode<K,V> root() {
 }
 ```
 
-#### <a name="left">rotateLeft() 左旋</a>
+### rotateLeft() 左旋
 
 ![左旋](/images/javase/HashMap-TreeNode/RotateLeft.png "左旋")
 
@@ -207,7 +205,7 @@ static <K,V> TreeNode<K,V> rotateLeft(TreeNode<K,V> root, TreeNode<K,V> p) {
 }
 ```
 
-#### <a name="right">rotateRight() 右旋</a>
+### rotateRight() 右旋
 
 ![右旋](/images/javase/HashMap-TreeNode/RotateRight.png "右旋")
 
@@ -247,7 +245,7 @@ static <K,V> TreeNode<K,V> rotateRight(TreeNode<K,V> root, TreeNode<K,V> p) {
 }
 ```
 
-#### getTreeNode() & find() 查找
+### getTreeNode() & find() 查找
 
 从树中查找元素，广度优先搜索。
 
@@ -284,7 +282,7 @@ final TreeNode<K,V> find(int h, Object k, Class<?> kc) {
 }
 ```
 
-#### putTreeVal() & balanceInsertion()
+### putTreeVal() & balanceInsertion()
 
 **`putTreeVal()`**：插入新树节点，通过比较决定放置在左节点还是右节点，**同时维护了链表的结构**。
 
@@ -346,7 +344,7 @@ static <K,V> TreeNode<K,V> balanceInsertion(TreeNode<K,V> root, TreeNode<K,V> x)
 }
 ```
 
-#### removeTreeNode() & balanceDeletion()
+### removeTreeNode() & balanceDeletion()
 
 **`removeTreeNode()`**：删除节点，**同时维护了链表的结构**。
 
@@ -446,7 +444,7 @@ static <K,V> TreeNode<K,V> balanceDeletion(TreeNode<K,V> root,
 }
 ```
 
-#### treeify() & untreeify()
+### treeify() & untreeify()
 
 **`treeify()`**：由链表结构转换为红黑树结构。
 

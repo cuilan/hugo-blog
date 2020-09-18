@@ -13,9 +13,7 @@ categories:
 
 ![AbstractQueue继承关系](/images/javase/AbstractQueue-source-analysis/AbstractQueue1.png "AbstractQueue继承关系")
 
-<!-- more -->
-
-## 一、AbstractQueue特点或规范
+# 一、AbstractQueue特点或规范
 
 **AbstractQueue** 类提供 **队列Queue** 操作的基础实现。此类不允许 **`null`** 元素。
 
@@ -35,7 +33,7 @@ categories:
 
 ---
 
-## 二、构造器
+# 二、构造器
 
 唯一构造器，由子类实现提供 **Collection** 规范中的两个构造器。
 ```java
@@ -45,11 +43,11 @@ protected AbstractQueue() {
 
 ---
 
-## 三、方法分析
+# 三、方法分析
 
-### 3.1 继承自 AbstractCollection 的方法
+## 3.1 继承自 AbstractCollection 的方法
 
-#### add(E) 方法
+### add(E) 方法
 将指定的元素插入此队列，如果插入成功，则返回 **`true`**，否则抛出 **`IllegalStateException`** 异常。
 ```java
 public boolean add(E e) {
@@ -60,7 +58,7 @@ public boolean add(E e) {
 }
 ```
 
-#### addAll(Collection) 方法
+### addAll(Collection) 方法
 
 将指定集合中的所有元素添加到当前队列中。此实现迭代指定的集合，并依次将迭代器返回的每个元素添加到当前队列中。
 ```java
@@ -77,7 +75,7 @@ public boolean addAll(Collection<? extends E> c) {
 }
 ```
 
-#### clear() 方法
+### clear() 方法
 
 删除队列中的所有元素。重复调用 **`poll()`** 方法直到返回 **`null`**。
 ```java
@@ -87,9 +85,9 @@ public void clear() {
 }
 ```
 
-### 3.2 继承自 AbstractQueue 的方法
+## 3.2 继承自 AbstractQueue 的方法
 
-#### element() 方法
+### element() 方法
 
 删除并返回此队列的头元素。此方法与 **`peek()`** 的不同之处仅在于，如果此队列为空，则抛出异常。
 ```java
@@ -102,7 +100,7 @@ public E element() {
 }
 ```
 
-#### remove() 方法
+### remove() 方法
 
 删除并返回此队列的头元素。此方法与 **`poll()`** 的不同之处仅在于，如果此队列为空，则抛出异常。
 ```java

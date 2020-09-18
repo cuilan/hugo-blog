@@ -13,16 +13,14 @@ categories:
 
 ![AbstractSet继承关系](/images/javase/AbstractSet-source-analysis/AbstractSet1.png "AbstractSet继承关系")
 
-<!-- more -->
-
-## 一、AbstractSet特点或规范
+# 一、AbstractSet特点或规范
 
 **AbstractSet** 类提供了 **Set** 接口的基础实现，以最大限度地减少实现 **Set** 接口所需的工作量。
 - 子类通过此类实现集合 与 通过实现 **AbstractCollection** 类实现集合的过程相同，但必须遵循 **Set** 接口的规范。
 - AbstractSet 类不会覆盖 AbstractCollection 类中的任何实现。
 - 只是添加了 **`equals()`** 和 **`hashCode()`** 的实现。
 
-## 二、构造器
+# 二、构造器
 
 唯一构造器。
 ```java
@@ -30,9 +28,9 @@ protected AbstractSet() {
 }
 ```
 
-## 三、实现方法
+# 三、实现方法
 
-#### equals(Object) 方法
+## equals(Object) 方法
 
 将指定对象与当前 Set 进行比较。
 - 如果指定对象也是一个集合，且与当前 Set 引用相同则返回 **`true`**。
@@ -57,7 +55,7 @@ public boolean equals(Object o) {
 }
 ```
 
-#### hashCode() 方法
+## hashCode() 方法
 
 返回此 Set 的哈希值。Set 的哈希值是集合中所有元素的哈希值的 **总和**，其中空元素的哈希值为 **0**。
 
@@ -74,7 +72,7 @@ public int hashCode() {
 }
 ```
 
-#### removeAll(Collection) 方法
+## removeAll(Collection) 方法
 
 从当前集合中删除指定集合中的所有元素。
 

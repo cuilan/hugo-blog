@@ -11,7 +11,7 @@ categories:
 
 **`java.util.Map`** 接口是双列集合的顶级接口。
 
-## 一、Map特点或规范
+# 一、Map特点或规范
 
 - 双列集合，由 **key** 映射 **value** 的对象。
 - **Map** 不能包含重复的 **key**，且每个 **key** 只能映射一个 **value**。
@@ -21,21 +21,19 @@ categories:
   - **`java.util.TreeMap`** 类有序
   - 其他，如 **`java.util.HashMap`** 类无序
 
-<!-- more -->
-
-### 1.1 构造器规范
+## 1.1 构造器规范
 
 所有 Map 实现类都应该提供两个“标准”构造函数，Map 接口无法强制子类执行此规范（因为接口不能包含构造函数），但JDK中的所有 Map 实现都符合要求：
 - **无参构造器**，用于创建一个空 **Map**。
 - **参数类型为 Map 的构造器**，它创建一个具有相同键值的新映射映射作为其论点。
 
-### 1.2 key/value限制
+## 1.2 key/value限制
 
 某些 Map 实现类对可能包含的 key 和 value 有限制。如，某些实现禁止空 key 和空 value，有些实现类对键的类型有限制。如果插入不合格的 key 或 value 会引发异常，通常是 **`NullPointerException`** 或 **`ClassCastException`**。
 
 ---
 
-## 二、Map.Entry接口
+# 二、Map.Entry接口
 
 **Map.Entry** 类映射实体，即：key-value 键值对。**`Map.entrySet()`** 方法可以返回 Map 的实体集合视图，即：**`Set<Map.Entry<K, V>>`**。
 
@@ -93,9 +91,9 @@ interface Entry<K, V> {
 
 ---
 
-## 三、方法描述
+# 三、方法描述
 
-### 3.1 查询方法
+## 3.1 查询方法
 
 返回 Map 中 key-value 映射的数量。如果 Map 中包含元素多于 **`Integer.MAX_VALUE`**，则返回 **`Integer.MAX_VALUE`**。
 ```java
@@ -121,7 +119,7 @@ boolean containsValue(Object value);
 V get(Object key);
 ```
 
-### 3.2 修改操作
+## 3.2 修改操作
 
 将指定的 value 与 Map 中的指定 key 相关联。如果 Map 先前包含 key 的映射，则指定的 value 将替换旧 value。返回之前与 key 相关联的 value，如果之前没有关联，则返回 **`null`**。
 ```java
@@ -134,7 +132,7 @@ V put(K key, V value);
 V remove(Object key);
 ```
 
-### 3.3 批量操作
+## 3.3 批量操作
 
 将指定 Map 中的所有实体复制到此 Map 中。
 ```java
@@ -146,7 +144,7 @@ void putAll(Map<? extends K, ? extends V> m);
 void clear();
 ```
 
-### 3.4 视图
+## 3.4 视图
 
 返回 Map 中包含的 key 的 Set 视图。
 ```java
@@ -163,7 +161,7 @@ Collection<V> values();
 Set<Map.Entry<K, V>> entrySet();
 ```
 
-### 3.5 equals、hashCode
+## 3.5 equals、hashCode
 
 将指定对象与此 Map 进行相等性比较。如果给定对象也是一个 Map，并且两个 Map 指向同一个 Map，则返回 **`true`**。
 这可确保equals方法在Map接口的不同实现中正常工作。
@@ -176,7 +174,7 @@ boolean equals(Object o);
 int hashCode();
 ```
 
-### 3.6 默认方法
+## 3.6 默认方法
 
 返回指定 key 映射到的 value，如果此 Map 不包含 key 的映射，则返回 defaultValue。
 ```java

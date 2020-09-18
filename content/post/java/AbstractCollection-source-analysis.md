@@ -13,9 +13,7 @@ categories:
 
 ![AbstractCollection继承关系](/images/javase/AbstractCollection-source-analysis/AbstractCollection1.png "AbstractCollection继承关系")
 
-<!-- more -->
-
-## 一、AbstractCollection类继承规范
+# 一、AbstractCollection类继承规范
 
 - **`AbstractCollection`** 抽象类提供了 **`Collection`** 接口的骨干实现，以最大限度地减少实现 **`Collection`** 接口所需的工作量。
 - 如需实现一个 **不可修改的集合**，只需要继承此类并提供 **`iterator()`** 方法和 **`size()`** 方法的实现。（**`iterator()`** 方法返回的迭代器必须实现 **`hasNext()`** 方法和 **`next()`**方法。）
@@ -25,16 +23,16 @@ categories:
 
 ---
 
-## 二、成员分析
+# 二、成员分析
 
-### 2.1 常量
+## 2.1 常量
 
 集合的最大数组大小。某些虚拟机在数组中保留一些 `header words`。如果尝试分配更大的数组可能会导致 `OutOfMemoryError`：请求的数组大小超过VM限制。
 ```java
 private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 ```
 
-### 2.2 构造方法
+## 2.2 构造方法
 
 唯一的构造函数。
 ```java
@@ -42,7 +40,7 @@ protected AbstractCollection() {
 }
 ```
 
-### 2.3 抽象方法
+## 2.3 抽象方法
 
 方法描述见：<a href="/blog/2019/07/15/javase/Collection-source-analysis/">**`java.util.Collection`**</a> 接口。
 ```java
@@ -50,9 +48,9 @@ public abstract Iterator<E> iterator();
 public abstract int size();
 ```
 
-### 2.4 实现方法
+## 2.4 实现方法
 
-#### isEmpty()方法
+### isEmpty()方法
 
 如果挡墙集合不包含任何元素，则返回 **`true`**。依赖子类实现的 **`size()`** 方法，判断size是否等于0。
 ```java
@@ -61,7 +59,7 @@ public boolean isEmpty() {
 }
 ```
 
-#### contains(Object o)方法
+### contains(Object o)方法
 
 如果当前集合中包含指定的元素，则返回 **`true`**。
 即：当且仅当此集合包含至少一个元素e时才返回true，**`(o == null ? e == null : o.equals(e))`**。
@@ -83,7 +81,7 @@ public boolean contains(Object o) {
 }
 ```
 
-#### toArray()方法
+### toArray()方法
 
 返回包含当前集合中所有元素的数组。
 如果当前集合的迭代器返回的元素是有序的，则此方法必须以相同的顺序返回元素数组。
@@ -103,7 +101,7 @@ public Object[] toArray() {
 }
 ```
 
-#### toArray(T[] a)方法
+### toArray(T[] a)方法
 
 返回包含当前集合中所有元素的数组，并按照类型放入指定数组 **a** 中。如果数组 `length` 小于当前集合，则创建一个新的数组并放入集合中的元素。
 ```java
@@ -136,7 +134,7 @@ public <T> T[] toArray(T[] a) {
 }
 ```
 
-#### finishToArray(T[] r, Iterator<?> it)方法
+### finishToArray(T[] r, Iterator<?> it)方法
 
 当迭代器返回的元素多于预期时，则重新分配在 **`toArray`** 中使用的数组，并完成从迭代器填充它。
 
@@ -160,7 +158,7 @@ private static <T> T[] finishToArray(T[] r, Iterator<?> it) {
 }
 ```
 
-#### hugeCapacity(int minCapacity)方法
+### hugeCapacity(int minCapacity)方法
 
 调整最大容量，如果小于0，抛出 **`OutOfMemoryError`** 异常，如果大于虚拟机最大限制，则设置为常量 **`MAX_ARRAY_SIZE`**。
 ```java
@@ -174,7 +172,7 @@ private static int hugeCapacity(int minCapacity) {
 }
 ```
 
-#### add(E e)方法
+### add(E e)方法
 
 - **AbstractCollection** 没有提供 add() 方法的具体实现，只提供子类实现的规范，始终抛出 **`UnsupportedOperationException`** 异常。
 - 如果添加成功（集合因调用导致改变），则返回 **`true`**。
@@ -189,7 +187,7 @@ public boolean add(E e) {
 }
 ```
 
-#### remove(Object o)方法
+### remove(Object o)方法
 
 - 从当前集合中移除指定元素的第一个出现的实例（如果存在）。
 - 此子类实现的 **`iterator()`** 方法查找指定的元素。如果找到该元素，则由此迭代器的 **`remove()`** 方法从集合中删除该元素。
@@ -214,7 +212,7 @@ public boolean remove(Object o) {
 }
 ```
 
-#### containsAll(Collection<?> c)方法
+### containsAll(Collection<?> c)方法
 
 如果当前集合包含指定 Collection 中的所有元素，则返回 **`true`**。
 ```java
@@ -226,7 +224,7 @@ public boolean containsAll(Collection<?> c) {
 }
 ```
 
-#### addAll(Collection<? extends E> c)方法
+### addAll(Collection<? extends E> c)方法
 
 将指定集合中的所有元素条件至当前集合中，此方法依赖 **`add()`** 方法。
 ```java
@@ -240,7 +238,7 @@ public boolean addAll(Collection<? extends E> c) {
 }
 ```
 
-#### removeAll(Collection<?> c)方法
+### removeAll(Collection<?> c)方法
 
 从当前集合，删除指定集合 c 中的全部元素，且该指定的集合不可为 null。
 **注意**：如果当前子类实现的 `iterator()` 方法返回的迭代器未实现 `remove()` 方法，且当前集合包含了指定的对象，则抛出 **`UnsupportedOperationException`** 异常。
@@ -260,7 +258,7 @@ public boolean removeAll(Collection<?> c) {
 }
 ```
 
-#### retainAll(Collection<?> c)方法
+### retainAll(Collection<?> c)方法
 
 仅保留当前集合包含了指定集合 c 中的元素，即：删除当前集合中不包含指定集合 c 中的元素。
 **注意**：如果当前子类实现的 `iterator()` 方法返回的迭代器未实现 `remove()` 方法，且当前集合包含了指定的对象，则抛出 **`UnsupportedOperationException`** 异常。
@@ -280,7 +278,7 @@ public boolean retainAll(Collection<?> c) {
 }
 ```
 
-#### clear()方法
+### clear()方法
 
 **清空集合**，将当前集合中的全部元素删除。子类实现通常会以 **高效的实现** 来覆盖此方法。
 **注意**：如果当前子类实现的 `iterator()` 方法返回的迭代器未实现 `remove()` 方法，且当前集合包含了指定的对象，则抛出 **`UnsupportedOperationException`** 异常。
@@ -294,7 +292,7 @@ public void clear() {
 }
 ```
 
-#### toString()方法
+### toString()方法
 
 返回当前集合的字符串表现形式，按照迭代器返回的顺序进行字符串拼接。
 覆盖 **`Object`** 的 **`toString()`** 方法，以 **`[`** 开始，以 **`]`** 结束，相邻元素以 **`, `** 逗号 + 空格来间隔，元素调用 **`String.valueOf(Object)`** 转换字符串形式。

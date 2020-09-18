@@ -13,35 +13,33 @@ categories:
 
 ![AbstractList继承关系](/images/javase/AbstractList-source-analysis/AbstractList1.png "AbstractList继承关系")
 
-<!-- more -->
+# 一、AbstractList类继承规范
 
-## 一、AbstractList类继承规范
-
-#### 随机访问性与顺序访问性规范
+## 随机访问性与顺序访问性规范
 - **`AbstractList`** 类提供了 **`List`** 接口的基础实现，以最大限度地减少子类且实现了 **“随机访问”** 数据存储（如：数组）所需的工作量（如：**`ArrayList`**）。
 - 对于顺序访问的数据结构（如：**`LinkedList`**），应该优先使用 **`java.util.AbstractSequentialList`**，而不是此类。
 
-#### 可修改性规范
+## 可修改性规范
 - 如果要实现不可修改的列表，子类只需要扩展此类并提供 **`get(int)`** 方法和 **`size()`** 方法的实现。
 - 如果要实现可修改的列表，子类必须另外覆盖 **`set(int, E)`** 方法，否则会抛出 **`UnsupportedOperationException`** 异常。
 
-#### 大小可变性规范
+## 大小可变性规范
 - 如果列表是 **size** 是可变的，则子类必须另外覆盖 **`add(int, E)`** 方法和 **`remove(int)`** 方法，**`add(E)`** 方法已提供实现，元素默认加入列表末尾。
 
-#### 子类构造器规范
+## 子类构造器规范
 - 子类应根据 **`Collection`** 接口的规范提供 **无参数构造器** 和 **参数为 Collection 的构造器**。
 
-#### 迭代器规范
+## 迭代器规范
 - 与其他抽象集合实现不同，子类不必提供迭代器实现；**迭代器（通常是：`Itr`）** 和 **列表迭代器（通常是：`ListItr`）** 是由这个类的 **“随机访问”** 方法实现的：**`get(int) set(int, E) add(int, E) remove(int)`**。
 
-#### 可覆盖性规范
+## 可覆盖性规范
 - 此类中每个非抽象方法的实现。子类都可以以更高效的方式或特有的方式进行覆盖。
 
 ---
 
-## 二、成员分析
+# 二、成员分析
 
-### 2.1 成员属性
+## 2.1 成员属性
 
 当前列表已被 **结构修改** 的次数。
 **结构修改**：是改变列表大小 或 以其他方式扰乱它的方式，即：正在进行的迭代可能产生不正确的结果。
@@ -57,7 +55,7 @@ categories:
 protected transient int modCount = 0;
 ```
 
-### 2.2 构造方法
+## 2.2 构造方法
 
 唯一的构造器。**Collection** 的构造器规范由子类实现。
 ```java
@@ -65,16 +63,16 @@ protected AbstractList() {
 }
 ```
 
-### 2.3 抽象方法
+## 2.3 抽象方法
 
 唯一的一个抽象方法，为调用者提供索引访问的方法。来自 **java.util.List** 接口。
 ```java
 abstract public E get(int index);
 ```
 
-### 2.4 实现方法
+## 2.4 实现方法
 
-#### set()可修改性方法
+### set()可修改性方法
 
 如果子类要实现一个 **可修改** 的列表，则必须覆盖此方法，提供可根据索引修改元素。来自 **java.util.List** 接口。
 ```java
@@ -83,7 +81,7 @@ public E set(int index, E element) {
 }
 ```
 
-#### add()、remove()大小可变性方法
+### add()、remove()大小可变性方法
 
 如果子类要实现一个 **大小可变** 的列表，则必须覆盖 **`add(int, E)`** 方法和 **`remove(int)`** 方法。均来自 **java.util.List** 接口。
 ```java
@@ -105,7 +103,7 @@ public E remove(int index) {
 }
 ```
 
-#### indexOf()正序搜索
+### indexOf()正序搜索
 
 返回此列表中第一次出现的指定元素的索引，如果当前列表不包含该元素，则返回-1。来自 **java.util.List** 接口。
 即：返回**最低索引**。
@@ -125,7 +123,7 @@ public int indexOf(Object o) {
 }
 ```
 
-#### lastIndexOf()倒序搜索
+### lastIndexOf()倒序搜索
 
 返回此列表中最后一次出现的指定元素的索引，如果当前列表不包含该元素，则返回-1。来自 **java.util.List** 接口。
 即：返回**最高索引**。
@@ -145,7 +143,7 @@ public int lastIndexOf(Object o) {
 }
 ```
 
-#### clear()、removeRange(int, int)方法
+### clear()、removeRange(int, int)方法
 
 清空列表中的全部元素。
 ```java
@@ -165,7 +163,7 @@ protected void removeRange(int fromIndex, int toIndex) {
 }
 ```
 
-#### addAll(int, Collection)方法
+### addAll(int, Collection)方法
 
 - 将**指定集合**中的**所有元素**插入到**当前列表**的**指定位置**中。
 - 新添加的元素将按照**指定集合**的迭代器返回的顺序插入至此列表中。
@@ -196,7 +194,7 @@ private String outOfBoundsMsg(int index) {
 }
 ```
 
-#### equals(Object)方法
+### equals(Object)方法
 
 将指定对象与当前列表进行比较。如果指定的对象类型为 **List**，且两个列表大小相同，且两个列表中的所有元素的 **equals()** 方法相等，顺序相等，才返回 **`true`**。
 
@@ -227,7 +225,7 @@ public boolean equals(Object o) {
 }
 ```
 
-#### hashCode()方法
+### hashCode()方法
 
 遵循 **java.util.List.hashCode()** 方法，确保两个列表进行 **equals()** 方法对比时，比较的是列表中元素的哈希值。
 ```java
@@ -239,9 +237,8 @@ public int hashCode() {
     return hashCode;
 }
 ```
----
 
-#### iterator()方法
+### iterator()方法
 
 创建并返回一个 **`Itr`** 迭代器。
 ```java
@@ -250,7 +247,7 @@ public Iterator<E> iterator() {
 }
 ```
 
-#### listIterator()方法
+### listIterator()方法
 
 创建并返回一个 **`ListIterator`** 迭代器，默认从位置 **0** 开始迭代。
 ```java
@@ -259,7 +256,7 @@ public ListIterator<E> listIterator() {
 }
 ```
 
-#### listIterator(int)方法
+### listIterator(int)方法
 
 创建并返回一个从指定索引位置开始的 **`ListIterator`** 迭代器。
 ```java
@@ -270,7 +267,7 @@ public ListIterator<E> listIterator(final int index) {
 }
 ```
 
-#### subList(int, int)方法
+### subList(int, int)方法
 
 返回一个从 **fromIndex** 位置到 **toIndex** 位置的子 **List**，该子 **List** 继承 **`AbstractList`**。
 如果当前列表实现 **java.util.RandomAccess**，返回一个支持随机访问的子列表。
@@ -284,11 +281,11 @@ public List<E> subList(int fromIndex, int toIndex) {
 
 ---
 
-## 三、迭代器
+# 三、迭代器
 
 **AbstractList** 抽象类内部提供了两个通用的迭代器，分别是：**`Itr`**、**`ListItr`**，子类无需实现迭代器，可直接使用。
 
-### 3.1 Itr
+## 3.1 Itr
 
 迭代器，实现了 **`java.util.Iterator`** 接口。
 ```java
@@ -343,7 +340,7 @@ private class Itr implements Iterator<E> {
 }
 ```
 
-### 3.2 ListItr
+## 3.2 ListItr
 
 ![ListItr继承关系](/images/javase/AbstractList-source-analysis/ListItr.png "ListItr继承关系")
 
@@ -410,11 +407,11 @@ private class ListItr extends Itr implements ListIterator<E> {
 
 ---
 
-## 四、子列表
+# 四、子列表
 
 调用 **`subList()`** 方法返回当前列表的子列表。
 
-### 4.1 SubList
+## 4.1 SubList
 
 **`AbstractList`** 抽象类的子类。
 ```java
@@ -579,7 +576,7 @@ class SubList<E> extends AbstractList<E> {
 }
 ```
 
-### 4.2 RandomAccessSubList
+## 4.2 RandomAccessSubList
 
 继承 **`SubList`**，实现了 **`java.util.RandomAccess`** 接口的随机访问子列表。
 ```java

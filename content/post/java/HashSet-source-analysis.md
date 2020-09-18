@@ -13,20 +13,18 @@ categories:
 
 ![HashSet继承关系](/images/javase/HashSet-source-analysis/HashSet1.png "HashSet继承关系")
 
-<!-- more -->
-
-## 一、HashSet特点或规范
+# 一、HashSet特点或规范
 
 **HashSet** 类是 **Set** 接口的实现类，底层由 **`java.util.HashMap`** 实现。
 - 无序，不保证集合的迭代顺序
 - 允许 **`null`** 元素。
 
-### 1.1 性能
+## 1.1 性能
 
 - 该类的基本操作（**`add(E)`**、**`remove(Object)`**、**`contains(Object)`**、**`size()`**）时间性能较高，时间复杂度为 **O(1)**，前提是 **Hash** 必须正确分布。
 - 迭代此集合需要的时间与 HashSet 实例的大小（元素数量）加上后备 HashMap 实例的“容量”（桶数）之和成比例。因此，如果迭代性能很重要，则不要将初始容量设置得太高（或负载因子太低）。
 
-### 1.2 线程不安全
+## 1.2 线程不安全
 
 注意，HashSet 线程不安全。如果多个线程同时访问，并且至少有一个线程修改了该 Set，则必须在外部进行同步。最好在创建完成时添加同步，以防止对 Set 的意外不同步访问：
 
@@ -38,7 +36,7 @@ Set s = Collections.synchronizedSet(new HashSet(...));
 
 ---
 
-## 二、成员变量
+# 二、成员变量
 
 **HashSet** 底层由 **HashMap** 实现，由此来保证不可重复性。
 ```java
@@ -50,9 +48,9 @@ private static final Object PRESENT = new Object();
 
 ---
 
-## 三、构造器
+# 三、构造器
 
-### 空参构造器（遵循 Collection 接口规范）
+## 空参构造器（遵循 Collection 接口规范）
 
 使用 HashMap 实例，默认初始容量为 **16 **，默认加载因子为：**0.75**。
 ```java
@@ -61,7 +59,7 @@ public HashSet() {
 }
 ```
 
-### 参数为 Collection 类型的构造器（遵循 Collection 接口规范）
+## 参数为 Collection 类型的构造器（遵循 Collection 接口规范）
 
 使用 HashMap 实例，初始容量为：集合的 **size / 0.75 + 1倍**，默认加载因子为：**0.75**。
 ```java
@@ -71,7 +69,7 @@ public HashSet(Collection<? extends E> c) {
 }
 ```
 
-### 指定初始容量和加载因子的构造器
+## 指定初始容量和加载因子的构造器
 
 构造一个空的 HashSet，使用 HashMap 实例，可指定 **初始容量** 和 **加载因子**。
 ```java
@@ -89,7 +87,7 @@ public HashSet(int initialCapacity) {
 }
 ```
 
-### 有序 HashSet 构造器
+## 有序 HashSet 构造器
 
 构造一个空的 LinkedHashSet，包访问权限，仅由子类 **`java.util.LinkedHashSet`** 使用。使用 LinkedHashMap 实例，可指定 **初始容量** 和 **加载因子**，**dummy** 参数仅作为标志位，用于区分其他构造器。
 ```java
@@ -100,9 +98,9 @@ HashSet(int initialCapacity, float loadFactor, boolean dummy) {
 
 ---
 
-## 四、实现方法
+# 四、实现方法
 
-### 4.1 继承自AbstractCollection的方法
+## 4.1 继承自AbstractCollection的方法
 
 ```java
 // 获取迭代器，迭代器返回的元素无序
@@ -141,7 +139,7 @@ public void clear() {
 }
 ```
 
-### 4.2 其他方法
+## 4.2 其他方法
 
 ```java
 public Object clone() {

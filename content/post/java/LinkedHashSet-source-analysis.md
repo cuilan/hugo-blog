@@ -13,9 +13,7 @@ categories:
 
 ![LinkedHashSet继承关系](/images/javase/LinkedHashSet-source-analysis/LinkedHashSet1.png "LinkedHashSet继承关系")
 
-<!-- more -->
-
-## 一、LinkedHashSet特点或规范
+# 一、LinkedHashSet特点或规范
 
 **`java.util.LinkedHashSet`** 类是 **Set** 接口的 **哈希表** 和 **链表** 双实现，保证迭代顺序。
 
@@ -25,9 +23,9 @@ categories:
 
 ---
 
-## 二、构造器
+# 二、构造器
 
-### 空参构造器（遵循 Collection 接口规范）
+## 空参构造器（遵循 Collection 接口规范）
 
 调用父类构造器，使用 LinkedHashSet 实例，默认初始容量为 **16 **，默认加载因子为：**0.75**。
 ```java
@@ -36,7 +34,7 @@ public LinkedHashSet() {
 }
 ```
 
-### 参数为 Collection 类型的构造器（遵循 Collection 接口规范）
+## 参数为 Collection 类型的构造器（遵循 Collection 接口规范）
 
 调用父类构造器，使用 LinkedHashMap 实例，初始容量为：集合的 **2倍**，默认加载因子为：**0.75**。
 ```java
@@ -46,7 +44,7 @@ public LinkedHashSet(Collection<? extends E> c) {
 }
 ```
 
-### 指定初始容量和加载因子的构造器
+## 指定初始容量和加载因子的构造器
 
 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，可指定 **初始容量** 和 **加载因子**。
 ```java
@@ -55,7 +53,7 @@ public LinkedHashSet(int initialCapacity, float loadFactor) {
 }
 ```
 
-### 仅指定初始容量的构造器
+## 仅指定初始容量的构造器
 
 构造一个空的 LinkedHashSet，调用父类构造器，使用 LinkedHashMap 实例，仅支持指定 **初始容量**，加载因子默认为：**0.75**。
 ```java
@@ -66,7 +64,7 @@ public LinkedHashSet(int initialCapacity) {
 
 ---
 
-## 三、其他方法
+# 三、其他方法
 
 获得一个 **有序不可重复** 的分割器。
 ```java

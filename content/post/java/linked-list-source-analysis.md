@@ -9,26 +9,15 @@ categories:
 - JAVA
 ---
 
-<a href="#1">一、LinkedList简介</a>
-<a href="#2">二、成员分析</a>
-<a href="#3">三、链表实现</a>
-<a href="#4">四、双端队列实现</a>
-<a href="#5">五、队列实现</a>
-<a href="#6">六、栈实现</a>
-<a href="#7">七、列表实现</a>
-<a href="#8">八、迭代器、分割器</a>
-
-## <a name="1">一、LinkedList简介</a>
+# 一、LinkedList简介
 
 **`java.util.LinkedList`** 是 **`java.util.List`** 接口实现，是一个 **链表** 数据结构的实现，直接继承自 **`java.util.AbstractSequentialList`** 抽象有序集合，是一个有序的 List，同时实现了 **`java.util.List`** 、 **`java.util.Deque`** 接口，也具备 **队列** 、 **双端队列** 的功能。同时，LinkedList 也具有 **栈** 的数据结构。因此 LinkedList 可以满足多种使用场景，是一个功能齐全的集合。
 
-<!-- more -->
-
-### 1.1 LinkedList 继承关系图
+## 1.1 LinkedList 继承关系图
 
 ![LinkedList继承关系](/images/javase/linked-list-source-analysis/linkedlist1.png "LinkedList继承关系")
 
-### 1.2 LinkedList 的特性：
+## 1.2 LinkedList 的特性：
  - 实现了 **双链表** 结构
  - 实现了 **Queue(队列)** 与 **Deque(双端队列)** 结构
  - 实现了 **Stack(栈)** 结构
@@ -39,7 +28,7 @@ categories:
  - 查询慢、增删快
  - 底层通过 **Node<E>** 实现
 
-### 1.3 线程同步问题
+## 1.3 线程同步问题
 
 由于 LinkedList 出于性能的考虑，并没有实现同步，因此在多线程环境下操作时，可能会引发线程安全问题。最好的解决办法是在创建时使用集合工具类 **`Collections.synchronizedList()`** 方法进行包装，以防止意外对列表的非同步访问。
 
@@ -49,9 +38,9 @@ List list = Collections.synchronizedList(new LinkedList(...));
 
 ---
 
-## <a name="2">二、成员分析</a>
+# 二、成员分析
 
-### 2.1 成员变量
+## 2.1 成员变量
 
 ```java
 // 集合大小
@@ -72,7 +61,7 @@ transient int size = 0;
 transient Node<E> last;
 ```
 
-### 2.2 构造函数
+## 2.2 构造函数
 
 遵循 **`java.util.Collection`** 规范。
 ```java
@@ -95,9 +84,9 @@ public LinkedList(Collection<? extends E> c) {
 
 ---
 
-## <a name="3">三、链表实现</a>
+# 三、链表实现
 
-### 3.1 Node内部类
+## 3.1 Node内部类
 
 内部类 Node 就是实际的节点，用于存放实际元素的地方。
 ```java
@@ -118,9 +107,9 @@ private static class Node<E> {
 }
 ```
 
-### 3.2 连接方法
+## 3.2 连接方法
 
-#### linkFirst(E) 方法：前
+### linkFirst(E) 方法：前
 
 创建并连接第一个元素。
 - 创建一个 Node 节点
@@ -142,7 +131,7 @@ private void linkFirst(E e) {
 }
 ```
 
-#### linkLast(E) 方法：后
+### linkLast(E) 方法：后
 
 创建并连接最后一个元素。
 - 创建一个 Node 节点
@@ -164,7 +153,7 @@ void linkLast(E e) {
 }
 ```
 
-#### linkBefore(E, Node) 方法：中
+### linkBefore(E, Node) 方法：中
 
 在**节点前（非空）**插入一个元素。
 - 获取 succ 节点的前节点
@@ -187,9 +176,9 @@ void linkBefore(E e, Node<E> succ) {
 }
 ```
 
-### 3.3 删除节点方法
+## 3.3 删除节点方法
 
-#### unlinkFirst(Node) 方法：前
+### unlinkFirst(Node) 方法：前
 
 删除并返回链表的第一个的节点（非空）。
 - 获取 f 节点的元素并返回
@@ -216,7 +205,7 @@ private E unlinkFirst(Node<E> f) {
 }
 ```
 
-#### unlinkLast(Node) 方法：后
+### unlinkLast(Node) 方法：后
 
 删除并返回链表的最后一个节点（非空）。
 - 获取 l 节点的元素并返回
@@ -243,7 +232,7 @@ private E unlinkLast(Node<E> l) {
 }
 ```
 
-#### unlink(Node) 方法：中
+### unlink(Node) 方法：中
 
 删除并返回链表中的一个节点（非空）。
 - 获取 x 节点的元素并返回
@@ -278,11 +267,11 @@ E unlink(Node<E> x) {
 
 ---
 
-## <a name="4">四、双端队列实现</a>
+# 四、双端队列实现
 
-### 4.1 获取
+## 4.1 获取
 
-#### getFirst() 方法：头
+### getFirst() 方法：头
 
 获取并返回第一个元素，如果为空抛出异常。
 ```java
@@ -294,7 +283,7 @@ public E getFirst() {
 }
 ```
 
-#### getLast() 方法：尾
+### getLast() 方法：尾
 
 获取并返回最后一个元素，如果为空抛出异常。
 ```java
@@ -306,7 +295,7 @@ public E getLast() {
 }
 ```
 
-#### peekFirst() 方法：头
+### peekFirst() 方法：头
 
 获取并返回第一个元素，如果为空则返回 null。
 ```java
@@ -316,7 +305,7 @@ public E peekFirst() {
 }
 ```
 
-#### peekLast() 方法：尾
+### peekLast() 方法：尾
 
 获取并返回最后一个元素，如果为空则返回 null。
 ```java
@@ -326,9 +315,9 @@ public E peekLast() {
 }
 ```
 
-### 4.2 删除
+## 4.2 删除
 
-#### removeFirst() 方法：头
+### removeFirst() 方法：头
 
 删除并返回第一个元素，如果为空抛出异常。
 ```java
@@ -340,7 +329,7 @@ public E removeFirst() {
 }
 ```
 
-#### removeLast() 方法：尾
+### removeLast() 方法：尾
 
 删除并返回最后一个元素，如果为空抛出异常。
 ```java
@@ -352,7 +341,7 @@ public E removeLast() {
 }
 ```
 
-#### pollFirst() 方法：头
+### pollFirst() 方法：头
 
 删除并返回第一个元素，如果为空则返回 null。
 ```java
@@ -362,7 +351,7 @@ public E pollFirst() {
 }
 ```
 
-#### pollLast() 方法：尾
+### pollLast() 方法：尾
 
 删除并返回最后一个元素，如果为空则返回 null。
 ```java
@@ -372,7 +361,7 @@ public E pollLast() {
 }
 ```
 
-#### removeFirstOccurrence(Object) 方法
+### removeFirstOccurrence(Object) 方法
 
 从头至尾（**正序**）删除第一次出现的元素 Object，依赖 **`remove(Object)`** 方法。
 ```java
@@ -381,7 +370,7 @@ public boolean removeFirstOccurrence(Object o) {
 }
 ```
 
-#### removeLastOccurrence(Object) 方法
+### removeLastOccurrence(Object) 方法
 
 从尾至头（**倒序**）删除第一次出现的元素 Object，依赖 **`unlink(Node)`** 方法。
 ```java
@@ -406,9 +395,9 @@ public boolean removeLastOccurrence(Object o) {
 }
 ```
 
-### 4.3 添加
+## 4.3 添加
 
-#### addFirst(E) 方法：头
+### addFirst(E) 方法：头
 
 在头部添加一个元素 E。
 ```java
@@ -418,7 +407,7 @@ public void addFirst(E e) {
 }
 ```
 
-#### addLast(E) 方法：尾
+### addLast(E) 方法：尾
 
 在尾部添加一个元素 E。
 ```java
@@ -428,7 +417,7 @@ public void addLast(E e) {
 }
 ```
 
-#### offerFirst(E) 方法：头
+### offerFirst(E) 方法：头
 
 在头部添加一个元素 E，并返回是否添加成功。
 ```java
@@ -438,7 +427,7 @@ public boolean offerFirst(E e) {
 }
 ```
 
-#### offerLast(E) 方法：尾
+### offerLast(E) 方法：尾
 
 在尾部添加一个元素 E，并返回是否添加成功。
 ```java
@@ -448,9 +437,9 @@ public boolean offerLast(E e) {
 }
 ```
 
-### 4.4 倒序迭代
+## 4.4 倒序迭代
 
-#### descendingIterator() 方法
+### descendingIterator() 方法
 
 ```java
 public Iterator<E> descendingIterator() {
@@ -460,11 +449,11 @@ public Iterator<E> descendingIterator() {
 
 ---
 
-## <a name="5">五、队列实现</a>
+# 五、队列实现
 
-### 5.1 获取
+## 5.1 获取
 
-#### element() 方法
+### element() 方法
 
 获取头元素，如果为空抛出异常。
 ```java
@@ -473,7 +462,7 @@ public E element() {
 }
 ```
 
-#### peek() 方法
+### peek() 方法
 
 获取头元素，如果为空则返回 null。
 ```java
@@ -483,9 +472,9 @@ public E peek() {
 }
 ```
 
-### 5.2 删除
+## 5.2 删除
 
-#### remove() 方法
+### remove() 方法
 
 删除头元素，如果为空抛出异常。
 ```java
@@ -494,7 +483,7 @@ public E remove() {
 }
 ```
 
-#### poll() 方法
+### poll() 方法
 
 删除头元素，如果为空则返回 null。
 ```java
@@ -504,9 +493,9 @@ public E poll() {
 }
 ```
 
-### 5.3 添加
+## 5.3 添加
 
-#### offer(E) 方法
+### offer(E) 方法
 
 在末尾添加一个元素 E，依赖 **`add(E)`** 方法。
 ```java
@@ -515,7 +504,7 @@ public boolean offer(E e) {
 }
 ```
 
-#### add(E) 方法
+### add(E) 方法
 
 在末尾添加一个元素 E。
 ```java
@@ -527,9 +516,9 @@ public boolean add(E e) {
 
 ---
 
-## <a name="6">六、栈实现</a>
+# 六、栈实现
 
-#### push(E) 方法
+## push(E) 方法
 
 将元素 E 压入栈顶，即：将元素 E 添加至栈的头部。
 ```java
@@ -538,7 +527,7 @@ public void push(E e) {
 }
 ```
 
-#### pop() 方法
+## pop() 方法
 
 弹出栈顶元素，即：删除并返回栈的第一个元素。
 ```java
@@ -549,9 +538,9 @@ public E pop() {
 
 ---
 
-## <a name="7">七、列表实现</a>
+# 七、列表实现
 
-### 7.1 元素操作
+## 7.1 元素操作
 
 ```java
 // 是否包含元素 o
@@ -633,7 +622,7 @@ public void clear() {
 }
 ```
 
-### 7.2 索引操作
+## 7.2 索引操作
 
 ```java
 public E get(int index) {
@@ -698,9 +687,9 @@ Node<E> node(int index) {
 }
 ```
 
-### 7.3 元素搜索操作
+## 7.3 元素搜索操作
 
-#### indexOf(Object) 方法
+### indexOf(Object) 方法
 
 返回此列表中第一次出现的指定元素的索引，如果此列表不包含该元素，则返回-1。
 ```java
@@ -723,7 +712,7 @@ public int indexOf(Object o) {
 }
 ```
 
-#### lastIndexOf(Object) 方法
+### lastIndexOf(Object) 方法
 
 返回此列表中指定元素最后一次出现的索引，如果此列表不包含该元素，则返回-1。
 ```java
@@ -748,16 +737,16 @@ public int lastIndexOf(Object o) {
 
 ---
 
-## <a name="8">八、迭代器、分割器</a>
+# 八、迭代器、分割器
 
-### ListItr
-
-略。
-
-### DescendingIterator
+## ListItr
 
 略。
 
-### LLSpliterator
+## DescendingIterator
+
+略。
+
+## LLSpliterator
 
 略。
