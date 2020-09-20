@@ -16,13 +16,13 @@ hasCJKLanguage = true
 home = ["HTML", "RSS", "Algolia"]
 
 [params]
-  header_image = "img/tag-bg.jpg"
+  header_image = "/img/post-bg-coffee.jpeg"
   SEOTitle = "EchoGreen"
   description = "Java程序员"
   keyword = "翠兰, cuilan, 博客, 个人网站"
   slogan = "Let the cat out of the bag."
 
-  image_404 = "img/404-bg.jpg"
+  image_404 = "/img/404-bg.jpg"
   title_404 = "404 :("
   omit_categories = false
 
