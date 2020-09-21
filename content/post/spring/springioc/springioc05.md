@@ -16,8 +16,6 @@ categories:
 
 # 一、register方法
 
-## 使用
-
 register 方法既可以注册普通 Bean，也可以将一个 JavaConfig 配置类作为 Bean 来注册。
 
 ```java
@@ -34,9 +32,7 @@ public AnnotationConfigApplicationContext(Class<?>... componentClasses) {
 }
 ```
 
-## 准备BeanDefinition
-
-
+# 二、准备BeanDefinition
 
 ```java
 private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
@@ -85,4 +81,103 @@ private <T> void doRegisterBean(Class<T> beanClass, @Nullable String name,
 }
 ```
 
+## 1. 创建 BeanDefinition
 
+## 2. 设置 Scope，单例或原型等
+
+## 3. 生成 Bean 的名称
+
+可实现 BeanNameGenerator 接口，自定义 Bean 名称生成策略可以实现该接口。
+
+## 4. 设置 Bean 的属性
+
+注解配置静态工具类，处理通用 BeanDefinition 的注解，懒加载、是否为主类、设置依赖、设置权限、描述等信息。
+
+```java
+AnnotationConfigUtils.processCommonDefinitionAnnotations(abd);
+
+static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd, AnnotatedTypeMetadata metadata) {
+	// 判断是否懒加载
+	AnnotationAttributes lazy = attributesFor(metadata, Lazy.class);
+	if (lazy != null) {
+		abd.setLazyInit(lazy.getBoolean("value"));
+	} else if (abd.getMetadata() != metadata) {
+		lazy = attributesFor(abd.getMetadata(), Lazy.class);
+		if (lazy != null) {
+			abd.setLazyInit(lazy.getBoolean("value"));
+		}
+	}
+	// 是否为主类
+	if (metadata.isAnnotated(Primary.class.getName())) {
+		abd.setPrimary(true);
+	}
+	// 设置依赖
+	AnnotationAttributes dependsOn = attributesFor(metadata, DependsOn.class);
+	if (dependsOn != null) {
+		abd.setDependsOn(dependsOn.getStringArray("value"));
+	}
+	// 设置权限
+	AnnotationAttributes role = attributesFor(metadata, Role.class);
+	if (role != null) {
+		abd.setRole(role.getNumber("value").intValue());
+	}
+	// 设置描述
+	AnnotationAttributes description = attributesFor(metadata, Description.class);
+	if (description != null) {
+		abd.setDescription(description.getString("value"));
+	}
+}
+```
+
+## 5. 注册 BeanDefinition
+
+BeanDefinitionHolder 仅仅是对 BeanDefinition 与 BeanName 的封装，registry 当前是 `DefaultListableBeanFactory`。
+
+```java
+public static void registerBeanDefinition(
+		BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
+		throws BeanDefinitionStoreException {
+
+	// Register bean definition under primary name.
+	String beanName = definitionHolder.getBeanName();
+	// 注册BeanDefinition，registry -> GenericApplicationContext
+	registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+
+	// 处理Bean的别名
+	// Register aliases for bean name, if any.
+	String[] aliases = definitionHolder.getAliases();
+	if (aliases != null) {
+		for (String alias : aliases) {
+			registry.registerAlias(beanName, alias);
+		}
+	}
+}
+```
+
+## 6. DefaultListableBeanFactory 的核心注册方法
+
+* 首先，从 IOC 核心容器 **`beanDefinitionMap`** 中获取 Bean，防止重复注册。
+
+```java
+// 判断是否已存在，防止重复注册
+BeanDefinition existingDefinition = this.beanDefinitionMap.get(beanName);
+```
+
+* 放入IOC核心容器
+
+```java
+// 放入IOC核心容器
+this.beanDefinitionMap.put(beanName, beanDefinition);
+```
+
+* 容量自增，并将原先的所有的 Bean 放入其中，再将当前 Bean 放入其中，保证注册顺序。
+
+```java
+// 容量自增
+List<String> updatedDefinitions = new ArrayList<>(this.beanDefinitionNames.size() + 1);
+// 将原先的beanDefinitionNames全部放入
+updatedDefinitions.addAll(this.beanDefinitionNames);
+// 将beanName单独放入ArrayList，保证注册顺序
+updatedDefinitions.add(beanName);
+this.beanDefinitionNames = updatedDefinitions;
+```

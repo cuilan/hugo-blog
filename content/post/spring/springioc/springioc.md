@@ -26,6 +26,7 @@ categories:
 
 1. [SpringIOC源码分析一](/post/spring/springioc/springioc04) AnnotationConfigApplicationContext 启动入口
 2. [SpringIOC源码分析二](/post/spring/springioc/springioc05) Spring 注册 Bean 的流程
+3. [SpringIOC源码分析三](/post/spring/springioc/springioc06) refresh 方法，刷新前的准备工作
 
 
 
