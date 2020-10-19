@@ -28,6 +28,8 @@ categories:
 2. [SpringIOC源码分析二](/post/spring/springioc/springioc05) Spring 注册 Bean 的流程
 3. [SpringIOC源码分析三](/post/spring/springioc/springioc06) refresh 方法，刷新前的准备工作
 4. [SpringIOC源码分析四](/post/spring/springioc/springioc07) 调用 BeanFactoryPostProcessors 后置处理器
+5. [SpringIOC源码分析五](/post/spring/springioc/springioc08) Spring容器初始化流程
+6. [SpringIOC源码分析六](/post/spring/springioc/springioc09) refresh 方法后续方法，bean 的实例化
 
 
 
