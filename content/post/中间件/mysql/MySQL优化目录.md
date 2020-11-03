@@ -23,3 +23,5 @@ categories:
 * [四、关于JOIN的优化](/post/中间件/mysql/关于join的优化)
 
 * [五、关于子查询的优化](/post/中间件/mysql/关于子查询的优化)
+
+* [六、Explain关键字详解](/post/中间件/mysql/explain关键字详解)
