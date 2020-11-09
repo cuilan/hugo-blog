@@ -18,7 +18,7 @@ categories:
 
 * [二、B+树索引](/post/中间件/mysql/b+树索引)
 
-* [三、Explain插叙优化器](/post/中间件/mysql/explain查询优化器)
+* [三、Explain查询优化器](/post/中间件/mysql/explain查询优化器)
 
 * [四、关于JOIN的优化](/post/中间件/mysql/关于join的优化)
 
