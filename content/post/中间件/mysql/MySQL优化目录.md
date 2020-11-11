@@ -25,3 +25,5 @@ categories:
 * [五、关于子查询的优化](/post/中间件/mysql/关于子查询的优化)
 
 * [六、Explain关键字详解](/post/中间件/mysql/explain关键字详解)
+
+* [七、事务及锁的原理](/post/中间件/mysql/事务及锁的原理)
