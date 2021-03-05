@@ -2,7 +2,7 @@
 layout:     post 
 title:      "manjaro安装后基本配置"
 subtitle:   ""
-description: "我们知道，kubernetes的Cluster Network属于私有网络，只能在cluster Network内部才能访问部署的应用，那如何才能将Kubernetes集群中的应用暴露到外部网络，为外部用户提供服务呢？本文探讨了从外部网络访问kubernetes cluster中应用的几种实现方式。"
+description: "manjaro安装后基本配置。"
 date:       2020-12-06
 author:     "张岩"
 published: true
