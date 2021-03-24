@@ -2,6 +2,7 @@
 layout:     post 
 title:      "Redis配置文件详解"
 subtitle:   "Redis、redis.conf"
+description: "Redis各模块功能，及配置参数详解"
 date:       2020-12-01
 tags:
 - 中间件
